@@ -1,59 +1,51 @@
-// game.c
+// Dans game.c
 #include <stdio.h>
 #include <stdlib.h>
 #include "game.h"
 #include "cartes.h"
 #include "joueurs.h"
-#include "display.h"
 
 #define TOTAL_CARTES 150
 #define MIN_CARTES_RESTANTES 75
 
-// Exemple d'initialisation et distribution
 void lancer_partie() {
     int nb_joueurs, nb_cartes_par_joueur;
-    
-    // Demander le nombre de joueurs et le nombre de cartes personnelles
+    char utiliserFichier;
+
     printf("Nombre de joueurs (2-8) : ");
     scanf("%d", &nb_joueurs);
-    if (nb_joueurs < 2 || nb_joueurs > 8) {
-        printf("Nombre de joueurs invalide !\n");
-        exit(EXIT_FAILURE);
-    }
-    
+    // Vérifier nb_joueurs ici...
+
     printf("Nombre de cartes personnelles par joueur : ");
     scanf("%d", &nb_cartes_par_joueur);
     if (nb_joueurs * nb_cartes_par_joueur > TOTAL_CARTES - MIN_CARTES_RESTANTES) {
         printf("Erreur : trop de cartes distribuées, la pioche doit rester au moins avec %d cartes.\n", MIN_CARTES_RESTANTES);
         exit(EXIT_FAILURE);
     }
-    
-    // Initialisation des cartes
+
+    printf("Utiliser un fichier de configuration pour les cartes ? (O/N) : ");
+    scanf(" %c", &utiliserFichier);
+
     Carte *pioche = malloc(TOTAL_CARTES * sizeof(Carte));
-    if(!pioche) {
-        printf("Erreur d'allocation mémoire.\n");
-        exit(EXIT_FAILURE);
-    }
     int nb_cartes;
-    initialiser_pioche(pioche, &nb_cartes);
+    if (utiliserFichier == 'O' || utiliserFichier == 'o') {
+        initialiser_pioche_valueFile(pioche, &nb_cartes, "config.txt");
+    } else {
+        initialiser_pioche(pioche, &nb_cartes);
+    }
     melanger(pioche, nb_cartes);
-    
+
     // Initialisation des joueurs
     Joueur *joueurs = malloc(nb_joueurs * sizeof(Joueur));
-    if (!joueurs) {
-        printf("Erreur d'allocation mémoire pour les joueurs.\n");
-        exit(EXIT_FAILURE);
-    }
     initialiser_joueurs(joueurs, nb_joueurs, nb_cartes_par_joueur);
-    
-    // Distribution des cartes personnelles
+
+    // Distribution
     for (int i = 0; i < nb_joueurs; i++) {
         for (int j = 0; j < nb_cartes_par_joueur; j++) {
             joueurs[i].cartes[j] = piocher(pioche, &nb_cartes);
         }
         joueurs[i].nb_cartes = nb_cartes_par_joueur;
     }
-    
     // Boucle de jeu simplifiée
     int partie_terminee = 0;
     while (!partie_terminee) {
