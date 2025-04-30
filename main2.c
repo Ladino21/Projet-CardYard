@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "game.h"
-#include "affichage.h"
+#include "display.h"
 
 int main() {
     int choix = 0;
     do {
-        affichage_menu();  // affiche le menu principal
+        display_menu();  // affiche le menu principal
         scanf("%d", &choix);
         switch (choix) {
             case 1:
