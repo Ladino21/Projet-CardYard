@@ -1,4 +1,7 @@
 // joueurs.h
+#ifndef CARTES_H
+#define CARTES_H
+
 #include "cartes.h"
 
 #define MAX_CARTES 20  // nombre maximum de cartes personnelles
@@ -16,3 +19,4 @@ void initialiser_joueurs(Joueur *joueurs, int nb_joueurs, int nb_cartes_par_joue
 void afficher_joueur(const Joueur *joueur);
 void reveler_joueur(Joueur *joueur);
 int calculer_score(const Joueur *joueur);
+#endif
