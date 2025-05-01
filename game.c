@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "game.h"
 #include "cartes.h"
-#include "joueur.h"
+#include "joueurs.h"
 
 #define TOTAL_CARTES 150
 #define MIN_CARTES_RESTANTES 75
