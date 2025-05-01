@@ -1,3 +1,5 @@
+#ifndef CARTES_H
+#define CARTES_H
 typedef struct {
     int valeur;
     int visible; // 0 = caché, 1 = visible
@@ -11,3 +13,4 @@ void melanger(Carte *pioche, int nbCartes);
 
 // Pioche la dernière carte du tableau
 Carte piocher(Carte *pioche, int *nbCartes);
+#endif
