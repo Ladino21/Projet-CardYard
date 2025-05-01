@@ -1,7 +1,7 @@
 // joueurs.c
 #include <stdio.h>
 #include <string.h>
-#include "joueur.h"
+#include "joueurs.h"
 #include "cartes.h"
 
 void initialiser_joueurs(Joueur *joueurs, int nb_joueurs, int nb_cartes_par_joueur) {
