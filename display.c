@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "display.h"
+#include "cartes.h"
 
 void display_menu() {
     printf("\n===== CARD YARD =====\n");
