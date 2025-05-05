@@ -11,7 +11,7 @@ void menu_principal() {
         printf("\n===== CARD YARD =====\n");
         printf("1. Nouvelle partie\n");
         printf("2. Quitter\n");
-        printf("Choix : ");
+        printf("Veuillez entrer votre choix : ");
         scanf("%d", &choix);
 
         switch (choix) {
