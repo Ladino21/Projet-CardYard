@@ -20,9 +20,10 @@ typedef struct {
 
 // Structure représentant la pioche (tableau statique de cartes + nombre actuel)
 typedef struct {
-    Carte cartes[NB_CARTES_TOTAL];
-    int nb_cartes;  // nombre de cartes restantes dans la pioche
+    Carte *cartes;
+    int taille;
 } Pioche;
+
 
 // Prototypes des fonctions sur la pioche
 void generer_pioche(Pioche *p);
