@@ -45,63 +45,38 @@ Deck createDeckDefault() {
 Deck createDeckFromFile(const char *filename) {
     Deck deck;
     deck.cards = NULL;
-    deck.size = 0;
+    deck.size  = 0;
+
     FILE *f = fopen(filename, "r");
     if (!f) {
-        fprintf(stderr, "Impossible d'ouvrir le fichier %s, utilisation de la pioche par défaut.\n", filename);
-        // Si le fichier ne peut être ouvert, on utilise le deck par défaut
+        printf("Impossible d'ouvrir '%s', deck par défaut.\n", filename);
         return createDeckDefault();
     }
-    // D'abord, calculer le nombre total de cartes en lisant le fichier
-    char line[128];
-    int totalCards = 0;
-    // Format attendu par ligne: "valeur:quantite"
-    while (fgets(line, sizeof(line), f)) {
-        if (line[0] == '\n' || line[0] == '\0') continue; // ignorer lignes vides
-        char *colon = strchr(line, ':');
-        if (!colon) continue; // ignorer lignes mal formatées
-        *colon = '\0';
-        int value = atoi(line);
-        int quantity = atoi(colon + 1);
-        if (quantity < 0) quantity = 0;
-        totalCards += quantity;
-    }
-    if (totalCards > MAX_CARDS) {
-        fprintf(stderr, "Trop de cartes dans le fichier (total %d dépasse MAX_CARDS), troncature.\n", totalCards);
-        totalCards = MAX_CARDS;
-    }
-    // Allouer le tableau de cartes
-    deck.cards = malloc(totalCards * sizeof(Card));
+
+    deck.cards = malloc(MAX_CARTES * sizeof(Card));
     if (!deck.cards) {
-        fprintf(stderr, "Échec d'allocation de la mémoire pour le deck\n");
-        deck.size = 0;
+        printf("Échec d'allocation pour la pioche depuis fichier.\n");
         fclose(f);
-        return deck;
+        return createDeckDefault();
     }
     deck.size = 0;
-    // Retour au début du fichier pour lire et remplir le deck
-    rewind(f);
-    while (fgets(line, sizeof(line), f)) {
-        if (line[0] == '\n' || line[0] == '\0') continue;
-        char *colon = strchr(line, ':');
-        if (!colon) continue;
-        *colon = '\0';
-        int valeur = atoi(line);
-        int quantity = atoi(colon + 1);
+
+    int value, quantity;
+    while (fscanf(f, "%d:%d", &value, &quantity) == 2) {
+        // Sentinelle : "0:0" termine la lecture
+        if (value == 0 && quantity == 0) break;
         if (quantity < 0) quantity = 0;
-        for (int j = 0; j < quantity && deck.size < totalCards; ++j) {
-            deck.cards[deck.size].valeur= valeur;
-            deck.cards[deck.size].visible = false;
+        for (int i = 0; i < quantity && deck.size < MAX_CARTES; ++i) {
+            deck.cards[deck.size].value     = value;
+            deck.cards[deck.size].isVisible = false;
             deck.size++;
         }
-        if (deck.size >= totalCards) break;
     }
+
     fclose(f);
-    // Mélanger le deck
     shuffleDeck(&deck);
     return deck;
 }
-
 void shuffleDeck(Deck *deck) {
     if (!deck || deck->size <= 1) return;
     static int seeded = 0;
