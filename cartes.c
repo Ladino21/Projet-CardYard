@@ -1,112 +1,58 @@
-// cartes.c
-#include <stdio.h>
+#include "cartes.h"
 #include <stdlib.h>
 #include <time.h>
-#include "cartes.h"
 
-Pioche creerPiocheDefaut() {
-    Pioche pioche;
-    pioche.taille = 0;
-    pioche.cartes = malloc(MAX_CARTES * sizeof(Carte));
-    if (!pioche.cartes) {
-        fprintf(stderr, "Erreur d'allocation pour la pioche par défaut.\n");
-        exit(EXIT_FAILURE);
+// Initialise la pioche selon les règles du jeu (valeurs et quantités données)
+void generer_pioche(Pioche *p) {
+    p->nb_cartes = 0;
+    // Ajouter les cartes de valeur -2
+    for (int i = 0; i < NB_CARTES_NEG2; i++) {
+        p->cartes[p->nb_cartes].valeur = -2;
+        p->cartes[p->nb_cartes].visible = false;
+        p->nb_cartes++;
     }
-
-    int valeurs[] = {-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-    int quantites[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
-    int total = sizeof(valeurs) / sizeof(valeurs[0]);
-
-    for (int i = 0; i < total; ++i) {
-        for (int j = 0; j < quantites[i] && pioche.taille < MAX_CARTES; ++j) {
-            pioche.cartes[pioche.taille].valeur = valeurs[i];
-            pioche.cartes[pioche.taille].visible = false;
-            pioche.taille++;
+    // Ajouter les cartes de valeur -1
+    for (int i = 0; i < NB_CARTES_NEG1; i++) {
+        p->cartes[p->nb_cartes].valeur = -1;
+        p->cartes[p->nb_cartes].visible = false;
+        p->nb_cartes++;
+    }
+    // Ajouter les cartes de valeur 0
+    for (int i = 0; i < NB_CARTES_ZERO; i++) {
+        p->cartes[p->nb_cartes].valeur = 0;
+        p->cartes[p->nb_cartes].visible = false;
+        p->nb_cartes++;
+    }
+    // Ajouter les cartes de valeurs positives de 1 à VALEUR_MAX
+    for (int v = 1; v <= VALEUR_MAX; v++) {
+        for (int i = 0; i < NB_CARTES_POS; i++) {
+            p->cartes[p->nb_cartes].valeur = v;
+            p->cartes[p->nb_cartes].visible = false;
+            p->nb_cartes++;
         }
     }
-
-    melangerPioche(&pioche);
-    return pioche;
 }
 
-Pioche creerPiocheDepuisFichier(const char *nomFichier) {
-    Pioche pioche;
-    pioche.cartes = NULL;
-    pioche.taille = 0;
-
-    FILE *fichier = fopen(nomFichier, "r");
-    if (!fichier) {
-        fprintf(stderr, "Impossible d'ouvrir le fichier %s. Utilisation de la pioche par défaut.\n", nomFichier);
-        return creerPiocheDefaut();
-    }
-
-    int valeur, quantite;
-    int totalCartes = 0;
-
-    // Premier passage : compter le total de cartes
-    while (fscanf(fichier, "%d:%d", &valeur, &quantite) == 2) {
-        if (valeur == 0 && quantite == 0) break;
-        if (quantite < 0) quantite = 0;
-        totalCartes += quantite;
-    }
-
-    if (totalCartes > MAX_CARTES) {
-        fprintf(stderr, "Trop de cartes (max = %d). Troncature.\n", MAX_CARTES);
-        totalCartes = MAX_CARTES;
-    }
-
-    pioche.cartes = malloc(totalCartes * sizeof(Carte));
-    if (!pioche.cartes) {
-        fprintf(stderr, "Échec d'allocation mémoire pour la pioche.\n");
-        fclose(fichier);
-        pioche.taille = 0;
-        return pioche;
-    }
-    pioche.taille = 0;
-
-    rewind(fichier);
-    while (fscanf(fichier, "%d:%d", &valeur, &quantite) == 2) {
-        if (valeur == 0 && quantite == 0) break;
-        if (quantite < 0) quantite = 0;
-
-        for (int j = 0; j < quantite && pioche.taille < totalCartes; ++j) {
-            pioche.cartes[pioche.taille].valeur = valeur;
-            pioche.cartes[pioche.taille].visible = false;
-            pioche.taille++;
-        }
-        if (pioche.taille >= totalCartes) break;
-    }
-
-    fclose(fichier);
-    melangerPioche(&pioche);
-    return pioche;
-}
-
-void melangerPioche(Pioche *pioche) {
-    if (!pioche || pioche->taille <= 1) return;
-    srand((unsigned int) time(NULL));
-    for (int i = pioche->taille - 1; i > 0; --i) {
+// Mélange la pioche en place avec l'algorithme de Fisher–Yates:contentReference[oaicite:2]{index=2}.
+void melanger_pioche(Pioche *p) {
+    // Initialiser la graine aléatoire pour varier le mélange à chaque exécution:contentReference[oaicite:3]{index=3}.
+    srand((unsigned)time(NULL));
+    for (int i = p->nb_cartes - 1; i > 0; i--) {
         int j = rand() % (i + 1);
-        Carte temp = pioche->cartes[i];
-        pioche->cartes[i] = pioche->cartes[j];
-        pioche->cartes[j] = temp;
+        // Échange des cartes aux indices i et j
+        Carte temp = p->cartes[i];
+        p->cartes[i] = p->cartes[j];
+        p->cartes[j] = temp;
     }
 }
 
-Carte piocherCarte(Pioche *pioche) {
-    Carte carte = {0, false};
-    if (!pioche || pioche->taille == 0) {
-        fprintf(stderr, "Pioche vide.\n");
-        return carte;
+// Pioche une carte (la retire de la fin du tableau) et la retourne.
+// Si la pioche est vide, retourne une carte "nulle" (valeur 0, visible = false).
+Carte piocher_carte(Pioche *p) {
+    Carte c = {0, false};
+    if (p->nb_cartes > 0) {
+        p->nb_cartes--;
+        c = p->cartes[p->nb_cartes];
     }
-    pioche->taille--;
-    return pioche->cartes[pioche->taille];
-}
-
-void libererPioche(Pioche *pioche) {
-    if (pioche && pioche->cartes) {
-        free(pioche->cartes);
-        pioche->cartes = NULL;
-        pioche->taille = 0;
-    }
+    return c;
 }
