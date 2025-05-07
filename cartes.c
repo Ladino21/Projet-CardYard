@@ -6,10 +6,12 @@
 
 Deck createDeckDefault() {
     Deck deck;
-    // On dÃ©finit un jeu de valeurs standard (0 Ã  13 avec 4 occurrences de chaque)
-    int defaultValues[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-    int defaultQuantities[] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4};
-    int totalValues = 14;
+    
+    // On dÃ©finit un jeu de valeurs standard (-2 Ã  12 )
+    
+    int defaultValues[] = {-2,-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+    int defaultQuantities[] = {5,10,15,10,10,10,10,10,10,10,10,10,10,10,10};
+    int totalValues = 15;
     // Calculer le nombre total de cartes
     int totalCards = 0;
     for (int i = 0; i < totalValues; ++i) {
@@ -21,6 +23,7 @@ Deck createDeckDefault() {
     }
     // Allouer le tableau de cartes
     deck.cards = malloc(totalCards * sizeof(Card));
+    //verif
     if (!deck.cards) {
         fprintf(stderr, "Ã‰chec d'allocation de la mÃ©moire pour le deck\n");
         deck.size = 0;
@@ -32,7 +35,9 @@ Deck createDeckDefault() {
         int value = defaultValues[i];
         int qty = defaultQuantities[i];
         for (int j = 0; j < qty && deck.size < totalCards; ++j) {
-            deck.cards[deck.size].value = value;
+            //face visible
+            deck.cards[deck.size].value = value; 
+            //face caché
             deck.cards[deck.size].isVisible = false;
             deck.size++;
         }
