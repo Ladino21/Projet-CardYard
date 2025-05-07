@@ -1,36 +1,36 @@
+// cartes.h
 #ifndef CARTES_H
 #define CARTES_H
 
 #include <stdbool.h>
 
-#define MAX_CARTES 500  // Limite maximale de cartes dans une pioche
+#define MAX_CARTES 500  // Nombre maximal de cartes
 
 // Structure représentant une carte
 typedef struct {
-    int valeur;          // Valeur de la carte (-2 à 12 en général)
-    bool estCachee;      // true = face cachée, false = visible
+    int valeur;
+    bool visible;
 } Carte;
 
-// Structure représentant une pioche
+// Structure représentant une pioche (deck)
 typedef struct {
-    Carte cartes[MAX_CARTES];  // Tableau de cartes (fixe)
-    int nombreCartes;          // Nombre de cartes actuellement dans la pioche
+    Carte *cartes; // Tableau dynamique de cartes
+    int taille;    // Nombre de cartes dans la pioche
 } Pioche;
 
-// Crée une pioche avec les valeurs par défaut (-2 à 12)
-Pioche *creerPiocheDefaut(void);
+// Crée une pioche par défaut
+Pioche creerPiocheDefaut();
 
-// Crée une pioche à partir d’un fichier texte ("valeur:quantité" par ligne)
-// Arrêt à la ligne "0:0" ou si erreur
-Pioche *creerPiocheDepuisFichier(const char *nomFichier);
+// Crée une pioche depuis un fichier (valeur:quantite, arrêt sur 0:0)
+Pioche creerPiocheDepuisFichier(const char *nomFichier);
 
-// Mélange les cartes de la pioche
+// Mélange la pioche
 void melangerPioche(Pioche *pioche);
 
-// Pioche une carte (retire la dernière carte de la pioche)
+// Pioche une carte du dessus
 Carte piocherCarte(Pioche *pioche);
 
-// Libère la mémoire allouée pour une pioche
+// Libère la mémoire de la pioche
 void libererPioche(Pioche *pioche);
 
-#endif // CARTES_H
+#endif
