@@ -1,36 +1,32 @@
-// cartes.h
 #ifndef CARTES_H
 #define CARTES_H
 
 #include <stdbool.h>
 
-#define MAX_CARTES 500  // Nombre maximal de cartes
+// Définition des constantes du jeu
+#define VALEUR_MIN       -2    // plus petite valeur de carte
+#define VALEUR_MAX        12   // plus grande valeur de carte
+#define NB_CARTES_NEG2     5   // nombre de cartes de valeur -2
+#define NB_CARTES_NEG1    10   // nombre de cartes de valeur -1
+#define NB_CARTES_ZERO    15   // nombre de cartes de valeur  0
+#define NB_CARTES_POS     10   // nombre de cartes pour chaque valeur positive
+#define NB_CARTES_TOTAL  (NB_CARTES_NEG2 + NB_CARTES_NEG1 + NB_CARTES_ZERO + (VALEUR_MAX * NB_CARTES_POS))
 
-// Structure représentant une carte
+// Structure représentant une carte (valeur + état visible ou non)
 typedef struct {
     int valeur;
     bool visible;
 } Carte;
 
-// Structure représentant une pioche (deck)
+// Structure représentant la pioche (tableau statique de cartes + nombre actuel)
 typedef struct {
-    Carte *cartes; // Tableau dynamique de cartes
-    int taille;    // Nombre de cartes dans la pioche
+    Carte cartes[NB_CARTES_TOTAL];
+    int nb_cartes;  // nombre de cartes restantes dans la pioche
 } Pioche;
 
-// Crée une pioche par défaut
-Pioche creerPiocheDefaut();
+// Prototypes des fonctions sur la pioche
+void generer_pioche(Pioche *p);
+void melanger_pioche(Pioche *p);
+Carte piocher_carte(Pioche *p);
 
-// Crée une pioche depuis un fichier (valeur:quantite, arrêt sur 0:0)
-Pioche creerPiocheDepuisFichier(const char *nomFichier);
-
-// Mélange la pioche
-void melangerPioche(Pioche *pioche);
-
-// Pioche une carte du dessus
-Carte piocherCarte(Pioche *pioche);
-
-// Libère la mémoire de la pioche
-void libererPioche(Pioche *pioche);
-
-#endif
+#endif // CARTES_H
