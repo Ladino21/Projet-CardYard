@@ -9,7 +9,7 @@
 void initialiserJeu(Jeu *jeu, int nbJoueurs) {
     jeu->nb_joueurs = nbJoueurs;
     // Créer la pioche et la mélanger
-    jeu->pioche = creerPioche();
+    jeu->pioche = creerPiocheDefaut();
     jeu->nb_cartes_pioche = NB_CARTES_TOTAL;
     // Créer les joueurs
     jeu->joueurs = creerJoueurs(nbJoueurs);
