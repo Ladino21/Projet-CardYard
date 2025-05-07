@@ -53,7 +53,7 @@ Deck createDeckFromFile(const char *filename) {
         return createDeckDefault();
     }
 
-    deck.cards = malloc(MAX_CARTES * sizeof(Card));
+    deck.cards = malloc(MAX_CARDS * sizeof(Card));
     if (!deck.cards) {
         printf("Échec d'allocation pour la pioche depuis fichier.\n");
         fclose(f);
@@ -66,9 +66,9 @@ Deck createDeckFromFile(const char *filename) {
         // Sentinelle : "0:0" termine la lecture
         if (value == 0 && quantity == 0) break;
         if (quantity < 0) quantity = 0;
-        for (int i = 0; i < quantity && deck.size < MAX_CARTES; ++i) {
-            deck.cards[deck.size].value     = value;
-            deck.cards[deck.size].isVisible = false;
+        for (int i = 0; i < quantity && deck.size < MAX_CARDS; ++i) {
+            deck.cards[deck.size].valeur  = value;
+            deck.cards[deck.size].visible = false;
             deck.size++;
         }
     }
