@@ -9,6 +9,7 @@ Player* createPlayers(int numPlayers, int cardsPerPlayer, Deck *deck, int totalC
     }
     // Allouer le tableau de joueurs
     Player *players = malloc(numPlayers * sizeof(Player));
+    //verification
     if (!players) {
         fprintf(stderr, "Ã‰chec d'allocation pour les joueurs\n");
         return NULL;
@@ -17,6 +18,7 @@ Player* createPlayers(int numPlayers, int cardsPerPlayer, Deck *deck, int totalC
         players[i].personalCount = cardsPerPlayer;
         // Allouer le tableau de cartes personnelles
         players[i].personal = malloc(cardsPerPlayer * sizeof(Card));
+        //verification
         if (!players[i].personal) {
             fprintf(stderr, "Ã‰chec d'allocation pour les cartes personnelles du joueur %d\n", i);
             // LibÃ©rer ce qui a Ã©tÃ© allouÃ© pour les joueurs prÃ©cÃ©dents
