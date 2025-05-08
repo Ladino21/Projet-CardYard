@@ -51,25 +51,25 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     pioche.cartes = NULL;
     pioche.taille = 0;
 
-    FILE *fichier = fopen(nomFichier, "r");
-    if (!fichier) {
-        printf("Impossible d'ouvrir '%s', pioche par défaut utilisée.\n", nomFichier);
+    FILE *f = fopen(nomFichier, "r");
+    if (!f) {
+        printf("Impossible d'ouvrir \"%s\". Utilisation d'une pioche par défaut.\n", nomFichier);
         return creerPiocheDefaut();
     }
 
     pioche.cartes = malloc(NB_CARTES_MAX * sizeof(Carte));
     if (!pioche.cartes) {
-        printf("Échec d'allocation pour la pioche depuis le fichier.\n");
-        fclose(fichier);
+        printf("Erreur d'allocation mémoire pour la pioche.\n");
+        fclose(f);
         return creerPiocheDefaut();
     }
 
-    pioche.taille = 0;
-    int valeur, quantite;
+    int valeur = 0, quantite = 0;
 
-    while (fscanf(fichier, "%d:%d", &valeur, &quantite) == 2) {
-        if (valeur == 0 && quantite == 0) break;
+    while (fscanf(f, "%d:%d", &valeur, &quantite) == 2) {
+        if (valeur == 0 && quantite == 0) break; // condition d'arrêt
         if (quantite < 0) quantite = 0;
+
         for (int i = 0; i < quantite && pioche.taille < NB_CARTES_MAX; ++i) {
             pioche.cartes[pioche.taille].valeur = valeur;
             pioche.cartes[pioche.taille].visible = false;
@@ -77,11 +77,10 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
         }
     }
 
-    fclose(fichier);
+    fclose(f);
     melangerPioche(&pioche);
     return pioche;
 }
-
 // Mélange les cartes de la pioche
 void melangerPioche(Pioche *pioche) {
     if (!pioche || pioche->taille <= 1) return;
