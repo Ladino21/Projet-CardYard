@@ -250,7 +250,7 @@ void freeGame(Game *game) {
     if (!game) return;
     // Libérer les joueurs (leurs mains et défausses)
     if (game->players) {
-        freePlayers(game->players, game->numPlayers);
+        libererJoueurs(game->players, game->numPlayers);
         game->players = NULL;
     }
     // Libérer la pioche
