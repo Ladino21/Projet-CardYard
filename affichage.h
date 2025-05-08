@@ -11,7 +11,7 @@ const char* couleurCarte(int valeur);
 // Affichages de cartes
 void afficherCarteStylisee(const Carte *carte);
 void afficherLigneCartes(const Carte *cartes, int nbCartes);
-
+void afficherEspacesCentrage(int nbCartes);
 // Affichages de zones
 void afficherPiocheCentrale(const Pioche *pioche);
 void afficherDefausse(const Joueur *joueur);
