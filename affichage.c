@@ -5,13 +5,13 @@
 #include "cartes.h"
 #include "joueurs.h"
 
-#define LARGEUR_CARTE 9
 #define TAILLE_TERMINAL 100
+#define LARGEUR_CARTE 9  // chaque carte = 9 caractères (bord inclus)
 
 const char* couleurCarte(int valeur) {
     switch(valeur) {
-        case -2: return "\033[45m"; // Magenta
-        case -1: return "\033[35m"; // Violet
+        case -2: return "\033[45m";
+        case -1: return "\033[35m";
         case  0: return "\033[44m";
         case  1: return "\033[46m";
         case  2: return "\033[106m";
@@ -29,29 +29,28 @@ const char* couleurCarte(int valeur) {
     }
 }
 
-void afficherEspacesCentrage(int nbCartes) {
-    int totalLargeur = nbCartes * (LARGEUR_CARTE + 1);
-    int marge = (TAILLE_TERMINAL - totalLargeur) / 2;
-    for (int i = 0; i < marge; i++) {
-        printf(" ");
-    }
-}
-
 void afficherLigneCartes(const Carte *cartes, int nbCartes) {
     if (nbCartes <= 0) return;
 
-    // Bord supérieur
+    int largeur_totale = nbCartes * LARGEUR_CARTE;
+    int offset = (TAILLE_TERMINAL - largeur_totale) / 2;
+    if (offset < 0) offset = 0;
+
+    // Ligne du haut
+    for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
         const Carte *c = &cartes[j];
-        printf("%s+-------+\033[0m", c->visible ? couleurCarte(c->valeur) : "\033[100m");
+        const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
+        printf("%s+-------+\033[0m", col);
     }
     printf("\n");
 
     // Ligne centrale
+    for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
         const Carte *c = &cartes[j];
-        const char *couleur = c->visible ? couleurCarte(c->valeur) : "\033[100m";
-        printf("%s|", couleur);
+        const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
+        printf("%s|", col);
         if (!c->visible) {
             printf("  ??   ");
         } else {
@@ -61,37 +60,52 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
     }
     printf("\n");
 
-    // Bord inférieur
+    // Ligne du bas
+    for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
         const Carte *c = &cartes[j];
-        printf("%s+-------+\033[0m", c->visible ? couleurCarte(c->valeur) : "\033[100m");
+        const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
+        printf("%s+-------+\033[0m", col);
     }
     printf("\n");
 
-    // Indices centrés sous chaque carte
+    // Indices bien centrés
+    for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
-        printf("   %2d   ", j);
-    }
-    printf("\n");
+        if (j < 10) {
+            printf("   [%d]   ", j);  // centré dans 9 caractères
+        } else {
+            printf("  [%2d]   ", j);  // pour les indices >= 10
+        }
+}
+printf("\n");
 }
 
 void afficherCarteStylisee(const Carte *carte) {
-    const char *couleur = (carte->visible && carte->valeur >= -2 && carte->valeur <= 99) ? couleurCarte(carte->valeur) : "\033[100m";
+    const char *couleur = (carte->visible && carte->valeur >= -2 && carte->valeur <= 99)
+                            ? couleurCarte(carte->valeur)
+                            : "\033[100m";
+
+    // Ligne du haut
     printf("%s+-------+\033[0m\n", couleur);
-    printf("%s| ", couleur);
+
+    // Ligne centrale
+    printf("%s|", couleur);
     if (!carte->visible) {
-        printf(" ?? ");
+        printf("  ??   ");  // 7 caractères exactement
     } else {
-        printf(" %2d ", carte->valeur);
+        printf("  %2d   ", carte->valeur);  // centré dans 7
     }
-    printf(" |\033[0m\n");
+    printf("|\033[0m\n");
+
+    // Ligne du bas
     printf("%s+-------+\033[0m\n", couleur);
 }
-
+ 
 void afficherPiocheCentrale(const Pioche *pioche) {
-    printf("Pioche centrale :\n");
+    printf("\nPioche centrale :\n");
     if (pioche->taille == 0) {
-        printf("(vide)\n");
+        printf("        (vide)\n");
     } else {
         Carte dos = { .valeur = -1, .visible = false };
         afficherCarteStylisee(&dos);
@@ -99,13 +113,19 @@ void afficherPiocheCentrale(const Pioche *pioche) {
     printf("\n");
 }
 
-void afficherDefausse(const Joueur *joueur) {
+void afficherDefausse(const Joueur *joueur, int nbCartes) {
+    int largeur_totale = nbCartes * LARGEUR_CARTE;
+    int offset = (TAILLE_TERMINAL - largeur_totale) / 2;
+    if (offset < 0) offset = 0;
+
+    for (int i = 0; i < offset; i++) printf(" ");
     printf("Défausse : ");
     if (joueur->nb_defausse == 0) {
         printf("(vide)\n");
     } else {
-        Carte top = joueur->defausse[joueur->nb_defausse - 1];
         printf("\n");
+        for (int i = 0; i < offset; i++) printf(" ");
+        Carte top = joueur->defausse[joueur->nb_defausse - 1];
         afficherCarteStylisee(&top);
     }
 }
@@ -115,12 +135,12 @@ void afficherPartie(const Partie *partie) {
 
     printf("\n==== État du jeu ====\n\n");
     afficherPiocheCentrale(&partie->pioche);
-    printf("\n");
 
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         printf("Joueur %d :\n", i + 1);
         afficherLigneCartes(partie->joueurs[i].personnelles, partie->joueurs[i].nb_cartes);
-        afficherDefausse(&partie->joueurs[i]);
+        afficherDefausse(&partie->joueurs[i], partie->joueurs[i].nb_cartes);
         printf("\n");
     }
 }
+
