@@ -23,7 +23,7 @@ Pioche creerPiocheDefaut() {
     }
     //allocation dynamique du tableau possendant toutes les cartes de la pioche//
     pioche.cartes = malloc(totalCartes * sizeof(Carte));
-    if (!pioche.cartes) {
+    if (pioche.cartes==NULL) {
         //vérification
         fprintf(stderr, "Échec d'allocation de la mémoire pour la pioche\n");
         pioche.taille = 0;
@@ -54,14 +54,14 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     //ouverture du fichier
     FILE *f = fopen(nomFichier, "r");
     //vérification//
-    if (!f) {
+    if (f==NULL) {
         printf("Impossible d'ouvrir \"%s\". Utilisation d'une pioche par défaut.\n", nomFichier);
         //si le fichier est incorect
         return creerPiocheDefaut();
     }
 
     pioche.cartes = malloc(NB_CARTES_MAX * sizeof(Carte));
-    if (!pioche.cartes) {
+    if (pioche.cartes==NULL) {
         printf("Erreur d'allocation mémoire pour la pioche.\n");
         fclose(f);
         return creerPiocheDefaut();
@@ -86,7 +86,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
 }
 // Mélange les cartes de la pioche
 void melangerPioche(Pioche *pioche) {
-    if (!pioche || pioche->taille <= 1) return;
+    if (pioche == NULL || pioche->taille <= 1) return;
     static int initialise = 0;
     if (!initialise) {
         srand((unsigned int) time(NULL));
@@ -107,7 +107,7 @@ Carte piocherCarte(Pioche *pioche) {
     carte.valeur = -1;
     carte.visible = false;
 
-    if (!pioche || pioche->taille == 0) {
+    if (pioche==NULL || pioche->taille == 0) {
         fprintf(stderr, "Pioche vide.\n");
         return carte;
     }
