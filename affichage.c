@@ -182,7 +182,7 @@ void afficherDefausse(const Joueur *joueur) {
         printf("\n");
 
         for (int i = debut; i < fin; ++i) {
-            printf("   %2d   ", i);
+            printf("   %2d    ", i);
         }
         printf("\n\n");
     }
