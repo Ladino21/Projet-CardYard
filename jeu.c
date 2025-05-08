@@ -208,7 +208,7 @@ void playGame(Game *game) {
                 // La carte remplacée est défaussée par le joueur courant
                 carteRemplacee.visible = true; // on la révèle au moment de la défausser
                 game->players[game->joueurActuel].discard[ game->players[game->joueurActuel].discardCount ] = carteRemplacee;
-                game->players[game->currentPlayer].discardCount++;
+                game->players[game->joueurActuel].discardCount++;
                 printf("Vous avez échangé la carte de valeur %d avec votre carte de valeur %d.\n",
                        drawnCard.valeur, carteRemplacee.valeur);
             }
@@ -238,7 +238,7 @@ void playGame(Game *game) {
             break;
         }
         // Passer au joueur suivant
-        game->currentPlayer = (game->currentPlayer + 1) % game->numPlayers;
+        game->joueurActuel = (game->joueurActuel + 1) % game->numPlayers;
     }
     // La partie est terminée, on peut afficher l'état final (par exemple toutes les cartes)
     printf("État final du jeu:\n");
