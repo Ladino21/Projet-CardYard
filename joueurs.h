@@ -3,23 +3,24 @@
 
 #include "cartes.h"
 
-#define MAX_PLAYERS 8  // nombre maximal de joueurs
+#define NB_JOUEURS_MAX 8  // nombre maximal de joueurs
 
 // Structure représentant un joueur
 typedef struct {
-    Card *personal;     // tableau de cartes personnelles (main/tapis du joueur)
-    int comptePersonnel;  // nombre de cartes personnelles
-    Card *discard;      // tableau représentant la pile de défausse du joueur
-    int discardCount;   // nombre de cartes dans la défausse (le sommet est discard[discardCount-1])
-} Player;
+    Carte *personnelles;     // cartes personnelles (main/tapis du joueur)
+    int nb_cartes;           // nombre de cartes personnelles
+    Carte *defausse;         // pile de défausse du joueur
+    int nb_defausse;         // nombre de cartes dans la défausse (le sommet est defausse[nb_defausse - 1])
+} Joueur;
 
-// Crée les joueurs et distribue les cartes personnelles à chacun depuis la pioche
-// numPlayers : nombre de joueurs, cardsPerPlayer : nombre de cartes personnelles par joueur
-// deck : pointeur vers le Deck à partir duquel on pioche
-// totalCards : nombre total de cartes initiales (utilisé pour dimensionner les piles de défausse)
-Player* creerJoueurs(int numPlayers, int cartesParJoueur, Deck *deck, int totalCards);
+// Crée les joueurs et leur distribue les cartes depuis la pioche
+// nb_joueurs : nombre total de joueurs
+// nb_cartes_par_joueur : nombre de cartes personnelles par joueur
+// pioche : pointeur vers la pioche
+// nb_cartes_total : taille initiale de la pioche (sert à dimensionner les défausses)
+Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, int nb_cartes_total);
 
-// Libère le tableau de joueurs et les allocations associées
-void libererJoueurs(Player *players, int numPlayers);
+// Libère la mémoire allouée pour les joueurs et leurs cartes
+void libererJoueurs(Joueur *joueurs, int nb_joueurs);
 
 #endif // JOUEURS_H
