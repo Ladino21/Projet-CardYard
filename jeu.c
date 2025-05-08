@@ -70,87 +70,59 @@ void jouerPartie(Partie *partie) {
     char entree[64];
     int finPartie = 0;
 
-while (!finPartie) {
-    printf("\n===== Tour du joueur %d =====\n", partie->joueur_courant + 1);
-    afficherPartie(partie);
+    while (!finPartie) {
+        printf("\n===== Tour du joueur %d =====\n", partie->joueur_courant + 1);
+        afficherPartie(partie);
 
-    int piocheVide = (partie->pioche.taille == 0);
+        int piocheVide = (partie->pioche.taille == 0);
+        printf("Joueur %d, choisissez une action :\n", partie->joueur_courant + 1);
+        if (!piocheVide) {
+            printf("[0] Piocher dans la pioche centrale\n");
+        }
+        printf("[1-%d] Piocher dans la défausse d’un joueur (entrez le numéro du joueur)\n", partie->nb_joueurs);
+        printf("[S] Sauvegarder la partie\n");
+        printf("[Q] Quitter\n");
+        printf("Votre choix : ");
 
-    printf("Joueur %d, choisissez une action :\n", partie->joueur_courant + 1);
-    if (!piocheVide) {
-        printf("[0] Piocher dans la pioche centrale\n");
-    }
-    printf("[1-%d] Piocher dans la défausse d’un joueur (entrez le numéro du joueur)\n", partie->nb_joueurs);
-    printf("[S] Sauvegarder la partie\n");
-    printf("[Q] Quitter\n");
-    printf("Votre choix : ");
+        if (!fgets(entree, sizeof(entree), stdin)) return;
+        entree[strcspn(entree, "\n")] = '\0';
 
-    if (!fgets(entree, sizeof(entree), stdin)) return;
-    entree[strcspn(entree, "\n")] = '\0';
-
-    if (strlen(entree) == 1) {
-        char choixLettre = toupper(entree[0]);
-        if (choixLettre == 'Q') {
-            printf("Quitter la partie sans sauvegarder ? (o/n) : ");
-            char confirmation;
-            if (scanf(" %c", &confirmation) == 1 && tolower(confirmation) == 'o') {
-                printf("Partie terminée.\n");
-                return;
+        if (strlen(entree) == 1) {
+            char choixLettre = toupper(entree[0]);
+            if (choixLettre == 'Q') {
+                printf("Quitter la partie sans sauvegarder ? (o/n) : ");
+                char confirmation;
+                if (scanf(" %c", &confirmation) == 1 && tolower(confirmation) == 'o') {
+                    printf("Partie terminée.\n");
+                    return;
+                }
+                while (getchar() != '\n');
+                continue;
             }
-            while (getchar() != '\n');
-            continue;
-        }
-        if (choixLettre == 'S') {
-            if (sauvegarderPartie("sauvegarde.dat", partie) == 0) {
-                printf("Partie sauvegardée dans sauvegarde.dat.\n");
-            } else {
-                printf("Erreur lors de la sauvegarde.\n");
+            if (choixLettre == 'S') {
+                if (sauvegarderPartie("sauvegarde.dat", partie) == 0) {
+                    printf("Partie sauvegardée dans sauvegarde.dat.\n");
+                } else {
+                    printf("Erreur lors de la sauvegarde.\n");
+                }
+                printf("Continuer la partie ? (o/n) : ");
+                char reponse;
+                if (scanf(" %c", &reponse) == 1 && tolower(reponse) != 'o') {
+                    printf("Partie sauvegardée et terminée.\n");
+                    return;
+                }
+                while (getchar() != '\n');
+                continue;
             }
-            printf("Continuer la partie ? (o/n) : ");
-            char reponse;
-            if (scanf(" %c", &reponse) == 1 && tolower(reponse) != 'o') {
-                printf("Partie sauvegardée et terminée.\n");
-                return;
-            }
-            while (getchar() != '\n');
-            continue;
         }
-    }
-
-    int choix = atoi(entree);
-    Carte cartePiochee;
-    int joueurSource = -1;
-
-    if (choix == 0) {
-        if (piocheVide) {
-            printf("La pioche est vide ! Vous devez choisir une carte dans une défausse.\n");
-            continue;
-        }
-        cartePiochee = piocherCarte(&partie->pioche);
-        printf("Vous avez pioché la carte %d.\n", cartePiochee.valeur);
-    } else if (choix >= 1 && choix <= partie->nb_joueurs) {
-        int cible = choix - 1;
-        if (partie->joueurs[cible].nb_defausse == 0) {
-            printf("La défausse du joueur %d est vide.\n", cible + 1);
-            continue;
-        }
-        cartePiochee = partie->joueurs[cible].defausse[partie->joueurs[cible].nb_defausse - 1];
-        partie->joueurs[cible].nb_defausse--;
-        joueurSource = cible;
-        printf("Vous avez pris la carte %d de la défausse du joueur %d.\n", cartePiochee.valeur, cible + 1);
-    } else {
-        printf("Choix invalide.\n");
-        continue;
-    }
-}
 
         int choix = atoi(entree);
         Carte cartePiochee;
         int joueurSource = -1;
 
         if (choix == 0) {
-            if (partie->pioche.taille == 0) {
-                printf("La pioche est vide !\n");
+            if (piocheVide) {
+                printf("La pioche est vide ! Vous devez piocher dans une défausse.\n");
                 continue;
             }
             cartePiochee = piocherCarte(&partie->pioche);
@@ -161,19 +133,19 @@ while (!finPartie) {
                 printf("La défausse du joueur %d est vide.\n", cible + 1);
                 continue;
             }
-            printf("Cartes dans la défausse du joueur %d :\n", cible + 1);
+
+            // Affichage de toutes les cartes de la défausse du joueur ciblé
             afficherLigneCartes(partie->joueurs[cible].defausse, partie->joueurs[cible].nb_defausse);
 
-            int indexDefausse = demanderEntier("Choisissez l'index de la carte à prendre dans la défausse : ", 0, partie->joueurs[cible].nb_defausse - 1);
-
-            // Récupérer la carte
+            int indexDefausse = demanderEntier("Index de la carte dans la défausse à prendre : ", 0, partie->joueurs[cible].nb_defausse - 1);
             cartePiochee = partie->joueurs[cible].defausse[indexDefausse];
 
-            // Décaler les cartes au-dessus
+            // Décalage des cartes après retrait
             for (int i = indexDefausse; i < partie->joueurs[cible].nb_defausse - 1; ++i) {
                 partie->joueurs[cible].defausse[i] = partie->joueurs[cible].defausse[i + 1];
             }
             partie->joueurs[cible].nb_defausse--;
+
             joueurSource = cible;
             printf("Vous avez pris la carte %d de la défausse du joueur %d.\n", cartePiochee.valeur, cible + 1);
         } else {
@@ -191,12 +163,10 @@ while (!finPartie) {
                 while (getchar() != '\n');
                 indexEchange = -1;
             } else {
-                indexEchange = demanderEntier("Index de la carte personnelle à échanger : ",
-                                               0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
+                indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
             }
         } else {
-            indexEchange = demanderEntier("Index de la carte personnelle à échanger : ",
-                                           0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
+            indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
         }
 
         if (indexEchange >= 0) {
@@ -227,47 +197,8 @@ while (!finPartie) {
             for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
                 if (partie->joueurs[i].personnelles[j].visible) visibles++;
             }
-            //retourne toute les cartes une fois qu'un joueur retourne toutes ses cartes et désigne un gagnant 
             if (visibles == partie->joueurs[i].nb_cartes) {
                 printf("Le joueur %d a retourné toutes ses cartes. Fin de la partie.\n", i + 1);
-                for (int j = 0; j < partie->nb_joueurs; ++j) {
-                    for (int k = 0; k < partie->joueurs[j].nb_cartes; ++k) {
-                        partie->joueurs[j].personnelles[k].visible = true;
-                    }
-                }
-                printf("\n--- Révélation des cartes ---\n");
-                afficherPartie(partie);
-                // Calcul des scores
-                typedef struct {
-                    int indice;
-                    int score;
-                } Classement;
-                Classement classement[NB_JOUEURS_MAX];
-
-                for (int j = 0; j < partie->nb_joueurs; ++j) {
-                    int score = 0;
-                    for (int k = 0; k < partie->joueurs[j].nb_cartes; ++k) {
-                        score += partie->joueurs[j].personnelles[k].valeur;
-                    }
-                    classement[j].indice = j;
-                    classement[j].score = score;
-                }
-                 // Tri par score croissant (plus petit score = meilleur)
-                for (int a = 0; a < partie->nb_joueurs - 1; ++a) {
-                    for (int b = a + 1; b < partie->nb_joueurs; ++b) {
-                        if (classement[a].score > classement[b].score) {
-                            Classement temp = classement[a];
-                            classement[a] = classement[b];
-                            classement[b] = temp;
-                        }
-                    }
-                }    
-                // Affichage du classement
-                printf("\n🏆 Classement final :\n");
-                for (int j = 0; j < partie->nb_joueurs; ++j) {
-                    printf("%d. Joueur %d avec %d points\n", j + 1, classement[j].indice + 1, classement[j].score);
-                }
-                printf("\n🎉 Le joueur %d remporte la partie ! 🎉\n", classement[0].indice + 1);
                 finPartie = 1;
                 break;
             }
@@ -278,6 +209,7 @@ while (!finPartie) {
 
     printf("État final :\n");
     afficherPartie(partie);
+    afficherClassement(partie); // Nécessite que tu aies la fonction afficherClassement dans affichage.c
     printf("Merci d’avoir joué !\n");
 }
 
