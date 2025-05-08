@@ -254,7 +254,7 @@ void freeGame(Game *game) {
         game->players = NULL;
     }
     // Libérer la pioche
-    freeDeck(&game->deck);
+    libererPaquet(&game->deck);
     // Libérer la structure Game
     free(game);
 }
