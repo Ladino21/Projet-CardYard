@@ -129,7 +129,18 @@ void jouerPartie(Partie *partie) {
                 printf("La défausse du joueur %d est vide.\n", cible + 1);
                 continue;
             }
-            cartePiochee = partie->joueurs[cible].defausse[partie->joueurs[cible].nb_defausse - 1];
+            printf("Cartes dans la défausse du joueur %d :\n", cible + 1);
+            afficherLigneCartes(partie->joueurs[cible].defausse, partie->joueurs[cible].nb_defausse);
+
+            int indexDefausse = demanderEntier("Choisissez l'index de la carte à prendre dans la défausse : ", 0, partie->joueurs[cible].nb_defausse - 1);
+
+            // Récupérer la carte
+            cartePiochee = partie->joueurs[cible].defausse[indexDefausse];
+
+            // Décaler les cartes au-dessus
+            for (int i = indexDefausse; i < partie->joueurs[cible].nb_defausse - 1; ++i) {
+                partie->joueurs[cible].defausse[i] = partie->joueurs[cible].defausse[i + 1];
+            }
             partie->joueurs[cible].nb_defausse--;
             joueurSource = cible;
             printf("Vous avez pris la carte %d de la défausse du joueur %d.\n", cartePiochee.valeur, cible + 1);
