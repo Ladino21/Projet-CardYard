@@ -17,7 +17,7 @@ typedef struct {
 // numPlayers : nombre de joueurs, cardsPerPlayer : nombre de cartes personnelles par joueur
 // deck : pointeur vers le Deck à partir duquel on pioche
 // totalCards : nombre total de cartes initiales (utilisé pour dimensionner les piles de défausse)
-Player* creerJoueurs(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCards);
+Player* creerJoueurs(int numPlayers, int cartesParJoueur, Deck *deck, int totalCards);
 
 // Libère le tableau de joueurs et les allocations associées
 void libererJoueurs(Player *players, int numPlayers);
