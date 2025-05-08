@@ -126,18 +126,29 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
 }
 
 void afficherCarteStylisee(const Carte *carte) {
-    const char *col = carte->visible ? couleurCarte(carte->valeur) : "\033[100m";
+    const char *couleur = (carte->visible && carte->valeur >= -2 && carte->valeur <= 99)
+                          ? couleurCarte(carte->valeur)
+                          : "\033[100m";
 
-    printf("%s+-------+\033[0m\n", col);
-    printf("%s|", col);
-    if (!carte->visible) printf(" CARD  "); else printf("       ");
+    // Bord supérieur
+    printf("%s+-------+\033[0m\n", couleur);
+
+    // Ligne centrale avec valeur centrée ou "??"
+    printf("%s|", couleur);
+    if (!carte->visible) {
+        printf("  ??   ");
+    } else {
+        char buffer[8];
+        snprintf(buffer, sizeof(buffer), "%d", carte->valeur);
+        int len = strlen(buffer);
+        int esp_gauche = (7 - len) / 2;
+        int esp_droite = 7 - len - esp_gauche;
+        printf("%*s%s%*s", esp_gauche, "", buffer, esp_droite, "");
+    }
     printf("|\033[0m\n");
 
-    printf("%s|", col);
-    if (!carte->visible) printf(" YARD  "); else printf("  %2d   ", carte->valeur);
-    printf("|\033[0m\n");
-
-    printf("%s+-------+\033[0m\n", col);
+    // Bord inférieur
+    printf("%s+-------+\033[0m\n", couleur);
 }
 
 void afficherPiocheCentrale(const Pioche *pioche) {
