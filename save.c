@@ -5,143 +5,148 @@
 #include "cartes.h"
 #include "joueurs.h"
 
-int saveGame(const char *filename, const Game *game) {
-    if (!game || !filename) return -1;
-    FILE *f = fopen(filename, "wb");
-    if (!f) {
-        return -1;
+int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
+    if (!partie || !nom_fichier) return -1;
+
+    FILE *f = fopen(nom_fichier, "wb");
+    if (!f) return -1;
+
+    // Écrire les informations principales de la partie
+    fwrite(&partie->nb_joueurs, sizeof(int), 1, f);
+    fwrite(&partie->nb_cartes_personnelles, sizeof(int), 1, f);
+    fwrite(&partie->joueur_courant, sizeof(int), 1, f);
+
+    // Sauvegarder la pioche
+    fwrite(&partie->pioche.taille, sizeof(int), 1, f);
+    if (partie->pioche.taille > 0) {
+        fwrite(partie->pioche.cartes, sizeof(Carte), partie->pioche.taille, f);
     }
-    // Écrire les paramètres de base du jeu
-    fwrite(&game->numPlayers, sizeof(int), 1, f);
-    fwrite(&game->cartesParJoueur, sizeof(int), 1, f);
-    fwrite(&game->joueurActuel, sizeof(int), 1, f);
-    // Écrire la pioche (taille et cartes restantes)
-    fwrite(&game->deck.size, sizeof(int), 1, f);
-    if (game->deck.size > 0) {
-        fwrite(game->deck.cards, sizeof(Card), game->deck.size, f);
-    }
-    // Écrire les données de chaque joueur
-    for (int i = 0; i < game->numPlayers; ++i) {
-        // Par sécurité, on écrit comptePersonnel (normalement identique pour tous les joueurs)
-        fwrite(&game->players[i].comptePersonnel, sizeof(int), 1, f);
-        if (game->players[i].comptePersonnel > 0) {
-            fwrite(game->players[i].personal, sizeof(Card), game->players[i].comptePersonnel, f);
+
+    // Sauvegarder les données de chaque joueur
+    for (int i = 0; i < partie->nb_joueurs; ++i) {
+        fwrite(&partie->joueurs[i].nb_cartes, sizeof(int), 1, f);
+        if (partie->joueurs[i].nb_cartes > 0) {
+            fwrite(partie->joueurs[i].personnelles, sizeof(Carte), partie->joueurs[i].nb_cartes, f);
         }
-        fwrite(&game->players[i].discardCount, sizeof(int), 1, f);
-        if (game->players[i].discardCount > 0) {
-            fwrite(game->players[i].discard, sizeof(Card), game->players[i].discardCount, f);
+
+        fwrite(&partie->joueurs[i].nb_defausse, sizeof(int), 1, f);
+        if (partie->joueurs[i].nb_defausse > 0) {
+            fwrite(partie->joueurs[i].defausse, sizeof(Carte), partie->joueurs[i].nb_defausse, f);
         }
     }
+
     fclose(f);
     return 0;
 }
 
-Game* loadGame(const char *filename) {
-    if (!filename) return NULL;
-    FILE *f = fopen(filename, "rb");
-    if (!f) {
-        return NULL;
-    }
-    // Allouer une nouvelle structure Game
-    Game *game = malloc(sizeof(Game));
-    if (!game) {
+Partie* chargerPartie(const char *nom_fichier) {
+    if (!nom_fichier) return NULL;
+
+    FILE *f = fopen(nom_fichier, "rb");
+    if (!f) return NULL;
+
+    Partie *partie = malloc(sizeof(Partie));
+    if (!partie) {
         fclose(f);
         return NULL;
     }
-    if (fread(&game->numPlayers, sizeof(int), 1, f) != 1) {
+
+    if (fread(&partie->nb_joueurs, sizeof(int), 1, f) != 1) {
         fclose(f);
-        free(game);
+        free(partie);
         return NULL;
     }
-    fread(&game->cartesParJoueur, sizeof(int), 1, f);
-    fread(&game->joueurActuel, sizeof(int), 1, f);
+    fread(&partie->nb_cartes_personnelles, sizeof(int), 1, f);
+    fread(&partie->joueur_courant, sizeof(int), 1, f);
+
     // Lire la pioche
-    int deckSize = 0;
-    fread(&deckSize, sizeof(int), 1, f);
-    game->deck.size = deckSize;
-    if (deckSize > 0) {
-        game->deck.cards = malloc(deckSize * sizeof(Card));
-        if (!game->deck.cards) {
+    int taille_pioche = 0;
+    fread(&taille_pioche, sizeof(int), 1, f);
+    partie->pioche.taille = taille_pioche;
+
+    if (taille_pioche > 0) {
+        partie->pioche.cartes = malloc(taille_pioche * sizeof(Carte));
+        if (!partie->pioche.cartes) {
             fclose(f);
-            free(game);
+            free(partie);
             return NULL;
         }
-        fread(game->deck.cards, sizeof(Card), deckSize, f);
+        fread(partie->pioche.cartes, sizeof(Carte), taille_pioche, f);
     } else {
-        game->deck.cards = NULL;
+        partie->pioche.cartes = NULL;
     }
-    // Allouer le tableau de joueurs
-    game->players = malloc(game->numPlayers * sizeof(Player));
-    if (!game->players) {
-        if (game->deck.cards) free(game->deck.cards);
-        free(game);
+
+    // Allouer les joueurs
+    partie->joueurs = malloc(partie->nb_joueurs * sizeof(Joueur));
+    if (!partie->joueurs) {
+        if (partie->pioche.cartes) free(partie->pioche.cartes);
+        free(partie);
         fclose(f);
         return NULL;
     }
-    // Calculer le nombre total initial de cartes pour dimensionner les défausses
-    // total initial = deckSize + total cartes personnelles + total cartes en défausse
-    int totalPersonal = game->numPlayers * game->cartesParJoueur;
-    int totalDiscard = 0;
-    // Sauvegarder la position du fichier avant de lire les détails des joueurs
+
+    // Calculer les tailles initiales pour les piles de défausse
+    int total_personnelles = partie->nb_joueurs * partie->nb_cartes_personnelles;
+    int total_defausse = 0;
+
     fpos_t pos;
     fgetpos(f, &pos);
-    // Parcourir les données joueurs pour calculer totalDiscard
-    for (int i = 0; i < game->numPlayers; ++i) {
-        int pCount;
-        int dCount;
-        fread(&pCount, sizeof(int), 1, f);
-        fseek(f, pCount * sizeof(Card), SEEK_CUR);
-        fread(&dCount, sizeof(int), 1, f);
-        totalDiscard += dCount;
-        fseek(f, dCount * sizeof(Card), SEEK_CUR);
+    for (int i = 0; i < partie->nb_joueurs; ++i) {
+        int nb_personnelles, nb_defausse;
+        fread(&nb_personnelles, sizeof(int), 1, f);
+        fseek(f, nb_personnelles * sizeof(Carte), SEEK_CUR);
+        fread(&nb_defausse, sizeof(int), 1, f);
+        total_defausse += nb_defausse;
+        fseek(f, nb_defausse * sizeof(Carte), SEEK_CUR);
     }
-    // Revenir au début des données joueurs
     fsetpos(f, &pos);
-    int initialTotal = deckSize + totalPersonal + totalDiscard;
-    if (initialTotal < 1) initialTotal = 1;
-    // Lire réellement les données joueurs en allouant les mémoires nécessaires
-    for (int i = 0; i < game->numPlayers; ++i) {
-        // Lire et allouer les cartes personnelles du joueur
-        int comptePersonnel;
-        fread(&comptePersonnel, sizeof(int), 1, f);
-        game->players[i].comptePersonnel = comptePersonnel;
-        game->players[i].personal = malloc(comptePersonnel * sizeof(Card));
-        if (!game->players[i].personal) {
-            // En cas d'échec, libérer ce qui a été alloué précédemment et quitter
+
+    int capacite_totale = taille_pioche + total_personnelles + total_defausse;
+    if (capacite_totale < 1) capacite_totale = 1;
+
+    // Lire les données des joueurs
+    for (int i = 0; i < partie->nb_joueurs; ++i) {
+        int nb_cartes;
+        fread(&nb_cartes, sizeof(int), 1, f);
+        partie->joueurs[i].nb_cartes = nb_cartes;
+
+        partie->joueurs[i].personnelles = malloc(nb_cartes * sizeof(Carte));
+        if (!partie->joueurs[i].personnelles) {
             for (int k = 0; k < i; ++k) {
-                free(game->players[k].personal);
-                free(game->players[k].discard);
+                free(partie->joueurs[k].personnelles);
+                free(partie->joueurs[k].defausse);
             }
-            free(game->players);
-            if (game->deck.cards) free(game->deck.cards);
-            free(game);
+            free(partie->joueurs);
+            if (partie->pioche.cartes) free(partie->pioche.cartes);
+            free(partie);
             fclose(f);
             return NULL;
         }
-        if (comptePersonnel > 0) {
-            fread(game->players[i].personal, sizeof(Card), comptePersonnel, f);
+        if (nb_cartes > 0) {
+            fread(partie->joueurs[i].personnelles, sizeof(Carte), nb_cartes, f);
         }
-        // Lire et allouer la pile de défausse du joueur
-        fread(&game->players[i].discardCount, sizeof(int), 1, f);
-        int dCount = game->players[i].discardCount;
-        game->players[i].discard = malloc(initialTotal * sizeof(Card));
-        if (!game->players[i].discard) {
-            // En cas d'échec, libérer les ressources allouées et quitter
-            free(game->players[i].personal);
+
+        fread(&partie->joueurs[i].nb_defausse, sizeof(int), 1, f);
+        int nb_defausse = partie->joueurs[i].nb_defausse;
+
+        partie->joueurs[i].defausse = malloc(capacite_totale * sizeof(Carte));
+        if (!partie->joueurs[i].defausse) {
+            free(partie->joueurs[i].personnelles);
             for (int k = 0; k < i; ++k) {
-                free(game->players[k].personal);
-                free(game->players[k].discard);
+                free(partie->joueurs[k].personnelles);
+                free(partie->joueurs[k].defausse);
             }
-            free(game->players);
-            if (game->deck.cards) free(game->deck.cards);
-            free(game);
+            free(partie->joueurs);
+            if (partie->pioche.cartes) free(partie->pioche.cartes);
+            free(partie);
             fclose(f);
             return NULL;
         }
-        if (dCount > 0) {
-            fread(game->players[i].discard, sizeof(Card), dCount, f);
+        if (nb_defausse > 0) {
+            fread(partie->joueurs[i].defausse, sizeof(Carte), nb_defausse, f);
         }
     }
+
     fclose(f);
-    return game;
+    return partie;
 }
