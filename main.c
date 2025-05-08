@@ -2,98 +2,106 @@
 #include <stdlib.h>
 #include <string.h>
 #include "jeu.h"
-#include "save.h"
+#include "sauvegarde.h"
 
 int main() {
     printf(" Bienvenue dans CARD YARD !!\n");
+
     while (1) {
-        printf("\nMenu principal:\n");
+        printf("\nMenu principal :\n");
         printf("1. Nouvelle partie\n");
-        printf("2. Charger partie\n");
+        printf("2. Charger une partie\n");
         printf("3. Quitter\n");
-        printf("Votre choix: ");
+        printf("Votre choix : ");
+
         int choix = 0;
         if (scanf("%d", &choix) != 1) {
-            // Si l'entrée n'est pas un entier (EOF par ex.), on quitte
-            break;
+            break; // Erreur de lecture ou EOF
         }
-        // Vider le tampon jusqu'au prochain saut de ligne
+
+        // Vider le tampon
         int ch;
         while ((ch = getchar()) != '\n' && ch != EOF) {}
+
         if (choix == 1) {
-            // Nouvelle partie
-            int numPlayers = 0;
-            int cartesParJoueur = 0;
-            char fileChoice;
-            char filename[256] = "";
+            int nb_joueurs = 0;
+            int nb_cartes = 0;
+            char reponse_fichier;
+            char nom_fichier[256] = "";
+
             // Saisie du nombre de joueurs
-            while (numPlayers < 2 || numPlayers > 8) {
-                printf("Entrez le nombre de joueurs (2-8): ");
-                if (scanf("%d", &numPlayers) != 1) {
-                    numPlayers = 0;
-                    // Consommer la fin de ligne incorrecte
+            while (nb_joueurs < 2 || nb_joueurs > 8) {
+                printf("Entrez le nombre de joueurs (2 à 8) : ");
+                if (scanf("%d", &nb_joueurs) != 1) {
+                    nb_joueurs = 0;
                     while ((ch = getchar()) != '\n' && ch != EOF) {}
                     continue;
                 }
                 while ((ch = getchar()) != '\n' && ch != EOF) {}
-                if (numPlayers < 2 || numPlayers > 8) {
-                    printf("Nombre de joueurs invalide. Veuillez recommencer.\n");
+                if (nb_joueurs < 2 || nb_joueurs > 8) {
+                    printf("Nombre invalide. Réessayez.\n");
                 }
             }
-            // Saisie du nombre de cartes personnelles par joueur
-            while (cartesParJoueur < 1) {
-                printf("Entrez le nombre de cartes personnelles par joueur: ");
-                if (scanf("%d", &cartesParJoueur) != 1) {
-                    cartesParJoueur = 0;
+
+            // Saisie du nombre de cartes par joueur
+            while (nb_cartes < 1) {
+                printf("Entrez le nombre de cartes personnelles par joueur : ");
+                if (scanf("%d", &nb_cartes) != 1) {
+                    nb_cartes = 0;
                     while ((ch = getchar()) != '\n' && ch != EOF) {}
                     continue;
                 }
                 while ((ch = getchar()) != '\n' && ch != EOF) {}
-                if (cartesParJoueur < 1) {
-                    printf("Nombre de cartes invalide.\n");
+                if (nb_cartes < 1) {
+                    printf("Nombre invalide.\n");
                 }
             }
-            // Choix de chargement de la pioche depuis un fichier
-            printf("Voulez-vous charger la pioche depuis un fichier? (o/n): ");
-            if (scanf(" %c", &fileChoice) != 1) {
-                fileChoice = 'n';
+
+            // Demande d'un fichier pour charger la pioche
+            printf("Voulez-vous charger la pioche depuis un fichier ? (o/n) : ");
+            if (scanf(" %c", &reponse_fichier) != 1) {
+                reponse_fichier = 'n';
             }
             while ((ch = getchar()) != '\n' && ch != EOF) {}
-            if (fileChoice == 'o' || fileChoice == 'O') {
-                printf("Entrez le nom du fichier de pioche: ");
-                if (fgets(filename, sizeof(filename), stdin)) {
-                    // Retirer le saut de ligne final
-                    filename[strcspn(filename, "\n")] = '\0';
+
+            if (reponse_fichier == 'o' || reponse_fichier == 'O') {
+                printf("Nom du fichier de pioche : ");
+                if (fgets(nom_fichier, sizeof(nom_fichier), stdin)) {
+                    nom_fichier[strcspn(nom_fichier, "\n")] = '\0'; // Enlever le \n
                 }
             }
-            // Création du jeu
-            Game *game = createGame(numPlayers, cartesParJoueur, 
-                                    (fileChoice=='o'||fileChoice=='O') ? filename : NULL);
-            if (!game) {
-                printf("Impossible de créer la partie.\n");
+
+            // Création de la partie
+            Partie *partie = creerPartie(nb_joueurs, nb_cartes,
+                            (reponse_fichier == 'o' || reponse_fichier == 'O') ? nom_fichier : NULL);
+            if (!partie) {
+                printf("Échec de la création de la partie.\n");
                 continue;
             }
-            // Lancement de la partie
-            playGame(game);
-            // Libération des ressources en fin de partie
-            freeGame(game);
-        } else if (choix== 2) {
-            // Chargement d'une partie sauvegardée
-            Game *game = loadGame("save.dat");
-            if (!game) {
-                printf("Aucune sauvegarde à charger ou échec du chargement.\n");
+
+            // Lancer la partie
+            jouerPartie(partie);
+            // Libérer la mémoire
+            libererPartie(partie);
+
+        } else if (choix == 2) {
+            // Charger une partie sauvegardée
+            Partie *partie = chargerPartie("save.dat");
+            if (!partie) {
+                printf("Aucune sauvegarde trouvée ou échec du chargement.\n");
             } else {
                 printf("Partie chargée avec succès.\n");
-                playGame(game);
-                freeGame(game);
+                jouerPartie(partie);
+                libererPartie(partie);
             }
-        } else if (choix== 3) {
-            // Quitter le programme
-            printf("Au revoir!\n");
+
+        } else if (choix == 3) {
+            printf("Au revoir !\n");
             break;
         } else {
-            printf("Choix invalide. Veuillez réessayer.\n");
+            printf("Choix invalide. Réessayez.\n");
         }
     }
+
     return 0;
 }
