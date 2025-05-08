@@ -4,22 +4,22 @@
 #include "cartes.h"
 #include "joueurs.h"
 
-// Structure représentant l'état global du jeu
+// Structure représentant l'état global de la partie
 typedef struct {
-    int numPlayers;
-    int cartesParJoueur;
-    int joueurActuel; // index (0-based) du joueur dont c'est le tour
-    Deck deck;
-    Player *players;
-} Game;
+    int nb_joueurs;
+    int nb_cartes_personnelles;
+    int joueur_courant; // indice du joueur dont c'est le tour
+    Pioche pioche;
+    Joueur *joueurs;
+} Partie;
 
-// Crée une nouvelle partie avec les paramètres donnés (renvoie un pointeur vers Game alloué)
-Game* createGame(int numPlayers, int cartesParJoueur, const char *deckFile);
+// Crée une nouvelle partie avec les paramètres donnés (renvoie un pointeur alloué)
+Partie* creerPartie(int nb_joueurs, int nb_cartes_par_joueur, const char *fichier_pioche);
 
-// Lance la boucle de jeu interactive pour l'état de jeu donné
-void playGame(Game *game);
+// Lance la boucle de jeu interactive
+void jouerPartie(Partie *partie);
 
 // Libère toutes les ressources associées à une partie
-void freeGame(Game *game);
+void libererPartie(Partie *partie);
 
 #endif // JEU_H
