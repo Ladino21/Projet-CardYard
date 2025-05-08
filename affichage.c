@@ -157,12 +157,14 @@ void afficherDefausse(const Joueur *joueur) {
         int fin = debut + max_par_ligne;
         if (fin > total) fin = total;
 
+        // Ligne haut
         for (int i = debut; i < fin; ++i) {
             const char *col = joueur->defausse[i].visible ? couleurCarte(joueur->defausse[i].valeur) : "\033[100m";
             printf("%s+-------+\033[0m ", col);
         }
         printf("\n");
 
+        // Ligne milieu
         for (int i = debut; i < fin; ++i) {
             const Carte *c = &joueur->defausse[i];
             const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
@@ -175,19 +177,20 @@ void afficherDefausse(const Joueur *joueur) {
         }
         printf("\n");
 
+        // Ligne bas
         for (int i = debut; i < fin; ++i) {
             const char *col = joueur->defausse[i].visible ? couleurCarte(joueur->defausse[i].valeur) : "\033[100m";
             printf("%s+-------+\033[0m ", col);
         }
         printf("\n");
 
+        // Indices centrés
         for (int i = debut; i < fin; ++i) {
-            printf("   %2d    ", i);
+            printf("   [%d]    ", i); // exactement 9 caractères pour matcher les 9 de la carte
         }
         printf("\n\n");
     }
 }
-
 void afficherPartie(const Partie *partie) {
     if (!partie) return;
 
