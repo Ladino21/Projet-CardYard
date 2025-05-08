@@ -195,7 +195,7 @@ void playGame(Game *game) {
                     game->players[depuisDefausseJoueur].discardCount++;
                 } else {
                     // Si elle venait de la pioche, remettre la carte en haut de la pioche
-                    game->deck.cards[ game->deck.size ] = drawnCard;
+                    game->deck.cards[ game->deck.size ] = cartePiochee;
                     game->deck.size++;
                 }
                 // On passe simplement au prochain tour (la carte n'est pas utilisée)
@@ -210,13 +210,13 @@ void playGame(Game *game) {
                 game->players[game->joueurActuel].discard[ game->players[game->joueurActuel].discardCount ] = carteRemplacee;
                 game->players[game->joueurActuel].discardCount++;
                 printf("Vous avez échangé la carte de valeur %d avec votre carte de valeur %d.\n",
-                       drawnCard.valeur, carteRemplacee.valeur);
+                       cartePiochee.valeur, carteRemplacee.valeur);
             }
         } else {
             // Si echangerIndices == -1 : le joueur défausse la carte piochée sans l'échanger
             game->players[game->joueurActuel].discard[ game->players[game->joueurActuel].discardCount ] = drawnCard;
             game->players[game->joueurActuel].discardCount++;
-            printf("Vous avez défaussé la carte de valeur %d sans l'utiliser.\n", drawnCard.valeur);
+            printf("Vous avez défaussé la carte de valeur %d sans l'utiliser.\n", cartePiochee.valeur);
         }
         // Vérifier la condition de fin de partie :
         // Ici on décide de terminer la partie si un joueur a toutes ses cartes personnelles visibles
