@@ -8,7 +8,7 @@
 // Structure représentant un joueur
 typedef struct {
     Card *personal;     // tableau de cartes personnelles (main/tapis du joueur)
-    int personalCount;  // nombre de cartes personnelles
+    int comptePersonnel;  // nombre de cartes personnelles
     Card *discard;      // tableau représentant la pile de défausse du joueur
     int discardCount;   // nombre de cartes dans la défausse (le sommet est discard[discardCount-1])
 } Player;
