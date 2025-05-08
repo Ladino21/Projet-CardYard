@@ -43,9 +43,9 @@ Game* createGame(int numPlayers, int cardsPerPlayer, const char *deckFile) {
     game->currentPlayer = 0;
     // Créer la pioche (depuis le fichier si fourni, sinon pioche par défaut)
     if (deckFile && strlen(deckFile) > 0) {
-        game->deck = createDeckFromFile(deckFile);
+        game->deck = creerPaquetFichier(deckFile);
     } else {
-        game->deck = createDeckDefault();
+        game->deck = creerPaquetParDefaut();
     }
     // Vérifier qu'il y a assez de cartes pour distribuer les cartes personnelles
     if (numPlayers * cardsPerPlayer > game->deck.size) {
@@ -60,7 +60,7 @@ Game* createGame(int numPlayers, int cardsPerPlayer, const char *deckFile) {
     // Créer les joueurs et distribuer leurs cartes personnelles
     game->players = creerJoueurs(numPlayers, cardsPerPlayer, &game->deck, totalCards);
     if (!game->players) {
-        freeDeck(&game->deck);
+        libererPaquet(&game->deck);
         free(game);
         return NULL;
     }
@@ -139,7 +139,7 @@ void playGame(Game *game) {
                 printf("La pioche centrale est vide! Choisissez une autre action.\n");
                 continue;
             }
-            drawnCard = drawCard(&game->deck);
+            drawnCard = piocherCarte(&game->deck);
             // Afficher la valeur de la carte piochée au joueur courant
             printf("Vous avez pioché la carte de valeur %d.\n", drawnCard.valeur);
         } else if (choice >= 1 && choice <= game->numPlayers) {
