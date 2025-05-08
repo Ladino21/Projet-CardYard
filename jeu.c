@@ -132,7 +132,7 @@ void playGame(Game *game) {
         // A ce stade, on traite l'entrée comme un choix numérique
         int choice = atoi(input);
         Card drawnCard;
-        int fromDiscardPlayer = -1;
+        int depuisDefausseJoueur = -1;
         if (choice == 0) {
             // Piocher dans la pioche centrale
             if (game->deck.size == 0) {
@@ -151,7 +151,7 @@ void playGame(Game *game) {
             // Prendre la carte du dessus de la défausse du joueur désigné
             drawnCard = game->players[targetPlayer].discard[ game->players[targetPlayer].discardCount - 1 ];
             game->players[targetPlayer].discardCount--;
-            fromDiscardPlayer = targetPlayer;
+            depuisDefausseJoueur = targetPlayer;
             printf("Vous prenez la carte %d de la défausse du joueur %d.\n", drawnCard.valeur, targetPlayer + 1);
         } else {
             printf("Choix invalide. Veuillez réessayer.\n");
@@ -189,10 +189,10 @@ void playGame(Game *game) {
                 printf("Vous ne pouvez pas échanger une carte déjà visible. Tour annulé.\n");
                 // Si le joueur a choisi par erreur une carte visible, on annule l'action:
                 // Si la carte provenait d'une défausse, il faut la remettre où elle était.
-                if (fromDiscardPlayer != -1) {
+                if (depuisDefausseJoueur != -1) {
                     // Remettre la carte dans la défausse d'origine
-                    game->players[fromDiscardPlayer].discard[ game->players[fromDiscardPlayer].discardCount ] = drawnCard;
-                    game->players[fromDiscardPlayer].discardCount++;
+                    game->players[depuisDefausseJoueur].discard[ game->players[depuisDefausseJoueur].discardCount ] = drawnCard;
+                    game->players[depuisDefausseJoueur].discardCount++;
                 } else {
                     // Si elle venait de la pioche, remettre la carte en haut de la pioche
                     game->deck.cards[ game->deck.size ] = drawnCard;
