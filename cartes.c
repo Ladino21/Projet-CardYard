@@ -13,7 +13,7 @@ Deck creerPaquetParDefaut() {
     // Calculer le nombre total de cartes
     int totalCards = 0;
     for (int i = 0; i < totalValues; ++i) {
-        totalCards += defaultQuantities[i];
+        totalCards += quantitesParDefaut[i];
     }
     if (totalCards > MAX_CARDS) {
         fprintf(stderr, "Trop de cartes dans le deck par défaut (total %d dépasse MAX_CARDS)\n", totalCards);
