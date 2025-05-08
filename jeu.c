@@ -142,10 +142,7 @@ while (!finPartie) {
         printf("Choix invalide.\n");
         continue;
     }
-
-    // (le reste du tour suit ici, inchangé…)
-
-        }
+}
 
         int choix = atoi(entree);
         Carte cartePiochee;
