@@ -8,7 +8,7 @@
 typedef struct {
     int numPlayers;
     int cartesParJoueur;
-    int currentPlayer; // index (0-based) du joueur dont c'est le tour
+    int joueurActuel; // index (0-based) du joueur dont c'est le tour
     Deck deck;
     Player *players;
 } Game;
