@@ -22,10 +22,10 @@ int saveGame(const char *filename, const Game *game) {
     }
     // Écrire les données de chaque joueur
     for (int i = 0; i < game->numPlayers; ++i) {
-        // Par sécurité, on écrit personalCount (normalement identique pour tous les joueurs)
-        fwrite(&game->players[i].personalCount, sizeof(int), 1, f);
-        if (game->players[i].personalCount > 0) {
-            fwrite(game->players[i].personal, sizeof(Card), game->players[i].personalCount, f);
+        // Par sécurité, on écrit comptePersonnel (normalement identique pour tous les joueurs)
+        fwrite(&game->players[i].comptePersonnel, sizeof(int), 1, f);
+        if (game->players[i].comptePersonnel > 0) {
+            fwrite(game->players[i].personal, sizeof(Card), game->players[i].comptePersonnel, f);
         }
         fwrite(&game->players[i].discardCount, sizeof(int), 1, f);
         if (game->players[i].discardCount > 0) {
@@ -102,10 +102,10 @@ Game* loadGame(const char *filename) {
     // Lire réellement les données joueurs en allouant les mémoires nécessaires
     for (int i = 0; i < game->numPlayers; ++i) {
         // Lire et allouer les cartes personnelles du joueur
-        int personalCount;
-        fread(&personalCount, sizeof(int), 1, f);
-        game->players[i].personalCount = personalCount;
-        game->players[i].personal = malloc(personalCount * sizeof(Card));
+        int comptePersonnel;
+        fread(&comptePersonnel, sizeof(int), 1, f);
+        game->players[i].comptePersonnel = personalCount;
+        game->players[i].personal = malloc(comptePersonnel * sizeof(Card));
         if (!game->players[i].personal) {
             // En cas d'échec, libérer ce qui a été alloué précédemment et quitter
             for (int k = 0; k < i; ++k) {
@@ -118,8 +118,8 @@ Game* loadGame(const char *filename) {
             fclose(f);
             return NULL;
         }
-        if (personalCount > 0) {
-            fread(game->players[i].personal, sizeof(Card), personalCount, f);
+        if (comptePersonnel > 0) {
+            fread(game->players[i].personal, sizeof(Card), comptePersonnel, f);
         }
         // Lire et allouer la pile de défausse du joueur
         fread(&game->players[i].discardCount, sizeof(int), 1, f);
