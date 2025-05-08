@@ -28,7 +28,7 @@ Player* creerJoueurs(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCa
         }
         // Distribuer les cartes personnelles en piochant du deck
         for (int c = 0; c < cardsPerPlayer; ++c) {
-            Card card = drawCard(deck);
+            Card card = piocherCarte(deck);
             card.visible = false; // les cartes personnelles commencent face cachée
             players[i].personal[c] = card;
         }
