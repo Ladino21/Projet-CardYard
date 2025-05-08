@@ -2,66 +2,73 @@
 #include <stdlib.h>
 #include "joueurs.h"
 
-Player* creerJoueurs(int numPlayers, int cartesParJoueur, Deck *deck, int totalCards) {
-    if (numPlayers < 2 || numPlayers > MAX_PLAYERS) {
-        fprintf(stderr, "Nombre de joueurs invalide: %d. Doit être entre 2 et %d.\n", numPlayers, MAX_PLAYERS);
+Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, int nb_cartes_total) {
+    if (nb_joueurs < 2 || nb_joueurs > NB_JOUEURS_MAX) {
+        fprintf(stderr, "Nombre de joueurs invalide : %d. Doit être entre 2 et %d.\n", nb_joueurs, NB_JOUEURS_MAX);
         return NULL;
     }
+
     // Allouer le tableau de joueurs
-    Player *players = malloc(numPlayers * sizeof(Player));
-    if (!players) {
-        fprintf(stderr, "Échec d'allocation pour les joueurs\n");
+    Joueur *joueurs = malloc(nb_joueurs * sizeof(Joueur));
+    if (!joueurs) {
+        fprintf(stderr, "Échec d'allocation pour les joueurs.\n");
         return NULL;
     }
-    for (int i = 0; i < numPlayers; ++i) {
-        players[i].comptePersonnel = cartesParJoueur;
-        // Allouer le tableau de cartes personnelles
-        players[i].personal = malloc(cartesParJoueur * sizeof(Card));
-        if (!players[i].personal) {
+
+    for (int i = 0; i < nb_joueurs; ++i) {
+        joueurs[i].nb_cartes = nb_cartes_par_joueur;
+
+        // Allouer les cartes personnelles
+        joueurs[i].personnelles = malloc(nb_cartes_par_joueur * sizeof(Carte));
+        if (!joueurs[i].personnelles) {
             fprintf(stderr, "Échec d'allocation pour les cartes personnelles du joueur %d\n", i);
-            // Libérer ce qui a été alloué pour les joueurs précédents
             for (int k = 0; k < i; ++k) {
-                free(players[k].personal);
+                free(joueurs[k].personnelles);
             }
-            free(players);
+            free(joueurs);
             return NULL;
         }
-        // Distribuer les cartes personnelles en piochant du deck
-        for (int c = 0; c < cartesParJoueur; ++c) {
-            Card card = piocherCarte(deck);
-            card.visible = false; // les cartes personnelles commencent face cachée
-            players[i].personal[c] = card;
+
+        // Distribuer les cartes personnelles depuis la pioche
+        for (int c = 0; c < nb_cartes_par_joueur; ++c) {
+            Carte carte = piocherCarte(pioche);
+            carte.visible = false; // les cartes sont face cachée au début
+            joueurs[i].personnelles[c] = carte;
         }
-        // Allouer le tableau de défausse (capacité = totalCards initial)
-        if (totalCards <= 0) totalCards = 1;
-        players[i].discard = malloc(totalCards * sizeof(Card));
-        if (!players[i].discard) {
+
+        // Allouer la défausse du joueur
+        if (nb_cartes_total <= 0) nb_cartes_total = 1;
+        joueurs[i].defausse = malloc(nb_cartes_total * sizeof(Carte));
+        if (!joueurs[i].defausse) {
             fprintf(stderr, "Échec d'allocation pour la défausse du joueur %d\n", i);
-            // Libérer ce joueur et les précédents
-            free(players[i].personal);
+            free(joueurs[i].personnelles);
             for (int k = 0; k < i; ++k) {
-                free(players[k].personal);
-                free(players[k].discard);
+                free(joueurs[k].personnelles);
+                free(joueurs[k].defausse);
             }
-            free(players);
+            free(joueurs);
             return NULL;
         }
-        players[i].discardCount = 0;
+
+        joueurs[i].nb_defausse = 0;
     }
-    return players;
+
+    return joueurs;
 }
 
-void libererJoueurs(Player *players, int numPlayers) {
-    if (!players) return;
-    for (int i = 0; i < numPlayers; ++i) {
-        if (players[i].personal) {
-            free(players[i].personal);
-            players[i].personal = NULL;
+void libererJoueurs(Joueur *joueurs, int nb_joueurs) {
+    if (!joueurs) return;
+
+    for (int i = 0; i < nb_joueurs; ++i) {
+        if (joueurs[i].personnelles) {
+            free(joueurs[i].personnelles);
+            joueurs[i].personnelles = NULL;
         }
-        if (players[i].discard) {
-            free(players[i].discard);
-            players[i].discard = NULL;
+        if (joueurs[i].defausse) {
+            free(joueurs[i].defausse);
+            joueurs[i].defausse = NULL;
         }
     }
-    free(players);
+
+    free(joueurs);
 }
