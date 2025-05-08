@@ -4,7 +4,7 @@
 #include <string.h>
 #include "cartes.h"
 
-Deck createDeckDefault() {
+Deck creerPaquetParDefaut() {
     Deck deck;
     // On définit un jeu de valeurs standard (0 à 13 avec 4 occurrences de chaque)
     int defaultValues[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
@@ -50,14 +50,14 @@ Deck createDeckFromFile(const char *filename) {
     FILE *f = fopen(filename, "r");
     if (!f) {
         printf("Impossible d'ouvrir '%s', deck par défaut.\n", filename);
-        return createDeckDefault();
+        return creerPaquetParDefaut();
     }
 
     deck.cards = malloc(MAX_CARDS * sizeof(Card));
     if (!deck.cards) {
         printf("Échec d'allocation pour la pioche depuis fichier.\n");
         fclose(f);
-        return createDeckDefault();
+        return creerPaquetParDefaut();
     }
     deck.size = 0;
 
