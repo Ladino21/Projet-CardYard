@@ -13,7 +13,7 @@ int saveGame(const char *filename, const Game *game) {
     }
     // Écrire les paramètres de base du jeu
     fwrite(&game->numPlayers, sizeof(int), 1, f);
-    fwrite(&game->cardsPerPlayer, sizeof(int), 1, f);
+    fwrite(&game->cartesParJoueur, sizeof(int), 1, f);
     fwrite(&game->currentPlayer, sizeof(int), 1, f);
     // Écrire la pioche (taille et cartes restantes)
     fwrite(&game->deck.size, sizeof(int), 1, f);
@@ -53,7 +53,7 @@ Game* loadGame(const char *filename) {
         free(game);
         return NULL;
     }
-    fread(&game->cardsPerPlayer, sizeof(int), 1, f);
+    fread(&game->cartesParJoueur, sizeof(int), 1, f);
     fread(&game->currentPlayer, sizeof(int), 1, f);
     // Lire la pioche
     int deckSize = 0;
@@ -80,7 +80,7 @@ Game* loadGame(const char *filename) {
     }
     // Calculer le nombre total initial de cartes pour dimensionner les défausses
     // total initial = deckSize + total cartes personnelles + total cartes en défausse
-    int totalPersonal = game->numPlayers * game->cardsPerPlayer;
+    int totalPersonal = game->numPlayers * game->cartesParJoueur;
     int totalDiscard = 0;
     // Sauvegarder la position du fichier avant de lire les détails des joueurs
     fpos_t pos;
