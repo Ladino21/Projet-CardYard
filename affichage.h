@@ -16,7 +16,7 @@ void afficherClassement(const Partie *partie);
 
 // Affichages de zones
 void afficherPiocheCentrale(const Pioche *pioche);
-void afficherDefausse(const Joueur *joueur, int nbCartes);
+void afficherDefausse(const Joueur *joueur);
 void afficherPartie(const Partie *partie);
 
 #endif // AFFICHAGE_H
