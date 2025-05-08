@@ -9,7 +9,7 @@ Deck creerPaquetParDefaut() {
     // On définit un jeu de valeurs standard (0 à 13 avec 4 occurrences de chaque)
     int defaultValues[] = {-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12};
     int defaultQuantities[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10};
-    int totalValues = 14;
+    int totalValues = 15;
     // Calculer le nombre total de cartes
     int totalCards = 0;
     for (int i = 0; i < totalValues; ++i) {
