@@ -7,8 +7,8 @@
 Deck creerPaquetParDefaut() {
     Deck deck;
     // On définit un jeu de valeurs standard (0 à 13 avec 4 occurrences de chaque)
-    int defaultValues[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-    int defaultQuantities[] = {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4};
+    int defaultValues[] = {-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12};
+    int defaultQuantities[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10};
     int totalValues = 14;
     // Calculer le nombre total de cartes
     int totalCards = 0;
@@ -38,7 +38,7 @@ Deck creerPaquetParDefaut() {
         }
     }
     // Mélanger la pioche
-    shuffleDeck(&deck);
+    MelangePaquet(&deck);
     return deck;
 }
 
@@ -74,10 +74,10 @@ Deck creerPaquetFichier(const char *filename) {
     }
 
     fclose(f);
-    shuffleDeck(&deck);
+    MelangePaquet(&deck);
     return deck;
 }
-void shuffleDeck(Deck *deck) {
+void MelangePaquet(Deck *deck) {
     if (!deck || deck->size <= 1) return;
     static int seeded = 0;
     if (!seeded) {
@@ -93,7 +93,7 @@ void shuffleDeck(Deck *deck) {
     }
 }
 
-Card drawCard(Deck *deck) {
+Card piocherCarte(Deck *deck) {
     Card card;
     card.valeur = -1;
     card.visible = false;
@@ -107,7 +107,7 @@ Card drawCard(Deck *deck) {
     return card;
 }
 
-void freeDeck(Deck *deck) {
+void libererPaquet(Deck *deck) {
     if (deck && deck->cards) {
         free(deck->cards);
         deck->cards = NULL;
