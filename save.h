@@ -1,12 +1,14 @@
-#ifndef SAVE_H
-#define SAVE_H
+#ifndef SAUVEGARDE_H
+#define SAUVEGARDE_H
 
 #include "jeu.h"
 
-// Sauvegarde l'état actuel de la partie dans un fichier binaire (retourne 0 si succès, !=0 si échec)
-int saveGame(const char *filename, const Game *game);
+// Sauvegarde l'état actuel de la partie dans un fichier binaire
+// Retourne 0 si succès, une valeur différente de 0 en cas d'échec
+int sauvegarderPartie(const char *nom_fichier, const Partie *partie);
 
-// Charge une partie depuis un fichier binaire de sauvegarde (renvoie un pointeur vers Game alloué, ou NULL en cas d'échec)
-Game* loadGame(const char *filename);
+// Charge une partie depuis un fichier binaire
+// Renvoie un pointeur alloué vers Partie, ou NULL si échec
+Partie* chargerPartie(const char *nom_fichier);
 
-#endif // SAVE_H
+#endif // SAUVEGARDE_H
