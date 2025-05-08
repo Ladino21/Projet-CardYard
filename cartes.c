@@ -42,7 +42,7 @@ Deck creerPaquetParDefaut() {
     return deck;
 }
 
-Deck createDeckFromFile(const char *filename) {
+Deck creerPaquetFichier(const char *filename) {
     Deck deck;
     deck.cards = NULL;
     deck.size  = 0;
