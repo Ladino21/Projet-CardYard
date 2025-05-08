@@ -187,6 +187,44 @@ void jouerPartie(Partie *partie) {
             //retourne toute les cartes une fois qu'un joueur retourne toutes ses cartes et désigne un gagnant 
             if (visibles == partie->joueurs[i].nb_cartes) {
                 printf("Le joueur %d a retourné toutes ses cartes. Fin de la partie.\n", i + 1);
+                for (int j = 0; j < partie->nb_joueurs; ++j) {
+                    for (int k = 0; k < partie->joueurs[j].nb_cartes; ++k) {
+                        partie->joueurs[j].personnelles[k].visible = true;
+                    }
+                }
+                printf("\n--- Révélation des cartes ---\n");
+                afficherPartie(partie);
+                // Calcul des scores
+                typedef struct {
+                    int indice;
+                    int score;
+                } Classement;
+                Classement classement[NB_JOUEURS_MAX];
+
+                for (int j = 0; j < partie->nb_joueurs; ++j) {
+                    int score = 0;
+                    for (int k = 0; k < partie->joueurs[j].nb_cartes; ++k) {
+                        score += partie->joueurs[j].personnelles[k].valeur;
+                    }
+                    classement[j].indice = j;
+                    classement[j].score = score;
+                }
+                 // Tri par score croissant (plus petit score = meilleur)
+                for (int a = 0; a < partie->nb_joueurs - 1; ++a) {
+                    for (int b = a + 1; b < partie->nb_joueurs; ++b) {
+                        if (classement[a].score > classement[b].score) {
+                            Classement temp = classement[a];
+                            classement[a] = classement[b];
+                            classement[b] = temp;
+                        }
+                    }
+                }    
+                // Affichage du classement
+                printf("\n🏆 Classement final :\n");
+                for (int j = 0; j < partie->nb_joueurs; ++j) {
+                    printf("%d. Joueur %d avec %d points\n", j + 1, classement[j].indice + 1, classement[j].score);
+                }
+                printf("\n🎉 Le joueur %d remporte la partie ! 🎉\n", classement[0].indice + 1);
                 finPartie = 1;
                 break;
             }
