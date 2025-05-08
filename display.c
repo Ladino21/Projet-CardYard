@@ -4,7 +4,7 @@
 #include "cartes.h"
 #include "joueurs.h"
 
-void displayCardsLine(const Card *cards, int count) {
+void afficherLigneDeCartes(const Card *cards, int count) {
     if (count <= 0) return;
     const int width = 4;
 
@@ -41,11 +41,11 @@ void displayCardsLine(const Card *cards, int count) {
     printf("\n");
 }
 
-void displayGame(const Game *game) {
+void afficherJeu(const Game *game) {
     if (!game) return;
     for (int p = 0; p < game->numPlayers; ++p) {
         printf("Joueur %d :\n", p + 1);
-        displayCardsLine(game->players[p].personal, game->players[p].personalCount);
+        afficherLigneDeCartes(game->players[p].personal, game->players[p].personalCount);
 
         // Indices en dessous des cartes
         if (game->players[p].personalCount > 0) {
@@ -60,7 +60,7 @@ void displayGame(const Game *game) {
         printf("Défausse : ");
         if (game->players[p].discardCount > 0) {
             Card topCard = game->players[p].discard[game->players[p].discardCount - 1];
-            displayCardsLine(&topCard, 1);
+            afficherLigneDeCartes(&topCard, 1);
         } else {
             printf("(vide)\n");
         }
