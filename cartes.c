@@ -16,12 +16,12 @@ Pioche creerPiocheDefaut() {
     for (int i = 0; i < totalValeurs; ++i) {
         totalCartes += quantitesDefaut[i];
     }
-    //vérification du nombre de cartes dans la pioche
+    //vérification du nombre de cartes dans la pioche//
     if (totalCartes > NB_CARTES_MAX) {
         fprintf(stderr, "Trop de cartes dans la pioche par défaut (total %d dépasse NB_CARTES_MAX)\n", totalCartes);
         totalCartes = NB_CARTES_MAX;
     }
-    //allocation dynamique du tableau possendant toutes les cartes de la pioche
+    //allocation dynamique du tableau possendant toutes les cartes de la pioche//
     pioche.cartes = malloc(totalCartes * sizeof(Carte));
     if (!pioche.cartes) {
         //vérification
@@ -31,7 +31,7 @@ Pioche creerPiocheDefaut() {
     }
 
     pioche.taille = 0;
-
+    //remplissage automatique de la pioche par défaut.//
     for (int i = 0; i < totalValeurs; ++i) {
         int valeur = valeursDefaut[i];
         int quantite = quantitesDefaut[i];
@@ -51,10 +51,12 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     Pioche pioche;
     pioche.cartes = NULL;
     pioche.taille = 0;
-
+    //ouverture du fichier
     FILE *f = fopen(nomFichier, "r");
+    //vérification//
     if (!f) {
         printf("Impossible d'ouvrir \"%s\". Utilisation d'une pioche par défaut.\n", nomFichier);
+        //si le fichier est incorect
         return creerPiocheDefaut();
     }
 
