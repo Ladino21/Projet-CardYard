@@ -7,8 +7,8 @@
 Deck creerPaquetParDefaut() {
     Deck deck;
     // On définit un jeu de valeurs standard (0 à 13 avec 4 occurrences de chaque)
-    int defaultValues[] = {-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12};
-    int defaultQuantities[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10};
+    int valeursParDefaut[] = {-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12};
+    int quantitesParDefaut[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10};
     int totalValues = 15;
     // Calculer le nombre total de cartes
     int totalCards = 0;
@@ -29,8 +29,8 @@ Deck creerPaquetParDefaut() {
     deck.size = 0;
     // Remplir la pioche avec les valeurs spécifiées
     for (int i = 0; i < totalValues; ++i) {
-        int valeur = defaultValues[i];
-        int qty = defaultQuantities[i];
+        int valeur = valeursParDefaut[i];
+        int qty = quantitesParDefaut[i];
         for (int j = 0; j < qty && deck.size < totalCards; ++j) {
             deck.cards[deck.size].valeur = valeur;
             deck.cards[deck.size].visible = false;
