@@ -6,6 +6,8 @@
 #include "cartes.h"
 #include "joueurs.h"
 #include "save.h"
+#include "affichage.c"
+
 
 // Déclarations anticipées des fonctions d'affichage (implémentées dans display.c)
 void afficherPartie(const Partie *partie);
