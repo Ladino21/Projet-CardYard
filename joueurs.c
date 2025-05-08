@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "joueurs.h"
 
-Player* createPlayers(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCards) {
+Player* creerJoueurs(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCards) {
     if (numPlayers < 2 || numPlayers > MAX_PLAYERS) {
         fprintf(stderr, "Nombre de joueurs invalide: %d. Doit être entre 2 et %d.\n", numPlayers, MAX_PLAYERS);
         return NULL;
