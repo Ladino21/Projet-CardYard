@@ -19,7 +19,7 @@ int demanderEntier(const char *message, int min, int max) {
     char ligne[64];
     while (1) {
         printf("%s", message);
-        if (!fgets(ligne, sizeof(ligne), stdin)) {
+        if (fgets(ligne, sizeof(ligne), stdin)==NULL) {
             return -1;
         }
         ligne[strcspn(ligne, "\n")] = '\0';
@@ -33,7 +33,7 @@ int demanderEntier(const char *message, int min, int max) {
 // Crée une partie avec les paramètres spécifiés
 Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPioche) {
     Partie *partie = malloc(sizeof(Partie));
-    if (!partie) {
+    if (partie==NULL) {
         fprintf(stderr, "Erreur d'allocation pour la structure Partie\n");
         return NULL;
     }
@@ -56,7 +56,7 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
 
     int totalCartes = partie->pioche.taille;
     partie->joueurs = creerJoueurs(nbJoueurs, nbCartesParJoueur, &partie->pioche, totalCartes);
-    if (!partie->joueurs) {
+    if (partie->joueurs==NULL) {
         libererPioche(&partie->pioche);
         free(partie);
         return NULL;
@@ -66,7 +66,7 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
 
 // Boucle principale du jeu
 void jouerPartie(Partie *partie) {
-    if (!partie) return;
+    if (partie==NULL) return;
     char entree[64];
     int finPartie = 0;
 
@@ -215,7 +215,7 @@ void jouerPartie(Partie *partie) {
 
 // Libère toute la mémoire utilisée par la partie
 void libererPartie(Partie *partie) {
-    if (!partie) return;
+    if (partie==NULL) return;
     if (partie->joueurs) {
         libererJoueurs(partie->joueurs, partie->nb_joueurs);
         partie->joueurs = NULL;
