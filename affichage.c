@@ -113,7 +113,7 @@ void afficherPiocheCentrale(const Pioche *pioche) {
     printf("\n");
 }
 
-void afficherDefausse(const Joueur *joueur, int nbCartes) {
+void afficherDefausse(const Joueur *joueur) {
     printf("Défausse (%d cartes) :\n", joueur->nb_defausse);
     if (joueur->nb_defausse == 0) {
         printf("(vide)\n");
