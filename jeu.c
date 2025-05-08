@@ -131,7 +131,7 @@ void playGame(Game *game) {
         }
         // A ce stade, on traite l'entrée comme un choix numérique
         int choice = atoi(input);
-        Card drawnCard;
+        Card cartePiochee;
         int depuisDefausseJoueur = -1;
         if (choice == 0) {
             // Piocher dans la pioche centrale
@@ -139,9 +139,9 @@ void playGame(Game *game) {
                 printf("La pioche centrale est vide! Choisissez une autre action.\n");
                 continue;
             }
-            drawnCard = piocherCarte(&game->deck);
+            cartePiochee = piocherCarte(&game->deck);
             // Afficher la valeur de la carte piochée au joueur courant
-            printf("Vous avez pioché la carte de valeur %d.\n", drawnCard.valeur);
+            printf("Vous avez pioché la carte de valeur %d.\n", cartePiochee.valeur);
         } else if (choice >= 1 && choice <= game->numPlayers) {
             int cibleJoueur  = choice - 1;
             if (game->players[cibleJoueur ].discardCount == 0) {
@@ -149,16 +149,16 @@ void playGame(Game *game) {
                 continue;
             }
             // Prendre la carte du dessus de la défausse du joueur désigné
-            drawnCard = game->players[cibleJoueur ].discard[ game->players[cibleJoueur ].discardCount - 1 ];
+            cartePiochee = game->players[cibleJoueur ].discard[ game->players[cibleJoueur ].discardCount - 1 ];
             game->players[cibleJoueur ].discardCount--;
             depuisDefausseJoueur = cibleJoueur ;
-            printf("Vous prenez la carte %d de la défausse du joueur %d.\n", drawnCard.valeur, cibleJoueur  + 1);
+            printf("Vous prenez la carte %d de la défausse du joueur %d.\n", cartePiochee.valeur, cibleJoueur  + 1);
         } else {
             printf("Choix invalide. Veuillez réessayer.\n");
             continue;
         }
-        // On a maintenant une carte dans drawnCard (depuis la pioche ou une défausse)
-        drawnCard.visible = true; // La carte piochée est connue du joueur courant (visible si ajoutée à sa main)
+        // On a maintenant une carte dans cartePiochee (depuis la pioche ou une défausse)
+        cartePiochee.visible = true; // La carte piochée est connue du joueur courant (visible si ajoutée à sa main)
         // Le joueur courant décide s'il échange cette carte ou la défausse directement
         int echangerIndices = -1;
         if (choice == 0) {
@@ -191,7 +191,7 @@ void playGame(Game *game) {
                 // Si la carte provenait d'une défausse, il faut la remettre où elle était.
                 if (depuisDefausseJoueur != -1) {
                     // Remettre la carte dans la défausse d'origine
-                    game->players[depuisDefausseJoueur].discard[ game->players[depuisDefausseJoueur].discardCount ] = drawnCard;
+                    game->players[depuisDefausseJoueur].discard[ game->players[depuisDefausseJoueur].discardCount ] = cartePiochee;
                     game->players[depuisDefausseJoueur].discardCount++;
                 } else {
                     // Si elle venait de la pioche, remettre la carte en haut de la pioche
@@ -203,7 +203,7 @@ void playGame(Game *game) {
                 // Effectuer l'échange
                 Card carteRemplacee = game->players[game->joueurActuel].personal[echangerIndices];
                 // Placer la carte piochée dans la main du joueur
-                game->players[game->joueurActuel].personal[echangerIndices] = drawnCard;
+                game->players[game->joueurActuel].personal[echangerIndices] = cartePiochee;
                 game->players[game->joueurActuel].personal[echangerIndices].visible = true;
                 // La carte remplacée est défaussée par le joueur courant
                 carteRemplacee.visible = true; // on la révèle au moment de la défausser
