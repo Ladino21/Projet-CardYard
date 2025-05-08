@@ -143,16 +143,16 @@ void playGame(Game *game) {
             // Afficher la valeur de la carte piochée au joueur courant
             printf("Vous avez pioché la carte de valeur %d.\n", drawnCard.valeur);
         } else if (choice >= 1 && choice <= game->numPlayers) {
-            int targetPlayer = choice - 1;
-            if (game->players[targetPlayer].discardCount == 0) {
-                printf("La défausse du joueur %d est vide. Choisissez une autre action.\n", targetPlayer + 1);
+            int cibleJoueur  = choice - 1;
+            if (game->players[cibleJoueur ].discardCount == 0) {
+                printf("La défausse du joueur %d est vide. Choisissez une autre action.\n", cibleJoueur  + 1);
                 continue;
             }
             // Prendre la carte du dessus de la défausse du joueur désigné
-            drawnCard = game->players[targetPlayer].discard[ game->players[targetPlayer].discardCount - 1 ];
-            game->players[targetPlayer].discardCount--;
-            depuisDefausseJoueur = targetPlayer;
-            printf("Vous prenez la carte %d de la défausse du joueur %d.\n", drawnCard.valeur, targetPlayer + 1);
+            drawnCard = game->players[cibleJoueur ].discard[ game->players[cibleJoueur ].discardCount - 1 ];
+            game->players[cibleJoueur ].discardCount--;
+            depuisDefausseJoueur = cibleJoueur ;
+            printf("Vous prenez la carte %d de la défausse du joueur %d.\n", drawnCard.valeur, cibleJoueur  + 1);
         } else {
             printf("Choix invalide. Veuillez réessayer.\n");
             continue;
