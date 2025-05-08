@@ -104,7 +104,7 @@ Game* loadGame(const char *filename) {
         // Lire et allouer les cartes personnelles du joueur
         int comptePersonnel;
         fread(&comptePersonnel, sizeof(int), 1, f);
-        game->players[i].comptePersonnel = personalCount;
+        game->players[i].comptePersonnel = comptePersonnel;
         game->players[i].personal = malloc(comptePersonnel * sizeof(Card));
         if (!game->players[i].personal) {
             // En cas d'échec, libérer ce qui a été alloué précédemment et quitter
