@@ -70,47 +70,81 @@ void jouerPartie(Partie *partie) {
     char entree[64];
     int finPartie = 0;
 
-    while (!finPartie) {
-        printf("\n===== Tour du joueur %d =====\n", partie->joueur_courant + 1);
-        afficherPartie(partie);
+while (!finPartie) {
+    printf("\n===== Tour du joueur %d =====\n", partie->joueur_courant + 1);
+    afficherPartie(partie);
 
-        printf("Joueur %d, choisissez une action :\n", partie->joueur_courant + 1);
+    int piocheVide = (partie->pioche.taille == 0);
+
+    printf("Joueur %d, choisissez une action :\n", partie->joueur_courant + 1);
+    if (!piocheVide) {
         printf("[0] Piocher dans la pioche centrale\n");
-        printf("[1-%d] Piocher dans la défausse d’un joueur (entrez le numéro du joueur)\n", partie->nb_joueurs);
-        printf("[S] Sauvegarder la partie\n");
-        printf("[Q] Quitter\n");
-        printf("Votre choix : ");
+    }
+    printf("[1-%d] Piocher dans la défausse d’un joueur (entrez le numéro du joueur)\n", partie->nb_joueurs);
+    printf("[S] Sauvegarder la partie\n");
+    printf("[Q] Quitter\n");
+    printf("Votre choix : ");
 
-        if (!fgets(entree, sizeof(entree), stdin)) return;
-        entree[strcspn(entree, "\n")] = '\0';
+    if (!fgets(entree, sizeof(entree), stdin)) return;
+    entree[strcspn(entree, "\n")] = '\0';
 
-        if (strlen(entree) == 1) {
-            char choixLettre = toupper(entree[0]);
-            if (choixLettre == 'Q') {
-                printf("Quitter la partie sans sauvegarder ? (o/n) : ");
-                char confirmation;
-                if (scanf(" %c", &confirmation) == 1 && tolower(confirmation) == 'o') {
-                    printf("Partie terminée.\n");
-                    return;
-                }
-                while (getchar() != '\n');
-                continue;
+    if (strlen(entree) == 1) {
+        char choixLettre = toupper(entree[0]);
+        if (choixLettre == 'Q') {
+            printf("Quitter la partie sans sauvegarder ? (o/n) : ");
+            char confirmation;
+            if (scanf(" %c", &confirmation) == 1 && tolower(confirmation) == 'o') {
+                printf("Partie terminée.\n");
+                return;
             }
-            if (choixLettre == 'S') {
-                if (sauvegarderPartie("sauvegarde.dat", partie) == 0) {
-                    printf("Partie sauvegardée dans sauvegarde.dat.\n");
-                } else {
-                    printf("Erreur lors de la sauvegarde.\n");
-                }
-                printf("Continuer la partie ? (o/n) : ");
-                char reponse;
-                if (scanf(" %c", &reponse) == 1 && tolower(reponse) != 'o') {
-                    printf("Partie sauvegardée et terminée.\n");
-                    return;
-                }
-                while (getchar() != '\n');
-                continue;
+            while (getchar() != '\n');
+            continue;
+        }
+        if (choixLettre == 'S') {
+            if (sauvegarderPartie("sauvegarde.dat", partie) == 0) {
+                printf("Partie sauvegardée dans sauvegarde.dat.\n");
+            } else {
+                printf("Erreur lors de la sauvegarde.\n");
             }
+            printf("Continuer la partie ? (o/n) : ");
+            char reponse;
+            if (scanf(" %c", &reponse) == 1 && tolower(reponse) != 'o') {
+                printf("Partie sauvegardée et terminée.\n");
+                return;
+            }
+            while (getchar() != '\n');
+            continue;
+        }
+    }
+
+    int choix = atoi(entree);
+    Carte cartePiochee;
+    int joueurSource = -1;
+
+    if (choix == 0) {
+        if (piocheVide) {
+            printf("La pioche est vide ! Vous devez choisir une carte dans une défausse.\n");
+            continue;
+        }
+        cartePiochee = piocherCarte(&partie->pioche);
+        printf("Vous avez pioché la carte %d.\n", cartePiochee.valeur);
+    } else if (choix >= 1 && choix <= partie->nb_joueurs) {
+        int cible = choix - 1;
+        if (partie->joueurs[cible].nb_defausse == 0) {
+            printf("La défausse du joueur %d est vide.\n", cible + 1);
+            continue;
+        }
+        cartePiochee = partie->joueurs[cible].defausse[partie->joueurs[cible].nb_defausse - 1];
+        partie->joueurs[cible].nb_defausse--;
+        joueurSource = cible;
+        printf("Vous avez pris la carte %d de la défausse du joueur %d.\n", cartePiochee.valeur, cible + 1);
+    } else {
+        printf("Choix invalide.\n");
+        continue;
+    }
+
+    // (le reste du tour suit ici, inchangé…)
+
         }
 
         int choix = atoi(entree);
