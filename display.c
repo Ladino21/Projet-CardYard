@@ -45,13 +45,13 @@ void afficherJeu(const Game *game) {
     if (!game) return;
     for (int p = 0; p < game->numPlayers; ++p) {
         printf("Joueur %d :\n", p + 1);
-        afficherLigneDeCartes(game->players[p].personal, game->players[p].personalCount);
+        afficherLigneDeCartes(game->players[p].personal, game->players[p].comptePersonnel);
 
         // Indices en dessous des cartes
-        if (game->players[p].personalCount > 0) {
-            for (int j = 0; j < game->players[p].personalCount; ++j) {
+        if (game->players[p].comptePersonnel > 0) {
+            for (int j = 0; j < game->players[p].comptePersonnel; ++j) {
                 printf("   %d   ", j);
-                if (j < game->players[p].personalCount - 1) printf(" ");
+                if (j < game->players[p].comptePersonnel - 1) printf(" ");
             }
             printf("\n");
         }
