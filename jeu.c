@@ -201,16 +201,16 @@ void playGame(Game *game) {
                 // On passe simplement au prochain tour (la carte n'est pas utilisée)
             } else {
                 // Effectuer l'échange
-                Card replacedCard = game->players[game->currentPlayer].personal[echangerIndices];
+                Card carteRemplacee = game->players[game->currentPlayer].personal[echangerIndices];
                 // Placer la carte piochée dans la main du joueur
                 game->players[game->currentPlayer].personal[echangerIndices] = drawnCard;
                 game->players[game->currentPlayer].personal[echangerIndices].visible = true;
                 // La carte remplacée est défaussée par le joueur courant
-                replacedCard.visible = true; // on la révèle au moment de la défausser
-                game->players[game->currentPlayer].discard[ game->players[game->currentPlayer].discardCount ] = replacedCard;
+                carteRemplacee.visible = true; // on la révèle au moment de la défausser
+                game->players[game->currentPlayer].discard[ game->players[game->currentPlayer].discardCount ] = carteRemplacee;
                 game->players[game->currentPlayer].discardCount++;
                 printf("Vous avez échangé la carte de valeur %d avec votre carte de valeur %d.\n",
-                       drawnCard.valeur, replacedCard.valeur);
+                       drawnCard.valeur, carteRemplacee.valeur);
             }
         } else {
             // Si echangerIndices == -1 : le joueur défausse la carte piochée sans l'échanger
