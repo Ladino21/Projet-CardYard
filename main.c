@@ -23,7 +23,7 @@ int main() {
         if (choix == 1) {
             // Nouvelle partie
             int numPlayers = 0;
-            int cardsPerPlayer = 0;
+            int cartesParJoueur = 0;
             char fileChoice;
             char filename[256] = "";
             // Saisie du nombre de joueurs
@@ -41,15 +41,15 @@ int main() {
                 }
             }
             // Saisie du nombre de cartes personnelles par joueur
-            while (cardsPerPlayer < 1) {
+            while (cartesParJoueur < 1) {
                 printf("Entrez le nombre de cartes personnelles par joueur: ");
-                if (scanf("%d", &cardsPerPlayer) != 1) {
-                    cardsPerPlayer = 0;
+                if (scanf("%d", &cartesParJoueur) != 1) {
+                    cartesParJoueur = 0;
                     while ((ch = getchar()) != '\n' && ch != EOF) {}
                     continue;
                 }
                 while ((ch = getchar()) != '\n' && ch != EOF) {}
-                if (cardsPerPlayer < 1) {
+                if (cartesParJoueur < 1) {
                     printf("Nombre de cartes invalide.\n");
                 }
             }
@@ -67,7 +67,7 @@ int main() {
                 }
             }
             // Création du jeu
-            Game *game = createGame(numPlayers, cardsPerPlayer, 
+            Game *game = createGame(numPlayers, cartesParJoueur, 
                                     (fileChoice=='o'||fileChoice=='O') ? filename : NULL);
             if (!game) {
                 printf("Impossible de créer la partie.\n");
