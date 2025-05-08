@@ -16,18 +16,18 @@ typedef struct {
 } Deck;
 
 // Crée une pioche par défaut (jeu de cartes valeurs par défaut)
-Deck createDeckDefault();
+Deck creerPaquetParDefaut();
 
 // Crée une pioche en chargeant les cartes depuis un fichier "valeur:quantite"
-Deck createDeckFromFile(const char *filename);
+Deck creerPaquetFichier(const char *filename);
 
 // Mélange la pioche
-void shuffleDeck(Deck *deck);
+void MelangePaquet(Deck *deck);
 
 // Pioche une carte du deck (retire la carte du haut de la pioche et la renvoie)
-Card drawCard(Deck *deck);
+Card piocherCarte(Deck *deck);
 
 // Libère la mémoire allouée pour le deck
-void freeDeck(Deck *deck);
+void libererPaquet(Deck *deck);
 
 #endif // CARTES_H
