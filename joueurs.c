@@ -10,7 +10,7 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
 
     // Allouer le tableau de joueurs
     Joueur *joueurs = malloc(nb_joueurs * sizeof(Joueur));
-    if (!joueurs) {
+    if (joueurs==NULL) {
         fprintf(stderr, "Échec d'allocation pour les joueurs.\n");
         return NULL;
     }
@@ -20,7 +20,7 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
 
         // Allouer les cartes personnelles
         joueurs[i].personnelles = malloc(nb_cartes_par_joueur * sizeof(Carte));
-        if (!joueurs[i].personnelles) {
+        if (joueurs[i].personnelles==NULL) {
             fprintf(stderr, "Échec d'allocation pour les cartes personnelles du joueur %d\n", i);
             for (int k = 0; k < i; ++k) {
                 free(joueurs[k].personnelles);
@@ -39,7 +39,7 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
         // Allouer la défausse du joueur
         if (nb_cartes_total <= 0) nb_cartes_total = 1;
         joueurs[i].defausse = malloc(nb_cartes_total * sizeof(Carte));
-        if (!joueurs[i].defausse) {
+        if (joueurs[i].defausse==NULL) {
             fprintf(stderr, "Échec d'allocation pour la défausse du joueur %d\n", i);
             free(joueurs[i].personnelles);
             for (int k = 0; k < i; ++k) {
@@ -57,7 +57,7 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
 }
 
 void libererJoueurs(Joueur *joueurs, int nb_joueurs) {
-    if (!joueurs) return;
+    if (joueurs==NULL) return;
 
     for (int i = 0; i < nb_joueurs; ++i) {
         if (joueurs[i].personnelles) {
