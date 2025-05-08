@@ -31,7 +31,7 @@ int demanderEntier(const char *message, int min, int max) {
     }
 }
 
-Game* createGame(int numPlayers, int cardsPerPlayer, const char *deckFile) {
+Game* createGame(int numPlayers, int cartesParJoueur, const char *deckFile) {
     // Allouer la structure Game
     Game *game = malloc(sizeof(Game));
     if (!game) {
@@ -39,7 +39,7 @@ Game* createGame(int numPlayers, int cardsPerPlayer, const char *deckFile) {
         return NULL;
     }
     game->numPlayers = numPlayers;
-    game->cardsPerPlayer = cardsPerPlayer;
+    game->cartesParJoueur = cartesParJoueur;
     game->currentPlayer = 0;
     // Créer la pioche (depuis le fichier si fourni, sinon pioche par défaut)
     if (deckFile && strlen(deckFile) > 0) {
@@ -48,9 +48,9 @@ Game* createGame(int numPlayers, int cardsPerPlayer, const char *deckFile) {
         game->deck = creerPaquetParDefaut();
     }
     // Vérifier qu'il y a assez de cartes pour distribuer les cartes personnelles
-    if (numPlayers * cardsPerPlayer > game->deck.size) {
+    if (numPlayers * cartesParJoueur > game->deck.size) {
         printf("La pioche ne contient que %d cartes, insuffisant pour %d joueurs avec %d cartes chacun.\n",
-               game->deck.size, numPlayers, cardsPerPlayer);
+               game->deck.size, numPlayers, cartesParJoueur);
         printf("Veuillez réduire le nombre de joueurs ou de cartes par joueur.\n");
         free(game);
         return NULL;
@@ -58,7 +58,7 @@ Game* createGame(int numPlayers, int cardsPerPlayer, const char *deckFile) {
     // Nombre total de cartes initiales (avant distribution) pour dimensionner les défausses
     int totalCards = game->deck.size;
     // Créer les joueurs et distribuer leurs cartes personnelles
-    game->players = creerJoueurs(numPlayers, cardsPerPlayer, &game->deck, totalCards);
+    game->players = creerJoueurs(numPlayers, cartesParJoueur, &game->deck, totalCards);
     if (!game->players) {
         libererPaquet(&game->deck);
         free(game);
