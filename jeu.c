@@ -13,7 +13,7 @@ void displayPlayer(const Player *player, int index);
 void displayCard(const Card *card);
 
 // Fonction auxiliaire pour demander un entier dans une plage [min, max]
-int promptInt(const char *message, int min, int max) {
+int demanderEntier(const char *message, int min, int max) {
     int value;
     char line[64];
     while (1) {
@@ -175,12 +175,12 @@ void playGame(Game *game) {
                 echangerIndices = -1;
             } else {
                 // Choix d'échanger : demander l'index de la carte personnelle à échanger
-                echangerIndices = promptInt("Entrez le numéro de la carte personnelle à échanger (0 - index max): ",
+                echangerIndices = demanderEntier("Entrez le numéro de la carte personnelle à échanger (0 - index max): ",
                                        0, game->players[game->currentPlayer].personalCount - 1);
             }
         } else {
             // Si la carte vient d'une défausse, on suppose que le joueur veut forcément l'utiliser (échanger)
-            echangerIndices = promptInt("Entrez le numéro de la carte personnelle à échanger avec cette carte: ",
+            echangerIndices = demanderEntier("Entrez le numéro de la carte personnelle à échanger avec cette carte: ",
                                    0, game->players[game->currentPlayer].personalCount - 1);
         }
         if (echangerIndices >= 0 && echangerIndices < game->players[game->currentPlayer].personalCount) {
