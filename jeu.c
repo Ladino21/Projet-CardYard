@@ -8,7 +8,7 @@
 #include "save.h"
 
 // Déclarations anticipées des fonctions d'affichage (implémentées dans display.c)
-void displayGame(const Game *game);
+void afficherJeu(const Game *game);
 void displayPlayer(const Player *player, int index);
 void displayCard(const Card *card);
 
@@ -75,7 +75,7 @@ void playGame(Game *game) {
     while (!gameOver) {
         printf("\n===== Tour du joueur %d =====\n", game->currentPlayer + 1);
         // Afficher l'état courant du jeu (mains et défausses)
-        displayGame(game);
+        afficherJeu(game);
         // Proposer les actions au joueur courant
         printf("Joueur %d, choisissez une action:\n", game->currentPlayer + 1);
         printf("[0] Piocher dans la pioche centrale\n");
@@ -242,7 +242,7 @@ void playGame(Game *game) {
     }
     // La partie est terminée, on peut afficher l'état final (par exemple toutes les cartes)
     printf("État final du jeu:\n");
-    displayGame(game);
+    afficherJeu(game);
     printf("Merci d'avoir joué !\n");
 }
 
