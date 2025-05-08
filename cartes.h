@@ -1,33 +1,35 @@
 #ifndef CARTES_H
 #define CARTES_H
+
 #include <stdbool.h>
-#define MAX_CARDS 150
+
+#define NB_CARTES_MAX 150
 
 // Structure représentant une carte
 typedef struct {
     int valeur;
     bool visible;
-} Card;
+} Carte;
 
-// Structure représentant la pioche (deck de cartes à piocher)
+// Structure représentant la pioche (ensemble de cartes à piocher)
 typedef struct {
-    Card *cards;  // tableau dynamique de cartes
-    int size;     // nombre de cartes actuellement dans la pioche
-} Deck;
+    Carte *cartes;  // tableau dynamique de cartes
+    int taille;     // nombre de cartes actuellement dans la pioche
+} Pioche;
 
-// Crée une pioche par défaut (jeu de cartes valeurs par défaut)
-Deck creerPaquetParDefaut();
+// Crée une pioche par défaut (jeu de cartes standard)
+Pioche creerPiocheDefaut();
 
 // Crée une pioche en chargeant les cartes depuis un fichier "valeur:quantite"
-Deck creerPaquetFichier(const char *filename);
+Pioche creerPiocheDepuisFichier(const char *nomFichier);
 
 // Mélange la pioche
-void MelangePaquet(Deck *deck);
+void melangerPioche(Pioche *pioche);
 
-// Pioche une carte du deck (retire la carte du haut de la pioche et la renvoie)
-Card piocherCarte(Deck *deck);
+// Pioche une carte du dessus de la pioche
+Carte piocherCarte(Pioche *pioche);
 
-// Libère la mémoire allouée pour le deck
-void libererPaquet(Deck *deck);
+// Libère la mémoire allouée pour la pioche
+void libererPioche(Pioche *pioche);
 
 #endif // CARTES_H
