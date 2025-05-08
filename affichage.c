@@ -30,6 +30,13 @@ const char* couleurCarte(int valeur) {
         default: return "\033[47m";
     }
 }
+void afficherEspacesCentrage(int nbCartes) {
+    int totalLargeur = nbCartes * (LARGEUR_CARTE + 1);
+    int marge = (TAILLE_TERMINAL - totalLargeur) / 2;
+    for (int i = 0; i < marge; i++) {
+        printf(" ");
+    }
+}
 
 void afficherLigneCartes(const Carte *cartes, int nbCartes) {
     if (nbCartes <= 0) return;
