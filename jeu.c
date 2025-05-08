@@ -77,7 +77,7 @@ void playGame(Game *game) {
         // Afficher l'état courant du jeu (mains et défausses)
         afficherJeu(game);
         // Proposer les actions au joueur courant
-        printf("Joueur %d, choisissez une action:\n", game->currentPlayer + 1);
+        printf("Joueur %d, choisissez une action:\n", game->joueurActuel + 1);
         printf("[0] Piocher dans la pioche centrale\n");
         printf("[1-%d] Piocher dans la défausse d'un joueur (entrez le numéro du joueur)\n", game->numPlayers);
         printf("[S] Sauvegarder la partie\n");
@@ -176,16 +176,16 @@ void playGame(Game *game) {
             } else {
                 // Choix d'échanger : demander l'index de la carte personnelle à échanger
                 echangerIndices = demanderEntier("Entrez le numéro de la carte personnelle à échanger (0 - index max): ",
-                                       0, game->players[game->currentPlayer].personalCount - 1);
+                                       0, game->players[game->joueurActuel].personalCount - 1);
             }
         } else {
             // Si la carte vient d'une défausse, on suppose que le joueur veut forcément l'utiliser (échanger)
             echangerIndices = demanderEntier("Entrez le numéro de la carte personnelle à échanger avec cette carte: ",
-                                   0, game->players[game->currentPlayer].personalCount - 1);
+                                   0, game->players[game->joueurActuel].personalCount - 1);
         }
-        if (echangerIndices >= 0 && echangerIndices < game->players[game->currentPlayer].personalCount) {
+        if (echangerIndices >= 0 && echangerIndices < game->players[game->joueurActuel].personalCount) {
             // Vérifier que la carte personnelle choisie n'est pas déjà visible (non échangeable)
-            if (game->players[game->currentPlayer].personal[echangerIndices].visible) {
+            if (game->players[game->joueurActuel].personal[echangerIndices].visible) {
                 printf("Vous ne pouvez pas échanger une carte déjà visible. Tour annulé.\n");
                 // Si le joueur a choisi par erreur une carte visible, on annule l'action:
                 // Si la carte provenait d'une défausse, il faut la remettre où elle était.
@@ -201,21 +201,21 @@ void playGame(Game *game) {
                 // On passe simplement au prochain tour (la carte n'est pas utilisée)
             } else {
                 // Effectuer l'échange
-                Card carteRemplacee = game->players[game->currentPlayer].personal[echangerIndices];
+                Card carteRemplacee = game->players[game->joueurActuel].personal[echangerIndices];
                 // Placer la carte piochée dans la main du joueur
-                game->players[game->currentPlayer].personal[echangerIndices] = drawnCard;
-                game->players[game->currentPlayer].personal[echangerIndices].visible = true;
+                game->players[game->joueurActuel].personal[echangerIndices] = drawnCard;
+                game->players[game->joueurActuel].personal[echangerIndices].visible = true;
                 // La carte remplacée est défaussée par le joueur courant
                 carteRemplacee.visible = true; // on la révèle au moment de la défausser
-                game->players[game->currentPlayer].discard[ game->players[game->currentPlayer].discardCount ] = carteRemplacee;
+                game->players[game->joueurActuel].discard[ game->players[game->joueurActuel].discardCount ] = carteRemplacee;
                 game->players[game->currentPlayer].discardCount++;
                 printf("Vous avez échangé la carte de valeur %d avec votre carte de valeur %d.\n",
                        drawnCard.valeur, carteRemplacee.valeur);
             }
         } else {
             // Si echangerIndices == -1 : le joueur défausse la carte piochée sans l'échanger
-            game->players[game->currentPlayer].discard[ game->players[game->currentPlayer].discardCount ] = drawnCard;
-            game->players[game->currentPlayer].discardCount++;
+            game->players[game->joueurActuel].discard[ game->players[game->joueurActuel].discardCount ] = drawnCard;
+            game->players[game->joueurActuel].discardCount++;
             printf("Vous avez défaussé la carte de valeur %d sans l'utiliser.\n", drawnCard.valeur);
         }
         // Vérifier la condition de fin de partie :
