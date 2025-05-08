@@ -184,6 +184,7 @@ void jouerPartie(Partie *partie) {
             for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
                 if (partie->joueurs[i].personnelles[j].visible) visibles++;
             }
+            //retourne toute les cartes une fois qu'un joueur retourne toutes ses cartes et désigne un gagnant 
             if (visibles == partie->joueurs[i].nb_cartes) {
                 printf("Le joueur %d a retourné toutes ses cartes. Fin de la partie.\n", i + 1);
                 finPartie = 1;
