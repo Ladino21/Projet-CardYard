@@ -1,5 +1,5 @@
-#ifndef SAUVEGARDE_H
-#define SAUVEGARDE_H
+#ifndef SAVE_H
+#define SAVE_H
 
 #include "jeu.h"
 
@@ -11,4 +11,4 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie);
 // Renvoie un pointeur alloué vers Partie, ou NULL si échec
 Partie* chargerPartie(const char *nom_fichier);
 
-#endif // SAUVEGARDE_H
+#endif // SAVE_H
