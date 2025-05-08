@@ -151,74 +151,64 @@ void afficherPiocheCentrale(const Pioche *pioche) {
     printf("\n");
 }
 
-void afficherDefausse(const Joueur *joueur, int nbCartes) {
-    int nb = joueur->nb_defausse;
-    int largeur_totale = nb * LARGEUR_CARTE;
-    int offset = (TAILLE_TERMINAL - largeur_totale) / 2;
-    if (offset < 0) offset = 0;
 
-    for (int i = 0; i < offset; i++) printf(" ");
+
+
+void afficherDefausse(const Joueur *joueur) {
     printf("Défausse :\n");
 
-    if (nb == 0) {
-        for (int i = 0; i < offset; i++) printf(" ");
+    if (joueur->nb_defausse == 0) {
         printf("(vide)\n");
         return;
     }
 
-    // Ligne du haut
-    for (int i = 0; i < offset; i++) printf(" ");
-    for (int j = 0; j < nb; j++) {
-        Carte *c = &joueur->defausse[j];
-        const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
-        printf("%s+-------+\033[0m", col);
-    }
-    printf("\n");
+    const int max_par_ligne = 5;
+    int total = joueur->nb_defausse;
 
-    // Ligne 1 - texte "CARD"
-    for (int i = 0; i < offset; i++) printf(" ");
-    for (int j = 0; j < nb; j++) {
-        Carte *c = &joueur->defausse[j];
-        const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
-        printf("%s|", col);
-        if (!c->visible)
-            printf(" CARD  ");
-        else
-            printf("       ");
-        printf("|\033[0m");
-    }
-    printf("\n");
+    for (int ligne = 0; ligne * max_par_ligne < total; ++ligne) {
+        int debut = ligne * max_par_ligne;
+        int fin = debut + max_par_ligne;
+        if (fin > total) fin = total;
 
-    // Ligne 2 - texte "YARD" ou valeur
-    for (int i = 0; i < offset; i++) printf(" ");
-    for (int j = 0; j < nb; j++) {
-        Carte *c = &joueur->defausse[j];
-        const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
-        printf("%s|", col);
-        if (!c->visible)
-            printf(" YARD  ");
-        else
-            printf("  %2d   ", c->valeur);
-        printf("|\033[0m");
-    }
-    printf("\n");
+        // Ligne haut
+        for (int i = debut; i < fin; ++i) {
+            const char *couleur = joueur->defausse[i].visible ? couleurCarte(joueur->defausse[i].valeur) : "\033[100m";
+            printf("%s+-------+\033[0m ", couleur);
+        }
+        printf("\n");
 
-    // Ligne du bas
-    for (int i = 0; i < offset; i++) printf(" ");
-    for (int j = 0; j < nb; j++) {
-        Carte *c = &joueur->defausse[j];
-        const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
-        printf("%s+-------+\033[0m", col);
-    }
-    printf("\n");
+        // Ligne milieu
+        for (int i = debut; i < fin; ++i) {
+            const Carte *carte = &joueur->defausse[i];
+            const char *couleur = carte->visible ? couleurCarte(carte->valeur) : "\033[100m";
+            printf("%s|", couleur);
+            if (!carte->visible) {
+                printf("  ??   ");
+            } else {
+                printf("  %2d   ", carte->valeur);
+            }
+            printf("|\033[0m ");
+        }
+        printf("\n");
 
-    // Ligne des indices
-    for (int i = 0; i < offset; i++) printf(" ");
-    for (int j = 0; j < nb; j++) {
-        printf("   [%d]   ", j);
+        // Ligne bas
+        for (int i = debut; i < fin; ++i) {
+            const char *couleur = joueur->defausse[i].visible ? couleurCarte(joueur->defausse[i].valeur) : "\033[100m";
+            printf("%s+-------+\033[0m ", couleur);
+        }
+        printf("\n");
+
+        // Indices
+        for (int i = debut; i < fin; ++i) {
+            printf("   %2d   ", i);
+        }
+        printf("\n\n");
     }
-    printf("\n");
 }
+
+
+
+
 void afficherPartie(const Partie *partie) {
     if (!partie) return;
 
