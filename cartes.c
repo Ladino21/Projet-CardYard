@@ -105,12 +105,14 @@ Carte piocherCarte(Pioche *pioche) {
     carte.visible = false;
 
     if (!pioche || pioche->taille == 0) {
-        fprintf(stderr, "Tentative de piocher dans une pioche vide.\n");
+        fprintf(stderr, "Pioche vide.\n");
         return carte;
     }
 
     pioche->taille--;
     carte = pioche->cartes[pioche->taille];
+    carte.visible = false;  // <- important
+
     return carte;
 }
 
