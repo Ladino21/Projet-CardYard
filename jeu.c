@@ -58,7 +58,7 @@ Game* createGame(int numPlayers, int cardsPerPlayer, const char *deckFile) {
     // Nombre total de cartes initiales (avant distribution) pour dimensionner les défausses
     int totalCards = game->deck.size;
     // Créer les joueurs et distribuer leurs cartes personnelles
-    game->players = createPlayers(numPlayers, cardsPerPlayer, &game->deck, totalCards);
+    game->players = creerJoueurs(numPlayers, cardsPerPlayer, &game->deck, totalCards);
     if (!game->players) {
         freeDeck(&game->deck);
         free(game);
