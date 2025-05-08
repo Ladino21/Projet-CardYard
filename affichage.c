@@ -218,7 +218,8 @@ void afficherPartie(const Partie *partie) {
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         printf("Joueur %d :\n", i + 1);
         afficherLigneCartes(partie->joueurs[i].personnelles, partie->joueurs[i].nb_cartes);
-        afficherDefausse(&partie->joueurs[i], partie->joueurs[i].nb_cartes);
+        afficherDefausse(&partie->joueurs[i]);
+
         printf("\n");
     }
 }
