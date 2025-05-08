@@ -14,7 +14,7 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes);
 void afficherEspacesCentrage(int nbCartes);
 // Affichages de zones
 void afficherPiocheCentrale(const Pioche *pioche);
-void afficherDefausse(const Joueur *joueur);
+void afficherDefausse(const Joueur *joueur, int nbCartes);
 void afficherPartie(const Partie *partie);
 
 #endif // AFFICHAGE_H
