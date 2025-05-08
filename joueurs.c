@@ -14,7 +14,7 @@ Player* creerJoueurs(int numPlayers, int cartesParJoueur, Deck *deck, int totalC
         return NULL;
     }
     for (int i = 0; i < numPlayers; ++i) {
-        players[i].personalCount = cartesParJoueur;
+        players[i].comptePersonnel = cartesParJoueur;
         // Allouer le tableau de cartes personnelles
         players[i].personal = malloc(cartesParJoueur * sizeof(Card));
         if (!players[i].personal) {
