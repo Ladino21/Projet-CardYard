@@ -10,7 +10,7 @@ Pioche creerPiocheDefaut() {
 
     int valeursDefaut[] = {-2,-1,0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
     int quantitesDefaut[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10};
-    int totalValeurs = 14;
+    int totalValeurs = 15;
 
     int totalCartes = 0;
     for (int i = 0; i < totalValeurs; ++i) {
