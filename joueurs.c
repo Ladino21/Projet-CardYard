@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "joueurs.h"
 
-Player* creerJoueurs(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCards) {
+Player* creerJoueurs(int numPlayers, int cartesParJoueur, Deck *deck, int totalCards) {
     if (numPlayers < 2 || numPlayers > MAX_PLAYERS) {
         fprintf(stderr, "Nombre de joueurs invalide: %d. Doit être entre 2 et %d.\n", numPlayers, MAX_PLAYERS);
         return NULL;
@@ -16,7 +16,7 @@ Player* creerJoueurs(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCa
     for (int i = 0; i < numPlayers; ++i) {
         players[i].personalCount = cardsPerPlayer;
         // Allouer le tableau de cartes personnelles
-        players[i].personal = malloc(cardsPerPlayer * sizeof(Card));
+        players[i].personal = malloc(cartesParJoueur * sizeof(Card));
         if (!players[i].personal) {
             fprintf(stderr, "Échec d'allocation pour les cartes personnelles du joueur %d\n", i);
             // Libérer ce qui a été alloué pour les joueurs précédents
@@ -27,7 +27,7 @@ Player* creerJoueurs(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCa
             return NULL;
         }
         // Distribuer les cartes personnelles en piochant du deck
-        for (int c = 0; c < cardsPerPlayer; ++c) {
+        for (int c = 0; c < cartesParJoueur; ++c) {
             Card card = piocherCarte(deck);
             card.visible = false; // les cartes personnelles commencent face cachée
             players[i].personal[c] = card;
