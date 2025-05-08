@@ -4,115 +4,124 @@
 #include <string.h>
 #include "cartes.h"
 
-Deck creerPaquetParDefaut() {
-    Deck deck;
-    // On définit un jeu de valeurs standard (0 à 13 avec 4 occurrences de chaque)
-    int valeursParDefaut[] = {-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,12};
-    int quantitesParDefaut[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10};
-    int totalValues = 15;
-    // Calculer le nombre total de cartes
-    int totalCards = 0;
-    for (int i = 0; i < totalValues; ++i) {
-        totalCards += quantitesParDefaut[i];
-    }
-    if (totalCards > MAX_CARDS) {
-        fprintf(stderr, "Trop de cartes dans le deck par défaut (total %d dépasse MAX_CARDS)\n", totalCards);
-        totalCards = MAX_CARDS;
-    }
-    // Allouer le tableau de cartes
-    deck.cards = malloc(totalCards * sizeof(Card));
-    if (!deck.cards) {
-        fprintf(stderr, "Échec d'allocation de la mémoire pour le deck\n");
-        deck.size = 0;
-        return deck;
-    }
-    deck.size = 0;
-    // Remplir la pioche avec les valeurs spécifiées
-    for (int i = 0; i < totalValues; ++i) {
-        int valeur = valeursParDefaut[i];
-        int qty = quantitesParDefaut[i];
-        for (int j = 0; j < qty && deck.size < totalCards; ++j) {
-            deck.cards[deck.size].valeur = valeur;
-            deck.cards[deck.size].visible = false;
-            deck.size++;
-        }
-    }
-    // Mélanger la pioche
-    MelangePaquet(&deck);
-    return deck;
-}
+// Crée une pioche avec des cartes par défaut
+Pioche creerPiocheDefaut() {
+    Pioche pioche;
 
-Deck creerPaquetFichier(const char *filename) {
-    Deck deck;
-    deck.cards = NULL;
-    deck.size  = 0;
+    int valeursDefaut[] = {-2,-1,0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,};
+    int quantitesDefaut[] = {5, 10, 15, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,};
+    int totalValeurs = 14;
 
-    FILE *f = fopen(filename, "r");
-    if (!f) {
-        printf("Impossible d'ouvrir '%s', deck par défaut.\n", filename);
-        return creerPaquetParDefaut();
+    int totalCartes = 0;
+    for (int i = 0; i < totalValeurs; ++i) {
+        totalCartes += quantitesDefaut[i];
     }
 
-    deck.cards = malloc(MAX_CARDS * sizeof(Card));
-    if (!deck.cards) {
-        printf("Échec d'allocation pour la pioche depuis fichier.\n");
-        fclose(f);
-        return creerPaquetParDefaut();
+    if (totalCartes > NB_CARTES_MAX) {
+        fprintf(stderr, "Trop de cartes dans la pioche par défaut (total %d dépasse NB_CARTES_MAX)\n", totalCartes);
+        totalCartes = NB_CARTES_MAX;
     }
-    deck.size = 0;
 
-    int value, quantity;
-    while (fscanf(f, "%d:%d", &value, &quantity) == 2) {
-        // Sentinelle : "0:0" termine la lecture
-        if (value == 0 && quantity == 0) break;
-        if (quantity < 0) quantity = 0;
-        for (int i = 0; i < quantity && deck.size < MAX_CARDS; ++i) {
-            deck.cards[deck.size].valeur  = value;
-            deck.cards[deck.size].visible = false;
-            deck.size++;
+    pioche.cartes = malloc(totalCartes * sizeof(Carte));
+    if (!pioche.cartes) {
+        fprintf(stderr, "Échec d'allocation de la mémoire pour la pioche\n");
+        pioche.taille = 0;
+        return pioche;
+    }
+
+    pioche.taille = 0;
+
+    for (int i = 0; i < totalValeurs; ++i) {
+        int valeur = valeursDefaut[i];
+        int quantite = quantitesDefaut[i];
+        for (int j = 0; j < quantite && pioche.taille < totalCartes; ++j) {
+            pioche.cartes[pioche.taille].valeur = valeur;
+            pioche.cartes[pioche.taille].visible = false;
+            pioche.taille++;
         }
     }
 
-    fclose(f);
-    MelangePaquet(&deck);
-    return deck;
+    melangerPioche(&pioche);
+    return pioche;
 }
-void MelangePaquet(Deck *deck) {
-    if (!deck || deck->size <= 1) return;
-    static int seeded = 0;
-    if (!seeded) {
+
+// Crée une pioche à partir d’un fichier
+Pioche creerPiocheDepuisFichier(const char *nomFichier) {
+    Pioche pioche;
+    pioche.cartes = NULL;
+    pioche.taille = 0;
+
+    FILE *fichier = fopen(nomFichier, "r");
+    if (!fichier) {
+        printf("Impossible d'ouvrir '%s', pioche par défaut utilisée.\n", nomFichier);
+        return creerPiocheDefaut();
+    }
+
+    pioche.cartes = malloc(NB_CARTES_MAX * sizeof(Carte));
+    if (!pioche.cartes) {
+        printf("Échec d'allocation pour la pioche depuis le fichier.\n");
+        fclose(fichier);
+        return creerPiocheDefaut();
+    }
+
+    pioche.taille = 0;
+    int valeur, quantite;
+
+    while (fscanf(fichier, "%d:%d", &valeur, &quantite) == 2) {
+        if (valeur == 0 && quantite == 0) break;
+        if (quantite < 0) quantite = 0;
+        for (int i = 0; i < quantite && pioche.taille < NB_CARTES_MAX; ++i) {
+            pioche.cartes[pioche.taille].valeur = valeur;
+            pioche.cartes[pioche.taille].visible = false;
+            pioche.taille++;
+        }
+    }
+
+    fclose(fichier);
+    melangerPioche(&pioche);
+    return pioche;
+}
+
+// Mélange les cartes de la pioche
+void melangerPioche(Pioche *pioche) {
+    if (!pioche || pioche->taille <= 1) return;
+    static int initialise = 0;
+    if (!initialise) {
         srand((unsigned int) time(NULL));
-        seeded = 1;
+        initialise = 1;
     }
-    for (int i = deck->size - 1; i > 0; --i) {
+
+    for (int i = pioche->taille - 1; i > 0; --i) {
         int j = rand() % (i + 1);
-        // Échanger deck->cards[i] et deck->cards[j]
-        Card temp = deck->cards[i];
-        deck->cards[i] = deck->cards[j];
-        deck->cards[j] = temp;
+        Carte temp = pioche->cartes[i];
+        pioche->cartes[i] = pioche->cartes[j];
+        pioche->cartes[j] = temp;
     }
 }
 
-Card piocherCarte(Deck *deck) {
-    Card card;
-    card.valeur = -1;
-    card.visible = false;
-    if (!deck || deck->size == 0) {
-        fprintf(stderr, "Tentative de piocher dans un deck vide.\n");
-        return card;
+// Tire une carte du dessus de la pioche
+Carte piocherCarte(Pioche *pioche) {
+    Carte carte;
+    carte.valeur = -1;
+    carte.visible = false;
+
+    if (!pioche || pioche->taille == 0) {
+        fprintf(stderr, "Tentative de piocher dans une pioche vide.\n");
+        return carte;
     }
-    // Renvoyer la carte du haut (dernier élément du tableau pour plus de simplicité)
-    deck->size--;
-    card = deck->cards[deck->size];
-    return card;
+
+    pioche->taille--;
+    carte = pioche->cartes[pioche->taille];
+    return carte;
 }
 
-void libererPaquet(Deck *deck) {
-    if (deck && deck->cards) {
-        free(deck->cards);
-        deck->cards = NULL;
+// Libère la mémoire allouée à la pioche
+void libererPioche(Pioche *pioche) {
+    if (pioche && pioche->cartes) {
+        free(pioche->cartes);
+        pioche->cartes = NULL;
     }
-    if (deck) {
-        deck->size = 0;
+    if (pioche) {
+        pioche->taille = 0;
     }
 }
