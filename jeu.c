@@ -40,7 +40,7 @@ Game* createGame(int numPlayers, int cartesParJoueur, const char *deckFile) {
     }
     game->numPlayers = numPlayers;
     game->cartesParJoueur = cartesParJoueur;
-    game->currentPlayer = 0;
+    game->joueurActuel = 0;
     // Créer la pioche (depuis le fichier si fourni, sinon pioche par défaut)
     if (deckFile && strlen(deckFile) > 0) {
         game->deck = creerPaquetFichier(deckFile);
@@ -73,7 +73,7 @@ void playGame(Game *game) {
     int gameOver = 0;
     // Boucle principale du jeu
     while (!gameOver) {
-        printf("\n===== Tour du joueur %d =====\n", game->currentPlayer + 1);
+        printf("\n===== Tour du joueur %d =====\n", game->joueurActuel + 1);
         // Afficher l'état courant du jeu (mains et défausses)
         afficherJeu(game);
         // Proposer les actions au joueur courant
