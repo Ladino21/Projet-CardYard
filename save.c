@@ -6,10 +6,10 @@
 #include "joueurs.h"
 
 int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
-    if (!partie || !nom_fichier) return -1;
+    if (partie == NULL || nom_fichier == NULL) return -1;
 
     FILE *f = fopen(nom_fichier, "wb");
-    if (!f) return -1;
+    if (f==NULL) return -1;
 
     // Écrire les informations principales de la partie
     fwrite(&partie->nb_joueurs, sizeof(int), 1, f);
@@ -40,13 +40,13 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
 }
 
 Partie* chargerPartie(const char *nom_fichier) {
-    if (!nom_fichier) return NULL;
+    if (nom_fichier==NULL) return NULL;
 
     FILE *f = fopen(nom_fichier, "rb");
-    if (!f) return NULL;
+    if (f==NULL) return NULL;
 
     Partie *partie = malloc(sizeof(Partie));
-    if (!partie) {
+    if (partie==NULL) {
         fclose(f);
         return NULL;
     }
@@ -66,7 +66,7 @@ Partie* chargerPartie(const char *nom_fichier) {
 
     if (taille_pioche > 0) {
         partie->pioche.cartes = malloc(taille_pioche * sizeof(Carte));
-        if (!partie->pioche.cartes) {
+        if (partie->pioche.cartes==NULL) {
             fclose(f);
             free(partie);
             return NULL;
@@ -78,7 +78,7 @@ Partie* chargerPartie(const char *nom_fichier) {
 
     // Allouer les joueurs
     partie->joueurs = malloc(partie->nb_joueurs * sizeof(Joueur));
-    if (!partie->joueurs) {
+    if (partie->joueurs==NULL) {
         if (partie->pioche.cartes) free(partie->pioche.cartes);
         free(partie);
         fclose(f);
@@ -111,7 +111,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         partie->joueurs[i].nb_cartes = nb_cartes;
 
         partie->joueurs[i].personnelles = malloc(nb_cartes * sizeof(Carte));
-        if (!partie->joueurs[i].personnelles) {
+        if (partie->joueurs[i].personnelles==NULL) {
             for (int k = 0; k < i; ++k) {
                 free(partie->joueurs[k].personnelles);
                 free(partie->joueurs[k].defausse);
@@ -130,7 +130,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         int nb_defausse = partie->joueurs[i].nb_defausse;
 
         partie->joueurs[i].defausse = malloc(capacite_totale * sizeof(Carte));
-        if (!partie->joueurs[i].defausse) {
+        if (partie->joueurs[i].defausse==NULL) {
             free(partie->joueurs[i].personnelles);
             for (int k = 0; k < i; ++k) {
                 free(partie->joueurs[k].personnelles);
