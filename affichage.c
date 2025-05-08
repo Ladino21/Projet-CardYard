@@ -114,19 +114,11 @@ void afficherPiocheCentrale(const Pioche *pioche) {
 }
 
 void afficherDefausse(const Joueur *joueur, int nbCartes) {
-    int largeur_totale = nbCartes * LARGEUR_CARTE;
-    int offset = (TAILLE_TERMINAL - largeur_totale) / 2;
-    if (offset < 0) offset = 0;
-
-    for (int i = 0; i < offset; i++) printf(" ");
-    printf("Défausse : ");
+    printf("Défausse (%d cartes) :\n", joueur->nb_defausse);
     if (joueur->nb_defausse == 0) {
         printf("(vide)\n");
     } else {
-        printf("\n");
-        for (int i = 0; i < offset; i++) printf(" ");
-        Carte top = joueur->defausse[joueur->nb_defausse - 1];
-        afficherCarteStylisee(&top);
+        afficherLigneCartes(joueur->defausse, joueur->nb_defausse);
     }
 }
 
