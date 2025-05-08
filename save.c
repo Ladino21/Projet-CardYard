@@ -14,7 +14,7 @@ int saveGame(const char *filename, const Game *game) {
     // Écrire les paramètres de base du jeu
     fwrite(&game->numPlayers, sizeof(int), 1, f);
     fwrite(&game->cartesParJoueur, sizeof(int), 1, f);
-    fwrite(&game->currentPlayer, sizeof(int), 1, f);
+    fwrite(&game->joueurActuel, sizeof(int), 1, f);
     // Écrire la pioche (taille et cartes restantes)
     fwrite(&game->deck.size, sizeof(int), 1, f);
     if (game->deck.size > 0) {
@@ -54,7 +54,7 @@ Game* loadGame(const char *filename) {
         return NULL;
     }
     fread(&game->cartesParJoueur, sizeof(int), 1, f);
-    fread(&game->currentPlayer, sizeof(int), 1, f);
+    fread(&game->joueurActuel, sizeof(int), 1, f);
     // Lire la pioche
     int deckSize = 0;
     fread(&deckSize, sizeof(int), 1, f);
