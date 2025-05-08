@@ -51,7 +51,7 @@ Player* creerJoueurs(int numPlayers, int cardsPerPlayer, Deck *deck, int totalCa
     return players;
 }
 
-void freePlayers(Player *players, int numPlayers) {
+void libererJoueurs(Player *players, int numPlayers) {
     if (!players) return;
     for (int i = 0; i < numPlayers; ++i) {
         if (players[i].personal) {
