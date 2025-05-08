@@ -86,7 +86,7 @@ int main() {
 
         } else if (choix == 2) {
             // Charger une partie sauvegardée
-            Partie *partie = chargerPartie("save.dat");
+            Partie *partie = chargerPartie("sauvegarde.dat");
             if (!partie) {
                 printf("Aucune sauvegarde trouvée ou échec du chargement.\n");
             } else {
