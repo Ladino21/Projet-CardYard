@@ -5,7 +5,7 @@
 - cloner l'adresse de notre lien github afin de créer un fichier cardyard
 - dans le terminale il faut acceder au fichier grace a la commande "cd Projet Card Yard"
 - ensuite compiler jeu grace a la commande "gcc-o" ou bien 
-
+- Attention si voulez utilisez le fichier deck.txt afin de modifier le nombre de cartes pour chaque valeur pensez bien a laisser la derniere ligne "0:0" 
 
 Règles du jeu – Card Yard
 
