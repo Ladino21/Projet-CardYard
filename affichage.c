@@ -30,6 +30,39 @@ const char* couleurCarte(int valeur) {
         default: return "\033[47m";
     }
 }
+void afficherClassement(const Partie *partie) {
+    typedef struct {
+        int joueur_id;
+        int score;
+    } Classement;
+
+    Classement scores[NB_JOUEURS_MAX];
+
+    for (int i = 0; i < partie->nb_joueurs; ++i) {
+        int total = 0;
+        for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
+            total += partie->joueurs[i].personnelles[j].valeur;
+        }
+        scores[i].joueur_id = i + 1;
+        scores[i].score = total;
+    }
+
+    // Tri des scores (ordre croissant)
+    for (int i = 0; i < partie->nb_joueurs - 1; ++i) {
+        for (int j = i + 1; j < partie->nb_joueurs; ++j) {
+            if (scores[i].score > scores[j].score) {
+                Classement tmp = scores[i];
+                scores[i] = scores[j];
+                scores[j] = tmp;
+            }
+        }
+    }
+
+    printf("\n🏆 Classement final :\n");
+    for (int i = 0; i < partie->nb_joueurs; ++i) {
+        printf("  %d. Joueur %d - Score : %d\n", i + 1, scores[i].joueur_id, scores[i].score);
+    }
+}
 
 void afficherLigneCartes(const Carte *cartes, int nbCartes) {
     if (nbCartes <= 0) return;
