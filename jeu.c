@@ -214,7 +214,7 @@ void playGame(Game *game) {
             }
         } else {
             // Si echangerIndices == -1 : le joueur défausse la carte piochée sans l'échanger
-            game->players[game->joueurActuel].discard[ game->players[game->joueurActuel].discardCount ] = drawnCard;
+            game->players[game->joueurActuel].discard[ game->players[game->joueurActuel].discardCount ] = cartePiochee;
             game->players[game->joueurActuel].discardCount++;
             printf("Vous avez défaussé la carte de valeur %d sans l'utiliser.\n", cartePiochee.valeur);
         }
