@@ -176,14 +176,14 @@ void playGame(Game *game) {
             } else {
                 // Choix d'échanger : demander l'index de la carte personnelle à échanger
                 echangerIndices = demanderEntier("Entrez le numéro de la carte personnelle à échanger (0 - index max): ",
-                                       0, game->players[game->joueurActuel].personalCount - 1);
+                                       0, game->players[game->joueurActuel].comptePersonnel - 1);
             }
         } else {
             // Si la carte vient d'une défausse, on suppose que le joueur veut forcément l'utiliser (échanger)
             echangerIndices = demanderEntier("Entrez le numéro de la carte personnelle à échanger avec cette carte: ",
-                                   0, game->players[game->joueurActuel].personalCount - 1);
+                                   0, game->players[game->joueurActuel].comptePersonnel - 1);
         }
-        if (echangerIndices >= 0 && echangerIndices < game->players[game->joueurActuel].personalCount) {
+        if (echangerIndices >= 0 && echangerIndices < game->players[game->joueurActuel].comptePersonnel) {
             // Vérifier que la carte personnelle choisie n'est pas déjà visible (non échangeable)
             if (game->players[game->joueurActuel].personal[echangerIndices].visible) {
                 printf("Vous ne pouvez pas échanger une carte déjà visible. Tour annulé.\n");
@@ -222,12 +222,12 @@ void playGame(Game *game) {
         // Ici on décide de terminer la partie si un joueur a toutes ses cartes personnelles visibles
         for (int i = 0; i < game->numPlayers; ++i) {
             int visCount = 0;
-            for (int j = 0; j < game->players[i].personalCount; ++j) {
+            for (int j = 0; j < game->players[i].comptePersonnel; ++j) {
                 if (game->players[i].personal[j].visible) {
                     visCount++;
                 }
             }
-            if (visCount == game->players[i].personalCount) {
+            if (visCount == game->players[i].comptePersonnel) {
                 // Toutes les cartes du joueur i sont visibles -> fin de la partie
                 gameOver = 1;
                 printf("Toutes les cartes du joueur %d sont visibles. Fin de la partie.\n", i+1);
