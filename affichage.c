@@ -4,7 +4,7 @@
 #include "jeu.h"
 #include "cartes.h"
 #include "joueurs.h"
-
+#include "affichage.h"
 
 
 #define TAILLE_TERMINAL 100
