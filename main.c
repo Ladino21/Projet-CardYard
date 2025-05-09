@@ -31,7 +31,6 @@ int main() {
                 printf("Entrez le nombre de joueurs (2 à 8) : ");
                 if (scanf("%d", &nb_joueurs) != 1) {
                     nb_joueurs = 0;
-                    int ch;
                     while ((ch = getchar()) != '\n' && ch != EOF) {}
                     continue;
                 }
