@@ -20,3 +20,4 @@ void afficherDefausse(const Joueur *joueur);
 void afficherPartie(const Partie *partie);
 
 #endif // AFFICHAGE_H
+
