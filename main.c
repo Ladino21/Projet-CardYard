@@ -14,21 +14,16 @@ int main() {
         printf("3. Quitter\n");
         printf("Votre choix : ");
 
-        int choix = 0;
-        char ligne[64];
-        if (!fgets(ligne, sizeof(ligne), stdin)) {
-           printf("Erreur de lecture.\n");
-           continue;
-       }
-       if (sscanf(ligne, "%d", &choix) != 1) {
-          printf("Entrée invalide. Veuillez entrer un chiffre entre 1 et 3.\n");
+       int choix = 0;
+       char ligne[64];
+       if (!fgets(ligne, sizeof(ligne), stdin)) {
+          printf("Erreur de lecture.\n");
           continue;
-       }
-
-
-        // Vider le tampon
-        int ch;
-        while ((ch = getchar()) != '\n' && ch != EOF) {}
+    }
+    if (sscanf(ligne, "%d", &choix) != 1) {
+       printf("Entrée invalide. Veuillez entrer un chiffre.\n");
+       continue;
+    }
 
         if (choix == 1) {
             int nb_joueurs = 0;
