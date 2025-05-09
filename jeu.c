@@ -115,7 +115,7 @@ void jouerPartie(Partie *partie) {
                 continue;
             }
         }
-
+// comme une sorte de verification pour ne pas rentrer n'importe quoi au cours de la game
         int choix = -1;//pour eviter de faire un tirage dans la pioche principal automatiquement quand on rentre une valeur au hasard au cours de la partie
         if (strlen(entree) == 1) {
             char c = toupper(entree[0]);
@@ -131,7 +131,8 @@ void jouerPartie(Partie *partie) {
             printf("Entrée invalide. Veuillez entrer un nombre ou une lettre valide.\n");
             continue;
         }    
-  
+  // fin de la verif
+        
         Carte cartePiochee;
         int joueurSource = -1;
 
