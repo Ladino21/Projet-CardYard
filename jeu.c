@@ -214,24 +214,28 @@ void jouerPartie(Partie *partie) {
         }
         //
         if (indexEchange >= 0) {
+            
+    // Tant que la carte ciblée est déjà visible, redemander un nouvel index
             while (partie->joueurs[partie->joueur_courant].personnelles[indexEchange].visible) {
-                printf("Impossible d’échanger une carte déjà visible.\n");
-                indexEchange = demanderEntier("Veuillez choisir une carte NON retournée : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
-             }
-            // Échange autorisé
-            Carte carteRemplacee = partie->joueurs[partie->joueur_courant].personnelles[indexEchange];
-            partie->joueurs[partie->joueur_courant].personnelles[indexEchange] = cartePiochee;
-            partie->joueurs[partie->joueur_courant].personnelles[indexEchange].visible = true;
-            carteRemplacee.visible = true;
-            partie->joueurs[partie->joueur_courant].defausse[partie->joueurs[partie->joueur_courant].nb_defausse++] = carteRemplacee;
-
-            printf("Vous avez échangé %d contre %d.\n", cartePiochee.valeur, carteRemplacee.valeur);
+                
+                
+                printf("Impossible d’échanger une carte déjà visible !\n");
+                indexEchange = demanderEntier("Choisissez une carte NON visible à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
         }
 
-        } else {
-            partie->joueurs[partie->joueur_courant].defausse[partie->joueurs[partie->joueur_courant].nb_defausse++] = cartePiochee;
-            printf("Vous avez défaussé la carte %d.\n", cartePiochee.valeur);
-        }
+    // Échange autorisé
+        Carte carteRemplacee = partie->joueurs[partie->joueur_courant].personnelles[indexEchange];
+        partie->joueurs[partie->joueur_courant].personnelles[indexEchange] = cartePiochee;
+        partie->joueurs[partie->joueur_courant].personnelles[indexEchange].visible = true;
+
+        carteRemplacee.visible = true;
+        partie->joueurs[partie->joueur_courant].defausse[partie->joueurs[partie->joueur_courant].nb_defausse++] = carteRemplacee;
+
+        printf("Vous avez échangé %d contre %d.\n", cartePiochee.valeur, carteRemplacee.valeur);
+    } else {
+       partie->joueurs[partie->joueur_courant].defausse[partie->joueurs[partie->joueur_courant].nb_defausse++] = cartePiochee;
+       printf("Vous avez défaussé la carte %d.\n", cartePiochee.valeur);
+    }
 
         for (int i = 0; i < partie->nb_joueurs; ++i) {
             int visibles = 0;
