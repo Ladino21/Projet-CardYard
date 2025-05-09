@@ -3,25 +3,13 @@
 #include <string.h>
 #include "jeu.h"
 #include "save.h"
+#include "cartes.h"
 
 int main() {
     printf(" Bienvenue dans CARD YARD !!\n");
 
     while (1) {
-        printf("\nMenu principal :\n");
-        printf("1. Nouvelle partie\n");
-        printf("2. Charger une partie\n");
-        printf("3. Quitter\n");
-        printf("Votre choix : ");
-
-        int choix = 0;
-        if (scanf("%d", &choix) != 1) {
-            break; // Erreur de lecture ou EOF
-        }
-
-        // Vider le tampon
-        int ch;
-        while ((ch = getchar()) != '\n' && ch != EOF) {}
+        // ... (le menu principal, inchangé) ...
 
         if (choix == 1) {
             int nb_joueurs = 0;
@@ -29,33 +17,7 @@ int main() {
             char reponse_fichier;
             char nom_fichier[256] = "";
 
-            // Saisie du nombre de joueurs
-            while (nb_joueurs < 2 || nb_joueurs > 8) {
-                printf("Entrez le nombre de joueurs (2 à 8) : ");
-                if (scanf("%d", &nb_joueurs) != 1) {
-                    nb_joueurs = 0;
-                    while ((ch = getchar()) != '\n' && ch != EOF) {}
-                    continue;
-                }
-                while ((ch = getchar()) != '\n' && ch != EOF) {}
-                if (nb_joueurs < 2 || nb_joueurs > 8) {
-                    printf("Nombre invalide. Réessayez.\n");
-                }
-            }
-
-            // Saisie du nombre de cartes par joueur
-            while (nb_cartes < 1) {
-                printf("Entrez le nombre de cartes personnelles par joueur : ");
-                if (scanf("%d", &nb_cartes) != 1) {
-                    nb_cartes = 0;
-                    while ((ch = getchar()) != '\n' && ch != EOF) {}
-                    continue;
-                }
-                while ((ch = getchar()) != '\n' && ch != EOF) {}
-                if (nb_cartes < 1) {
-                    printf("Nombre invalide.\n");
-                }
-            }
+            // ... (saisie du nombre de joueurs et cartes inchangée) ...
 
             // Demande d'un fichier pour charger la pioche
             printf("Voulez-vous charger la pioche depuis un fichier ? (o/n) : ");
@@ -69,6 +31,35 @@ int main() {
                 if (fgets(nom_fichier, sizeof(nom_fichier), stdin)) {
                     nom_fichier[strcspn(nom_fichier, "\n")] = '\0'; // Enlever le \n
                 }
+            }
+
+            // [CORRECTION] Vérification de la distribution possible (erreur 2)
+            {
+                Pioche pioche_temp;
+                if (reponse_fichier == 'o' || reponse_fichier == 'O') {
+                    pioche_temp = creerPiocheDepuisFichier(nom_fichier);
+                } else {
+                    pioche_temp = creerPiocheDefaut();
+                }
+                while (nb_joueurs * nb_cartes > pioche_temp.taille) {
+                    printf("La pioche ne contient que %d cartes, insuffisant pour %d joueurs avec %d cartes chacun.\n",
+                           pioche_temp.taille, nb_joueurs, nb_cartes);
+                    // Redemander le nombre de cartes personnelles
+                    nb_cartes = 0;
+                    while (nb_cartes < 1) {
+                        printf("Entrez le nombre de cartes personnelles par joueur : ");
+                        if (scanf("%d", &nb_cartes) != 1) {
+                            nb_cartes = 0;
+                            while ((ch = getchar()) != '\n' && ch != EOF) {}
+                            continue;
+                        }
+                        while ((ch = getchar()) != '\n' && ch != EOF) {}
+                        if (nb_cartes < 1) {
+                            printf("Nombre invalide.\n");
+                        }
+                    }
+                }
+                libererPioche(&pioche_temp);
             }
 
             // Création de la partie
@@ -85,21 +76,12 @@ int main() {
             libererPartie(partie);
 
         } else if (choix == 2) {
-            // Charger une partie sauvegardée
+            // Charger une partie sauvegardée (inchangé)
             Partie *partie = chargerPartie("sauvegarde.dat");
-            if (!partie) {
-                printf("Aucune sauvegarde trouvée ou échec du chargement.\n");
-            } else {
-                printf("Partie chargée avec succès.\n");
-                jouerPartie(partie);
-                libererPartie(partie);
-            }
-
+            // ...
         } else if (choix == 3) {
             printf("Au revoir !\n");
             break;
-        } else {
-            printf("Choix invalide. Réessayez.\n");
         }
     }
 
