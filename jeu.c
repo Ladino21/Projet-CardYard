@@ -121,12 +121,18 @@ void jouerPartie(Partie *partie) {
         int joueurSource = -1;
 
         if (choix == 0) {
-            if (piocheVide) {
-                printf("La pioche est vide ! Vous devez piocher dans une défausse.\n");
-                continue;
-            }
-            cartePiochee = piocherCarte(&partie->pioche);
-            printf("Vous avez pioché la carte %d.\n", cartePiochee.valeur);
+        if (piocheVide) {
+           printf("La pioche est vide ! Vous devez piocher dans une défausse.\n");
+           continue;
+        }
+
+        cartePiochee = piocherCarte(&partie->pioche);
+        if (cartePiochee.valeur == -999) {
+        printf("Erreur : aucune carte n’a pu être piochée.\n");
+        continue;
+        }
+
+        printf("Vous avez pioché la carte %d.\n", cartePiochee.valeur);
         } else if (choix >= 1 && choix <= partie->nb_joueurs) {
             int cible = choix - 1;
             if (partie->joueurs[cible].nb_defausse == 0) {
