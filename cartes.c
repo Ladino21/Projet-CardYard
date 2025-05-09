@@ -103,21 +103,22 @@ void melangerPioche(Pioche *pioche) {
 
 // Tire une carte du dessus de la pioche
 Carte piocherCarte(Pioche *pioche) {
-    Carte carte;
-    carte.valeur = -1;
-    carte.visible = false;
+    Carte carteInvalide;
+    carteInvalide.valeur = -999;
+    carteInvalide.visible = false;
 
-    if (pioche==NULL || pioche->taille == 0) {
-        fprintf(stderr, "Pioche vide.\n");
-        return carte;
+    if (pioche == NULL || pioche->taille <= 0) {
+        fprintf(stderr, "❌ Pioche vide !\n");
+        return carteInvalide;
     }
 
     pioche->taille--;
-    carte = pioche->cartes[pioche->taille];
-    carte.visible = false;  // <- important
+    Carte carte = pioche->cartes[pioche->taille];
+    carte.visible = false;
 
     return carte;
 }
+
 
 // Libère la mémoire allouée à la pioche
 void libererPioche(Pioche *pioche) {
