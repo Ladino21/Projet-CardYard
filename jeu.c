@@ -188,20 +188,23 @@ void jouerPartie(Partie *partie) {
 
         if (choix == 0) {
             //verification afin de pas rentrer n'importe quoi au cours de la game
-            printf("Voulez-vous échanger cette carte avec une carte personnelle ? (o/n) : ");
-            char rep;
-            if (scanf(" %c", &rep) != 1) {
-                while (getchar() != '\n');
-                indexEchange = -1;
-            } else {
-                while (getchar() != '\n'); // vider le buffer
-                rep = tolower(rep);
-                if (rep == 'o') {
-                    indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
-                } else {
-                    indexEchange = -1;
+            char ligne[64];
+            char rep = ' ';
+            while (1) {
+                printf("Voulez-vous échanger cette carte avec une carte personnelle ? (o/n) : ");
+                if (fgets(ligne, sizeof(ligne), stdin)) {
+                    if (sscanf(ligne, " %c", &rep) == 1 && (tolower(rep) == 'o' || tolower(rep) == 'n')) {
+                        break;
+                    }
                 }
-            }     
+                printf("Entrée invalide. Veuillez répondre par 'o' ou 'n'.\n");
+            }
+            if (tolower(rep) == 'o') {
+                indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
+                
+            } else {
+                indexEchange = -1;
+            }           
 
         } else {
             indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
