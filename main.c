@@ -15,9 +15,16 @@ int main() {
         printf("Votre choix : ");
 
         int choix = 0;
-        if (scanf("%d", &choix) != 1) {
-            break; // Erreur de lecture ou EOF
-        }
+        char ligne[64];
+        if (!fgets(ligne, sizeof(ligne), stdin)) {
+           printf("Erreur de lecture.\n");
+           continue;
+       }
+       if (sscanf(ligne, "%d", &choix) != 1) {
+          printf("Entrée invalide. Veuillez entrer un chiffre entre 1 et 3.\n");
+          continue;
+       }
+
 
         // Vider le tampon
         int ch;
