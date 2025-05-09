@@ -15,15 +15,10 @@ int main() {
         printf("Votre choix : ");
 
        int choix = 0;
-       char ligne[64];
-       if (!fgets(ligne, sizeof(ligne), stdin)) {
-          printf("Erreur de lecture.\n");
-          continue;
-    }
-    if (sscanf(ligne, "%d", &choix) != 1) {
-       printf("Entrée invalide. Veuillez entrer un chiffre.\n");
-       continue;
-    }
+       if (scanf("%d", &choix) != 1) {
+          break; // Erreur de lecture ou EOF
+       }
+
 
         if (choix == 1) {
             int nb_joueurs = 0;
