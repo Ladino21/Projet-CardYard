@@ -107,7 +107,8 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
 
     for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
-        printf("   [%d]   ", j);
+        printf("  [%d]  ", j);
+
     }
     printf("\n");
 }
