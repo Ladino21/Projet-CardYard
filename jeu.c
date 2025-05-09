@@ -212,7 +212,7 @@ void jouerPartie(Partie *partie) {
         } else {
             indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
         }
-        //
+        //etapes de verification afin de pas rentrer une carte deja visible 
         if (indexEchange >= 0) {
             
     // Tant que la carte ciblée est déjà visible, redemander un nouvel index
