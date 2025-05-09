@@ -3,6 +3,8 @@
 #include <string.h>
 #include "jeu.h"
 #include "save.h"
+#include <ctype.h>  // pour tolower()
+
 
 int main() {
     printf(" Bienvenue dans CARD YARD !!\n");
