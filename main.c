@@ -8,6 +8,8 @@
 
 int main() {
     printf(" Bienvenue dans CARD YARD !!\n");
+    int ch;  // <- pour vider le buffer clavier
+
 
     while (1) {
         printf("\nMenu principal :\n");
