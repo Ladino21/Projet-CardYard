@@ -14,11 +14,14 @@ int main() {
         printf("3. Quitter\n");
         printf("Votre choix : ");
 
-       int choix = 0;
-       if (scanf("%d", &choix) != 1) {
-          break; // Erreur de lecture ou EOF
-       }
+        int choix = 0;
+        if (scanf("%d", &choix) != 1) {
+            break; // Erreur de lecture ou EOF
+        }
 
+        // Vider le tampon
+        int ch;
+        while ((ch = getchar()) != '\n' && ch != EOF) {}
 
         if (choix == 1) {
             int nb_joueurs = 0;
