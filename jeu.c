@@ -116,7 +116,22 @@ void jouerPartie(Partie *partie) {
             }
         }
 
-        int choix = atoi(entree);
+        int choix = -1;//pour eviter de faire un tirage dans la pioche principal automatiquement quand on rentre une valeur au hasard au cours de la partie
+        if (strlen(entree) == 1) {
+            char c = toupper(entree[0]);
+            if (c == 'S' || c == 'Q') {
+                choix = -2; // pour traitement spécial juste après
+            } else if (isdigit(c)) {
+                choix = c - '0';
+            } else {
+                printf("Choix invalide. Réessayez.\n");
+                continue;
+            }
+        } else if (sscanf(entree, "%d", &choix) != 1) {
+            printf("Entrée invalide. Veuillez entrer un nombre ou une lettre valide.\n");
+            continue;
+        }    
+  
         Carte cartePiochee;
         int joueurSource = -1;
 
