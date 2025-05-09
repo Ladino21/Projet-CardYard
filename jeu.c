@@ -66,7 +66,7 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
 
 // Boucle principale du jeu
 void jouerPartie(Partie *partie) {
-    if (partie == NULL) return;
+    if (partie==NULL) return;
     char entree[64];
     int finPartie = 0;
 
@@ -77,28 +77,16 @@ void jouerPartie(Partie *partie) {
         int piocheVide = (partie->pioche.taille == 0);
         printf("Joueur %d, choisissez une action :\n", partie->joueur_courant + 1);
         if (!piocheVide) {
-           printf("[0] Piocher dans la pioche centrale\n");
+            printf("[0] Piocher dans la pioche centrale\n");
         }
         printf("[1-%d] Piocher dans la défausse d’un joueur (entrez le numéro du joueur)\n", partie->nb_joueurs);
         printf("[S] Sauvegarder la partie\n");
         printf("[Q] Quitter\n");
         printf("Votre choix : ");
 
-
-        // Lecture du choix d'action
         if (!fgets(entree, sizeof(entree), stdin)) return;
         entree[strcspn(entree, "\n")] = '\0';
 
-        // [CORRECTION] Vérification du choix d'action (erreur 3)
-        if (strlen(entree) == 1) {
-            char c = entree[0];
-            if (!isdigit(c) && c != 'S' && c != 's' && c != 'Q' && c != 'q') {
-                printf("Choix invalide.\n");
-                continue;
-            }
-        }
-
-        // Traitement des actions S, Q, etc.
         if (strlen(entree) == 1) {
             char choixLettre = toupper(entree[0]);
             if (choixLettre == 'Q') {
@@ -124,7 +112,6 @@ void jouerPartie(Partie *partie) {
                     return;
                 }
                 while (getchar() != '\n');
-
                 continue;
             }
         }
@@ -140,13 +127,13 @@ void jouerPartie(Partie *partie) {
             }
             cartePiochee = piocherCarte(&partie->pioche);
             printf("Vous avez pioché la carte %d.\n", cartePiochee.valeur);
-
         } else if (choix >= 1 && choix <= partie->nb_joueurs) {
             int cible = choix - 1;
             if (partie->joueurs[cible].nb_defausse == 0) {
                 printf("La défausse du joueur %d est vide.\n", cible + 1);
                 continue;
-            }   
+            }
+
             // Affichage de toutes les cartes de la défausse du joueur ciblé
             int nb = partie->joueurs[cible].nb_defausse;
             int cartesParLigne = 10;
@@ -162,6 +149,8 @@ void jouerPartie(Partie *partie) {
                 }
                 printf("\n\n");
             }
+
+
             int indexDefausse = demanderEntier("Index de la carte dans la défausse à prendre : ", 0, partie->joueurs[cible].nb_defausse - 1);
             cartePiochee = partie->joueurs[cible].defausse[indexDefausse];
 
@@ -173,8 +162,6 @@ void jouerPartie(Partie *partie) {
 
             joueurSource = cible;
             printf("Vous avez pris la carte %d de la défausse du joueur %d.\n", cartePiochee.valeur, cible + 1);
-
-
         } else {
             printf("Choix invalide.\n");
             continue;
@@ -184,54 +171,41 @@ void jouerPartie(Partie *partie) {
         int indexEchange = -1;
 
         if (choix == 0) {
-            // [CORRECTION] Demande répétée pour échange (erreur 4)
+            printf("Voulez-vous échanger cette carte avec une carte personnelle ? (o/n) : ");
             char rep;
-            do {
-                printf("Voulez-vous échanger cette carte avec une carte personnelle ? (o/n) : ");
-                if (scanf(" %c", &rep) != 1) {
-                    while (getchar() != '\n');
-                    continue;
-                }
-                rep = tolower(rep);
+            if (scanf(" %c", &rep) != 1 || tolower(rep) == 'n') {
                 while (getchar() != '\n');
-                if (rep != 'o' && rep != 'n') {
-                    printf("Réponse invalide. ");
-                }
-            } while (rep != 'o' && rep != 'n');
-
-            if (rep == 'n') {
                 indexEchange = -1;
             } else {
-                indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0,
-                                              partie->joueurs[partie->joueur_courant].nb_cartes - 1);
+                indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
             }
         } else {
-            indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0,
-                                          partie->joueurs[partie->joueur_courant].nb_cartes - 1);
+            indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0, partie->joueurs[partie->joueur_courant].nb_cartes - 1);
         }
 
         if (indexEchange >= 0) {
-            // [CORRECTION] Refuser les cartes déjà visibles (erreur 5)
-            while (partie->joueurs[partie->joueur_courant].personnelles[indexEchange].visible) {
-                printf("Impossible d’échanger une carte déjà visible. Veuillez choisir un autre index.\n");
-                indexEchange = demanderEntier("Index de la carte personnelle à échanger : ", 0,
-                                              partie->joueurs[partie->joueur_courant].nb_cartes - 1);
-            }
-            // Effectuer l'échange
-            Carte carteRemplacee = partie->joueurs[partie->joueur_courant].personnelles[indexEchange];
-            partie->joueurs[partie->joueur_courant].personnelles[indexEchange] = cartePiochee;
-            partie->joueurs[partie->joueur_courant].personnelles[indexEchange].visible = true;
+            if (partie->joueurs[partie->joueur_courant].personnelles[indexEchange].visible) {
+                printf("Impossible d’échanger une carte déjà visible. Tour annulé.\n");
+                if (joueurSource != -1) {
+                    partie->joueurs[joueurSource].defausse[partie->joueurs[joueurSource].nb_defausse++] = cartePiochee;
+                } else {
+                    partie->pioche.cartes[partie->pioche.taille++] = cartePiochee;
+                }
+            } else {
+                Carte carteRemplacee = partie->joueurs[partie->joueur_courant].personnelles[indexEchange];
+                partie->joueurs[partie->joueur_courant].personnelles[indexEchange] = cartePiochee;
+                partie->joueurs[partie->joueur_courant].personnelles[indexEchange].visible = true;
 
-            carteRemplacee.visible = true;
-            partie->joueurs[partie->joueur_courant].defausse[
-                partie->joueurs[partie->joueur_courant].nb_defausse++] = carteRemplacee;
-            printf("Vous avez échangé %d contre %d.\n", cartePiochee.valeur, carteRemplacee.valeur);
+                carteRemplacee.visible = true;
+                partie->joueurs[partie->joueur_courant].defausse[partie->joueurs[partie->joueur_courant].nb_defausse++] = carteRemplacee;
+
+                printf("Vous avez échangé %d contre %d.\n", cartePiochee.valeur, carteRemplacee.valeur);
+            }
         } else {
-            // Pas d'échange, on défausse la carte piochée (inchangé)
-            partie->joueurs[partie->joueur_courant].defausse[
-                partie->joueurs[partie->joueur_courant].nb_defausse++] = cartePiochee;
+            partie->joueurs[partie->joueur_courant].defausse[partie->joueurs[partie->joueur_courant].nb_defausse++] = cartePiochee;
             printf("Vous avez défaussé la carte %d.\n", cartePiochee.valeur);
         }
+
         for (int i = 0; i < partie->nb_joueurs; ++i) {
             int visibles = 0;
             for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
@@ -245,19 +219,11 @@ void jouerPartie(Partie *partie) {
         }
 
         partie->joueur_courant = (partie->joueur_courant + 1) % partie->nb_joueurs;
-
-
     }
 
-    // [CORRECTION] Révéler toutes les cartes personnelles avant classement (erreur 6)
     printf("État final :\n");
-    for (int i = 0; i < partie->nb_joueurs; ++i) {
-        for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
-            partie->joueurs[i].personnelles[j].visible = true;
-        }
-    }
     afficherPartie(partie);
-    afficherClassement(partie);
+    afficherClassement(partie); // Nécessite que tu aies la fonction afficherClassement dans affichage.c
     printf("Merci d’avoir joué !\n");
 }
 
