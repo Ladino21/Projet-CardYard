@@ -120,6 +120,7 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
         printf("\n\n");
     }
 }
+
 void afficherCarteStylisee(const Carte *carte) {
     const char *col = carte->visible ? couleurCarte(carte->valeur) : "\033[100m";
 
@@ -199,6 +200,7 @@ void afficherDefausse(const Joueur *joueur) {
         printf("\n\n");
     }
 }
+
 void afficherPartie(const Partie *partie) {
     if (!partie) return;
 
