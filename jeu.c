@@ -140,14 +140,16 @@ void jouerPartie(Partie *partie) {
             for (int i = 0; i < nb; i += cartesParLigne) {
                 int reste = nb - i;
                 int count = (reste > cartesParLigne) ? cartesParLigne : reste;
+
                 afficherLigneCartes(&partie->joueurs[cible].defausse[i], count);
-    
-    // Afficher les indices sous chaque carte
-               for (int j = 0; j < count; j++) {
-                   printf("  [%d]  ", i + j);
-               }
-               printf("\n\n");
+
+                // Affichage correct des indices
+                for (int j = 0; j < count; j++) {
+                    printf("  [%d]  ", i + j);  // <- ici on affiche bien l’indice global
+                }
+                printf("\n\n");
             }
+
 
             int indexDefausse = demanderEntier("Index de la carte dans la défausse à prendre : ", 0, partie->joueurs[cible].nb_defausse - 1);
             cartePiochee = partie->joueurs[cible].defausse[indexDefausse];
