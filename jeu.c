@@ -220,10 +220,15 @@ void jouerPartie(Partie *partie) {
 
         partie->joueur_courant = (partie->joueur_courant + 1) % partie->nb_joueurs;
     }
+    for (int i = 0; i < partie->nb_joueurs; ++i) {
+        for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
+            partie->joueurs[i].personnelles[j].visible = true;
+        }
+    }
 
     printf("État final :\n");
     afficherPartie(partie);
-    afficherClassement(partie); // Nécessite que tu aies la fonction afficherClassement dans affichage.c
+    afficherClassement(partie); 
     printf("Merci d’avoir joué !\n");
 }
 
