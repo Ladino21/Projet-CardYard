@@ -69,6 +69,7 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
     int offset = (TAILLE_TERMINAL - largeur_totale) / 2;
     if (offset < 0) offset = 0;
 
+    // Ligne 1 : bords supérieurs
     for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
         const char *col = cartes[j].visible ? couleurCarte(cartes[j].valeur) : "\033[100m";
@@ -76,28 +77,31 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
     }
     printf("\n");
 
+    // Ligne 2 : ligne "CARD" ou vide
     for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
         const Carte *c = &cartes[j];
         const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
-        printf("%s|%s", col, col);
+        printf("%s|", col);
         if (!c->visible) printf(" CARD  ");
         else printf("       ");
-        printf("%s|\033[0m", col);
+        printf("|\033[0m");
     }
     printf("\n");
 
+    // Ligne 3 : ligne "YARD" ou valeur
     for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
         const Carte *c = &cartes[j];
         const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
-        printf("%s|%s", col, col);
+        printf("%s|", col);
         if (!c->visible) printf(" YARD  ");
         else printf("  %2d   ", c->valeur);
-        printf("%s|\033[0m", col);
+        printf("|\033[0m");
     }
     printf("\n");
 
+    // Ligne 4 : bords inférieurs
     for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
         const char *col = cartes[j].visible ? couleurCarte(cartes[j].valeur) : "\033[100m";
@@ -105,10 +109,10 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
     }
     printf("\n");
 
+    // Ligne 5 : indices bien alignés sous les cartes
     for (int i = 0; i < offset; i++) printf(" ");
     for (int j = 0; j < nbCartes; j++) {
-        printf("  [%d]  ", j);
-
+        printf("  [%2d] ", j);  // <- Alignement renforcé
     }
     printf("\n");
 }
