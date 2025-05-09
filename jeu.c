@@ -164,12 +164,6 @@ void jouerPartie(Partie *partie) {
                 int count = (reste > cartesParLigne) ? cartesParLigne : reste;
 
                 afficherLigneCartes(&partie->joueurs[cible].defausse[i], count);
-
-                // Affichage correct des indices
-                for (int j = 0; j < count; j++) {
-                    printf("  [%d]  ", i + j);  // <- ici on affiche bien l’indice global
-                }
-                printf("\n\n");
             }
 
 
