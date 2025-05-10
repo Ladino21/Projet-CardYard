@@ -1,12 +1,18 @@
 # Projet-CardYard
 
-étapes de compilation pour lancer ce jeu incroyable créer par Adam Abd El Ghany et nidal mekeddem :
-- ouvrir le terminale grace à la commande Alt + F2
-- Rentrez dans le terminale "gnome-terminal"
-- cloner l'adresse de notre lien github afin de créer un fichier cardyard
-- dans le terminale il faut acceder au fichier grace a la commande "cd Projet Card Yard"
-- ensuite compiler jeu grace a la commande "gcc-o" ou bien 
-- Attention si voulez utilisez le fichier pioche.txt afin de modifier le nombre de cartes pour chaque valeur pensez bien a laisser la derniere ligne "0:0" 
+Etapes de compilation pour lancer ce jeu incroyable créer par Adam Abd El Ghany et nidal mekeddem :
+Etape 1: Ouvrir un terminal
+- Appuie sur Alt + F2
+- Tape gnome-terminal puis appuie sur Entrée
+Etape 2: Cloner le projet depuis GitHub
+- Entrez "git clone https://github.com/Ladino21/Projet-CardYard"
+Etape 3: Accéder au dossier du projet
+- Entrez "gcc -o jeu *.c"
+--> un executable est crée appelé jeu
+Etape 4: Lancer le jeu
+- Entrez "./jeu"
+
+!! Attention !! Si vous souhaiter modifier le fichier "pioche.txt" afin de modifier le nombre de cartes pour chaque valeur pensez bien à laisser la derniere ligne "0:0" 
 
 Règles du jeu – Card Yard
 
