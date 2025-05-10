@@ -32,15 +32,16 @@ int demanderEntier(const char *message, int min, int max) {
 
 Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPioche) {
     //verif 
-    if (fichierPioche != NULL && fichierPioche[0] != '\0') {
-       partie->pioche = creerPiocheDepuisFichier(fichierPioche);
-    } else {
-       partie->pioche = creerPiocheDefaut();
-    }
-    
     Partie *partie = malloc(sizeof(Partie));
     if (!partie) return NULL;
 
+// Puis, une fois partie allouée :
+       if (fichierPioche != NULL && fichierPioche[0] != '\0') {
+          partie->pioche = creerPiocheDepuisFichier(fichierPioche);
+          } else {
+           partie->pioche = creerPiocheDefaut();
+          }
+    
     partie->nb_joueurs = nbJoueurs;
     partie->nb_cartes_personnelles = nbCartesParJoueur;
     partie->joueur_courant = 0;
