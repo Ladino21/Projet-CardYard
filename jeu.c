@@ -233,22 +233,26 @@ void jouerPartie(Partie *partie) {
         }
 
         static int joueurQuiADeclencheFin = -1;
+
         if (joueurQuiADeclencheFin == -1) {
-            int visibles = 0;
-            for (int j = 0; j < partie->joueurs[partie->joueur_courant].nb_cartes; ++j) {
-                if (partie->joueurs[partie->joueur_courant].personnelles[j].visible) visibles++;
-            }
-            if (visibles == partie->joueurs[partie->joueur_courant].nb_cartes) {
-                printf("Le joueur %d a retourné toutes ses cartes.\n", partie->joueur_courant + 1);
-                joueurQuiADeclencheFin = partie->joueur_courant;
-            }
+           int visibles = 0;
+           for (int j = 0; j < partie->joueurs[partie->joueur_courant].nb_cartes; ++j) {
+               
+            
+               if (partie->joueurs[partie->joueur_courant].personnelles[j].visible) visibles++;
+           }
+           if (visibles == partie->joueurs[partie->joueur_courant].nb_cartes) {
+              printf("Le joueur %d a retourné toutes ses cartes.\n", partie->joueur_courant + 1);
+              joueurQuiADeclencheFin = partie->joueur_courant;
+           }
+            
         } else {
-            // Le joueur qui a déclenché la fin a déjà joué -> fin après un tour complet
             if (partie->joueur_courant == joueurQuiADeclencheFin) {
-                printf("Tous les joueurs ont rejoué une dernière fois.\n");
-                finPartie = 1;
+               printf("Tous les joueurs ont rejoué une dernière fois.\n");
+               finPartie = 1;
             }
         }
+
 
 
         partie->joueur_courant = (partie->joueur_courant + 1) % partie->nb_joueurs;
