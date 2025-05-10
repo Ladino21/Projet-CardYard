@@ -11,7 +11,8 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
     //verif
     if (partie == NULL || nom_fichier == NULL) return -1;
 
-    FILE *f = fopen(nom_fichier, "wb");
+    FILE *f = fopen(nom_fichier, "wb");//ecriture binaire
+    //verif
     if (f==NULL) return -1;
 
     // Écrire les informations principales de la partie
