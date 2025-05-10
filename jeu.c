@@ -1,3 +1,4 @@
+//toute les fonction sauf jouerpartie() -> Adam
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -64,7 +65,7 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
 
     return partie;
 }
-
+//Nidal 
 void jouerPartie(Partie *partie) {
     //verif des pointeurs
     if (partie == NULL) {
