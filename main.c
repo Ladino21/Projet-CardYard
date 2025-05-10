@@ -27,7 +27,7 @@ int main() {
         }
 
         if (sscanf(ligne, "%d", &choix) != 1) {
-            printf("Entrée invalide. Veuillez entrer un nombre.\n");
+            printf("!! Veuillez entrer un nombre entre 1 et 3 !!\n");
             continue;
         }
 
@@ -42,7 +42,7 @@ int main() {
                 printf("Entrez le nombre de joueurs (2 à 8) : ");
                 if (!fgets(ligne, sizeof(ligne), stdin)) continue;
                 if (sscanf(ligne, "%d", &nb_joueurs) != 1) {
-                    printf("Entrée invalide.\n");
+                    printf("!! Entrée invalide !!\n");
                     nb_joueurs = 0;
                 }
             }
@@ -52,7 +52,7 @@ int main() {
                 printf("Entrez le nombre de cartes personnelles par joueur : ");
                 if (!fgets(ligne, sizeof(ligne), stdin)) continue;
                 if (sscanf(ligne, "%d", &nb_cartes) != 1) {
-                    printf("Entrée invalide.\n");
+                    printf("!! Veuillez entrez un nombre coherent !!\n");
                     nb_cartes = 0;
                 }
             }
