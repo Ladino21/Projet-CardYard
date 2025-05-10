@@ -56,9 +56,9 @@ void afficherClassement(const Partie *partie) {
         }
     }
 
-    printf("\n🏆 Classement final :\n");
+    printf("\n !! Classement final !! :\n");
     for (int i = 0; i < partie->nb_joueurs; ++i) {
-        printf("  %d. Joueur %d - Score : %d\n", i + 1, scores[i].joueur_id, scores[i].score);
+        printf("  %d* Joueur %d - Score : %d\n", i + 1, scores[i].joueur_id, scores[i].score);
     }
 }
 
