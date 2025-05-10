@@ -1,20 +1,47 @@
 # Projet-CardYard
 
-Etapes de compilation sur Linux pour lancer CARD YARD créer par Adam Abd El Ghany et nidal mekeddem :
+Etapes de compilation pour lancer CARD YARD créer par Adam Abd El Ghany et Nidal Mekeddem :
+
+SOUS LINUX: 
 
 Etape 1: Ouvrir un terminal
-- Appuie sur Alt + F2
-- Tape gnome-terminal puis appuie sur Entrée
+- Appuyez sur Alt + F2
+- Tapez gnome-terminal puis appuyez sur Entrée
 
 Etape 2: Cloner le projet depuis GitHub
 - Entrez "git clone https://github.com/Ladino21/Projet-CardYard"
 
 Etape 3: Accéder au dossier du projet
+- Entrez "cd Projet-CardYard"
+
+Etape 4: compiler le jeu
 - Entrez "gcc -o jeu *.c"
 --> un executable est crée appelé jeu
 
-Etape 4: Lancer le jeu
+Etape 5: Lancer le jeu
 - Entrez "./jeu"
+
+SOUS WINDOWS : 
+
+Etape 1: Ouvrir un terminal
+- appuyez sur Windows + R
+- Entrez cmd ou powershell
+
+Etape 2: Cloner le projet depuis GitHub
+- Entrez "git clone https://github.com/Ladino21/Projet-CardYard"
+
+Etape 3: Accéder au dossier du projet
+- Entrez "cd Projet-CardYard"
+
+Etape 4: Compiler le projet
+- Si vous utilisez GCC via MinGW: Entrez "gcc -o jeu *.c"
+- Sinon, vérifie que gcc est bien installé avec: "gcc --version"
+
+Etape 5: Lancer le jeu
+Entrez:
+"./jeu.exe" ou "jeu.exe"
+
+
 
 !! Attention !! 
 
