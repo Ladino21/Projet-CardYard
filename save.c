@@ -50,13 +50,20 @@ Partie* chargerPartie(const char *nom_fichier) {
         fclose(f);
         return NULL;
     }
-
+//verification pour ne pas rentrer n'importe quoi dans fichier 
     if (fread(&partie->nb_joueurs, sizeof(int), 1, f) != 1) {
         fclose(f);
         free(partie);
         return NULL;
     }
-    fread(&partie->nb_cartes_personnelles, sizeof(int), 1, f);
+    //la meme chose qu'avant
+    if (fread(&partie->nb_cartes_personnelles, sizeof(int), 1, f) != 1) {
+        fclose(f);
+        free(partie);
+        return NULL;
+    }
+
+    
     fread(&partie->joueur_courant, sizeof(int), 1, f);
 
     // Lire la pioche
@@ -71,7 +78,14 @@ Partie* chargerPartie(const char *nom_fichier) {
             free(partie);
             return NULL;
         }
-        fread(partie->pioche.cartes, sizeof(Carte), taille_pioche, f);
+        //verif encore du fichier
+        if (fread(partie->pioche.cartes, sizeof(Carte), taille_pioche, f) != taille_pioche) {
+            fclose(f);
+            free(partie->pioche.cartes);
+            free(partie);
+            return NULL;
+        }
+
     } else {
         partie->pioche.cartes = NULL;
     }
