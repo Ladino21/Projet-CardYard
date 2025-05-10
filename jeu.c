@@ -233,24 +233,25 @@ void jouerPartie(Partie *partie) {
         }
 
         static int joueurQuiADeclencheFin = -1;
-        static int compteurToursFin = 0;
+        static int joueursRestants = 0;
 
         if (joueurQuiADeclencheFin == -1) {
-        // Vérifier si le joueur courant a retourné toutes ses cartes
            int visibles = 0;
-           for (int j = 0; j < partie->joueurs[partie->joueur_courant].nb_cartes; ++j) { 
+           for (int j = 0; j < partie->joueurs[partie->joueur_courant].nb_cartes; ++j) {
                if (partie->joueurs[partie->joueur_courant].personnelles[j].visible) visibles++;
            }
            if (visibles == partie->joueurs[partie->joueur_courant].nb_cartes) {
               joueurQuiADeclencheFin = partie->joueur_courant;
-              compteurToursFin = 0;
+              joueursRestants = partie->nb_joueurs - 1;
               printf("Le joueur %d a retourné toutes ses cartes.\n", partie->joueur_courant + 1);
            }
         } else {
-            compteurToursFin++;
-            if (compteurToursFin >= partie->nb_joueurs) {
-               printf("Tous les joueurs ont joué un dernier tour.\n");
-               finPartie = 1;
+            if (partie->joueur_courant != joueurQuiADeclencheFin) {
+               joueursRestants--;
+               if (joueursRestants == 0) {
+                  printf("Tous les autres joueurs ont joué un dernier tour.\n");
+                  finPartie = 1;
+               }
             }
         }
 
