@@ -222,6 +222,7 @@ void jouerPartie(Partie *partie) {
     afficherPartie(partie);
     afficherClassement(partie);
     printf("Merci d’avoir joué !\n");
+    }
 }
 
 void libererPartie(Partie *partie) {
