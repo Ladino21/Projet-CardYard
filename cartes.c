@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 #include "cartes.h"
 
 // Crée une pioche avec des cartes par défaut
@@ -51,24 +52,39 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     Pioche pioche;
     pioche.cartes = NULL;
     pioche.taille = 0;
-    //ouverture du fichier
+
     FILE *f = fopen(nomFichier, "r");
-    //vérification//
-    if (f==NULL) {
-        printf("Impossible d'ouvrir \"%s\". Utilisation d'une pioche par défaut.\n", nomFichier);
-        //si le fichier est incorect
-        return creerPiocheDefaut();
+
+    if (f == NULL) {
+        char rep = ' ';
+        int ch;
+
+        while (1) {
+            printf("Impossible d'ouvrir \"%s\". Voulez-vous utiliser la pioche par défaut ? (o/n) : ", nomFichier);
+            if (scanf(" %c", &rep) == 1) {
+                rep = tolower(rep);
+                while ((ch = getchar()) != '\n' && ch != EOF) {}
+
+                if (rep == 'o') {
+                    return creerPiocheDefaut();
+                } else if (rep == 'n') {
+                    printf("Annulation de la création de la partie.\n");
+                    Pioche vide = { .cartes = NULL, .taille = 0 };
+                    return vide;
+                }
+            }
+            printf("Réponse invalide. Veuillez taper 'o' ou 'n'.\n");
+        }
     }
 
     pioche.cartes = malloc(NB_CARTES_MAX * sizeof(Carte));
-    if (pioche.cartes==NULL) {
+    if (pioche.cartes == NULL) {
         printf("Erreur d'allocation mémoire pour la pioche.\n");
         fclose(f);
         return creerPiocheDefaut();
     }
 
     int valeur = 0, quantite = 0;
-
     while (fscanf(f, "%d:%d", &valeur, &quantite) == 2) {
         if (valeur == 0 && quantite == 0) break; // condition d'arrêt
         if (quantite < 0) quantite = 0;
@@ -84,6 +100,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     melangerPioche(&pioche);
     return pioche;
 }
+
 // Mélange les cartes de la pioche
 void melangerPioche(Pioche *pioche) {
     if (pioche == NULL || pioche->taille <= 1) return;
