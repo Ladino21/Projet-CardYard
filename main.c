@@ -61,24 +61,30 @@ int main() {
             // Demande d’un fichier pour charger la pioche
             //etape de verification afin de pas rentrer n'importe quoi a la o/n ? 
             do {
-                printf("Voulez-vous charger la pioche depuis un fichier ? (o/n) : ");
-                if (scanf(" %c", &reponse_fichier) != 1) {
-                    while ((ch = getchar()) != '\n' && ch != EOF) {}
-                    reponse_fichier = 'x'; // pour forcer la boucle à recommencer
-                } else {
-                    while ((ch = getchar()) != '\n' && ch != EOF) {}
-                    reponse_fichier = tolower(reponse_fichier);
-                }
-                if (reponse_fichier != 'o' && reponse_fichier != 'n') {
-                    printf("Réponse invalide. Veuillez taper 'o' ou 'n'.\n");
-                }
+               char ligne[64];
+               printf("Voulez-vous charger la pioche depuis un fichier ? (o/n) : ");
+               if (fgets(ligne, sizeof(ligne), stdin)) {
+                  if (ligne[0] != '\n') {
+                     reponse_fichier = tolower(ligne[0]);
+                  } else {
+                     reponse_fichier = 'x';  // force à recommencer si juste "Entrée"
+                  }
+               } else {
+                     reponse_fichier = 'x'; // erreur de lecture
+               }
+
+               if (reponse_fichier != 'o' && reponse_fichier != 'n') {
+                  printf("Réponse invalide. Veuillez taper 'o' ou 'n'.\n");
+               }
             } while (reponse_fichier != 'o' && reponse_fichier != 'n');
+
             if (reponse_fichier == 'o') {
-                printf("Nom du fichier de pioche : ");
-                if (fgets(nom_fichier, sizeof(nom_fichier), stdin)) {
-                    nom_fichier[strcspn(nom_fichier, "\n")] = '\0';
-                }
-            }   
+               printf("Nom du fichier de pioche : ");
+               if (fgets(nom_fichier, sizeof(nom_fichier), stdin)) {
+                  nom_fichier[strcspn(nom_fichier, "\n")] = '\0';
+               }
+            }        
+  
 
             Partie *partie = creerPartie(nb_joueurs, nb_cartes,
                 (reponse_fichier == 'o' || reponse_fichier == 'O') ? nom_fichier : NULL);
