@@ -157,7 +157,7 @@ Carte piocherCarte(Pioche *pioche) {
 void libererPioche(Pioche *pioche) {
     if (pioche == NULL) {
         printf("pioche invalide (NULL)\n");
-        return;
+        exit(95);
     }
     if (pioche && pioche->cartes) {
         free(pioche->cartes);
