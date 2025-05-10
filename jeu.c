@@ -107,19 +107,32 @@ void jouerPartie(Partie *partie) {
             }
             if (choixLettre == 'S') {
                 if (sauvegarderPartie("sauvegarde.dat", partie) == 0) {
-                    printf("Sauvegarde réussie.\n");
+                   printf("Sauvegarde réussie.\n");
                 } else {
-                    printf("Échec de la sauvegarde.\n");
+                    
+                   printf("Échec de la sauvegarde.\n");
                 }
-                printf("Continuer ? (o/n) : ");
-                char reponse;
-                if (scanf(" %c", &reponse) == 1 && tolower(reponse) != 'o') {
-                    printf("Partie sauvegardée et arrêtée.\n");
-                    return;
+
+                char reponse = ' ';
+                char ligne[64];
+                while (1) {
+                   printf("Continuer ? (o/n) : ");
+                   if (fgets(ligne, sizeof(ligne), stdin)) {
+                      if (sscanf(ligne, " %c", &reponse) == 1) {
+                         reponse = tolower(reponse);
+                         if (reponse == 'o') break;
+                         if (reponse == 'n') {
+                            printf("Partie sauvegardée et arrêtée.\n");
+                            return;
+                         }
+                      }
+                   }
+                   printf("Réponse invalide. Tapez 'o' ou 'n'.\n");
                 }
-                while (getchar() != '\n');
+
                 continue;
             }
+
         }
 
         Carte cartePiochee;
