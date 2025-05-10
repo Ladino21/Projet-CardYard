@@ -63,7 +63,12 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
 }
 
 void libererJoueurs(Joueur *joueurs, int nb_joueurs) {
-    if (joueurs == NULL) return;
+    if (joueurs == NULL){
+        //verif des pointeurs
+        printf("joueurs invalide (NULL)\n");
+        exit(10);
+    }
+
 
     for (int i = 0; i < nb_joueurs; ++i) {
         if (joueurs[i].personnelles) {
