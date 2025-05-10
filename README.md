@@ -1,6 +1,6 @@
 # Projet-CardYard
 
-Etapes de compilation pour lancer ce jeu incroyable créer par Adam Abd El Ghany et nidal mekeddem :
+Etapes de compilation pour lancer CARD YARD créer par Adam Abd El Ghany et nidal mekeddem :
 
 Etape 1: Ouvrir un terminal
 - Appuie sur Alt + F2
