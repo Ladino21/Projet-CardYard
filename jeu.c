@@ -31,10 +31,11 @@ int demanderEntier(const char *message, int min, int max) {
 }
 
 Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPioche) {
-    //verif des pointeurs
-    if (fichierPioche == NULL) {
-        printf("message invalide (NULL)\n");
-        exit(6);
+    //verif 
+    if (fichierPioche != NULL && fichierPioche[0] != '\0') {
+       partie->pioche = creerPiocheDepuisFichier(fichierPioche);
+    } else {
+       partie->pioche = creerPiocheDefaut();
     }
     
     Partie *partie = malloc(sizeof(Partie));
