@@ -76,7 +76,7 @@ void jouerPartie(Partie *partie) {
     char entree[64];
     int finPartie = 0;
 
-    while (finPartie == NULL) {
+    while (!finPartie) {
         printf("\n===== Tour du joueur %d =====\n", partie->joueur_courant + 1);
         afficherPartie(partie);
 
