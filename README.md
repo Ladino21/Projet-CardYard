@@ -1,7 +1,8 @@
 # Projet-CardYard
 
 étapes de compilation pour lancer ce jeu incroyable créer par Adam Abd El Ghany et nidal mekeddem :
-- ouvrir le terminale grace à la commande ...
+- ouvrir le terminale grace à la commande Alt + F2
+- Rentrez dans le terminale "gnome-terminal"
 - cloner l'adresse de notre lien github afin de créer un fichier cardyard
 - dans le terminale il faut acceder au fichier grace a la commande "cd Projet Card Yard"
 - ensuite compiler jeu grace a la commande "gcc-o" ou bien 
