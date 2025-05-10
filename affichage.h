@@ -10,10 +10,9 @@ const char* couleurCarte(int valeur);
 
 // Affichages de cartes
 void afficherCarteStylisee(const Carte *carte);
-void afficherLigneCartes(const Carte *cartes, int nbCartes);
+afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes,int indice_debut);
 void afficherEspacesCentrage(int nbCartes);
 void afficherClassement(const Partie *partie);
-
 // Affichages de zones
 void afficherPiocheCentrale(const Pioche *pioche);
 void afficherDefausse(const Joueur *joueur);
