@@ -8,6 +8,7 @@
 #include "save.h"
 #include "affichage.h"
 
+
 // Déclarations anticipées
 void afficherPartie(const Partie *partie);
 void afficherJoueur(const Joueur *joueur, int indice);
@@ -36,8 +37,9 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
     partie->pioche = (fichierPioche && strlen(fichierPioche) > 0)
         ? creerPiocheDepuisFichier(fichierPioche)
         : creerPiocheDefaut();
+    printf("Nombre de cartes dans la pioche : %d\n", partie->pioche.taille);
 
-    if (nbJoueurs * nbCartesParJoueur > partie->=pioche.taille) {
+    if (nbJoueurs * nbCartesParJoueur >= partie->pioche.taille) {
         printf("Pioche insuffisante.\n");
         libererPioche(&partie->pioche);
         free(partie);
@@ -220,4 +222,3 @@ void libererPartie(Partie *partie) {
     libererPioche(&partie->pioche);
     free(partie);
 }
-
