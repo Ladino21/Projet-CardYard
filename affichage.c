@@ -62,7 +62,7 @@ void afficherClassement(const Partie *partie) {
     }
 }
 
-void afficherLigneCartes(const Carte *cartes, int nbCartes) {
+void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice_debut) {
     if (nbCartes <= 0) return;
 
     const int max_par_ligne = 10;
@@ -110,11 +110,11 @@ void afficherLigneCartes(const Carte *cartes, int nbCartes) {
 
         // Ligne des indices
         for (int i = debut; i < fin; ++i) {
-            if (i < 10){
-                printf("   [%d]    ", i); // 9 caractères
-            }
-            else{
-                printf("  [%d]    ", i);  // aussi 9 caractère
+            int index = i + indice_debut;
+            if (index < 10){
+                printf("   [%d]    ", index);
+            } else {
+                printf("  [%d]    ", index);
             }
         }
         printf("\n\n");
@@ -195,7 +195,12 @@ void afficherDefausse(const Joueur *joueur) {
 
         // Indices centrés
         for (int i = debut; i < fin; ++i) {
-            printf("   [%d]    ", i); // exactement 9 caractères pour matcher les 9 de la carte
+            if (i < 10){
+                printf("   [%d]    ", i); // 9 caractères
+            }
+            else{
+                printf("  [%d]    ", i);  // aussi 9 caractère
+            }
         }
         printf("\n\n");
     }
@@ -209,7 +214,7 @@ void afficherPartie(const Partie *partie) {
 
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         printf("Joueur %d :\n", i + 1);
-        afficherLigneCartes(partie->joueurs[i].personnelles, partie->joueurs[i].nb_cartes);
+        afficherLigneCartesAvecIndice(partie->joueurs[i].personnelles, partie->joueurs[i].nb_cartes,0);
         afficherDefausse(&partie->joueurs[i]);
         printf("\n");
     }
