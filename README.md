@@ -16,7 +16,9 @@ Etape 3: Accéder au dossier du projet
 Etape 4: Lancer le jeu
 - Entrez "./jeu"
 
-!! Attention !! Si vous souhaiter modifier le fichier "pioche.txt" afin de modifier le nombre de cartes pour chaque valeur pensez bien à laisser la derniere ligne "0:0" 
+!! Attention !! 
+
+Si vous souhaiter modifier le fichier "pioche.txt" afin de modifier le nombre de cartes pour chaque valeur pensez bien à laisser la derniere ligne "0:0" 
 
 Règles du jeu – Card Yard
 
