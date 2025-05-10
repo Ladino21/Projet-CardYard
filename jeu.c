@@ -39,6 +39,7 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
 
     if (nbJoueurs * nbCartesParJoueur > partie->=pioche.taille) {
         printf("Pioche insuffisante.\n");
+        libererPioche(&partie->pioche);
         free(partie);
         return NULL;
     }
