@@ -126,7 +126,13 @@ Partie* chargerPartie(const char *nom_fichier) {
     // Lire les données des joueurs
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         int nb_cartes;
-        fread(&nb_cartes, sizeof(int), 1, f);
+        //verif encore
+        if (fread(&nb_cartes, sizeof(int), 1, f) != 1) {
+            fclose(f);
+            free(partie);
+            return NULL;
+        }
+        
         partie->joueurs[i].nb_cartes = nb_cartes;
 
         partie->joueurs[i].personnelles = malloc(nb_cartes * sizeof(Carte));
