@@ -64,7 +64,12 @@ Partie* chargerPartie(const char *nom_fichier) {
     }
 
     
-    fread(&partie->joueur_courant, sizeof(int), 1, f);
+    if (fread(&partie->joueur_courant, sizeof(int), 1, f) != 1) {
+        fclose(f);
+        free(partie);
+        return NULL;
+    }
+
 
     // Lire la pioche
     int taille_pioche = 0;
