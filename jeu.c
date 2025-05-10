@@ -139,8 +139,9 @@ void jouerPartie(Partie *partie) {
             int nb = partie->joueurs[cible].nb_defausse;
             for (int i = 0; i < nb; i += 10) {
                 int count = (nb - i > 10) ? 10 : (nb - i);
-                afficherLigneCartes(&partie->joueurs[cible].defausse[i], count);
+                afficherLigneCartesAvecIndice(&partie->joueurs[cible].defausse[i], count, i);
             }
+
 
             int indexDefausse = demanderEntier("Choisissez l'index de la carte que vous desirez: ", 0, nb - 1);
             cartePiochee = partie->joueurs[cible].defausse[indexDefausse];
