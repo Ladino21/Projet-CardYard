@@ -49,6 +49,11 @@ Pioche creerPiocheDefaut() {
 
 // Crée une pioche à partir d’un fichier
 Pioche creerPiocheDepuisFichier(const char *nomFichier) {
+    //verif sur les pointeurs
+    if (nomFichier == NULL) {
+        printf("nomfichier invalide (NULL)\n");
+        return;
+    }
     Pioche pioche;
     pioche.cartes = NULL;
     pioche.taille = 0;
@@ -103,6 +108,11 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
 
 // Mélange les cartes de la pioche
 void melangerPioche(Pioche *pioche) {
+    //verif sur les pointeurs
+    if (pioche == NULL) {
+        printf("pioche invalide (NULL)\n");
+        return;
+    }
     if (pioche == NULL || pioche->taille <= 1) return;
     static int initialise = 0;
     if (!initialise) {
@@ -120,6 +130,11 @@ void melangerPioche(Pioche *pioche) {
 
 // Tire une carte du dessus de la pioche
 Carte piocherCarte(Pioche *pioche) {
+    if (pioche == NULL) {
+        printf("pioche invalide (NULL)\n");
+        return;
+    }
+    
     Carte carteInvalide;
     carteInvalide.valeur = -999;
     carteInvalide.visible = false;
@@ -139,6 +154,10 @@ Carte piocherCarte(Pioche *pioche) {
 
 // Libère la mémoire allouée à la pioche
 void libererPioche(Pioche *pioche) {
+    if (pioche == NULL) {
+        printf("pioche invalide (NULL)\n");
+        return;
+    }
     if (pioche && pioche->cartes) {
         free(pioche->cartes);
         pioche->cartes = NULL;
