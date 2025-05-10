@@ -140,12 +140,14 @@ Partie* chargerPartie(const char *nom_fichier) {
 
         partie->joueurs[i].personnelles = malloc(nb_cartes * sizeof(Carte));
         if (partie->joueurs[i].personnelles==NULL) {
+            //si ya une erreur on libere tout
             for (int k = 0; k < i; ++k) {
                 free(partie->joueurs[k].personnelles);
                 free(partie->joueurs[k].defausse);
             }
             free(partie->joueurs);
             if (partie->pioche.cartes) free(partie->pioche.cartes);
+            //si ya une erreur on libere tout
             free(partie);
             fclose(f);
             return NULL;
@@ -159,6 +161,7 @@ Partie* chargerPartie(const char *nom_fichier) {
 
         partie->joueurs[i].defausse = malloc(capacite_totale * sizeof(Carte));
         if (partie->joueurs[i].defausse==NULL) {
+            //si ya une erreur on libere tout
             free(partie->joueurs[i].personnelles);
             for (int k = 0; k < i; ++k) {
                 free(partie->joueurs[k].personnelles);
