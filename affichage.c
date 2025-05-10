@@ -63,6 +63,12 @@ void afficherClassement(const Partie *partie) {
 }
 
 void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice_debut) {
+    //verif pointeur
+    if (cartes == NULL) {
+        printf("Carte invalide (NULL)\n");
+        return;
+    }
+    
     if (nbCartes <= 0) return;
 
     const int max_par_ligne = 10;
@@ -122,6 +128,11 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
 }
 
 void afficherCarteStylisee(const Carte *carte) {
+    //verif
+    if (carte == NULL) {
+        printf("Carte invalide (NULL)\n");
+        return;
+    }
     const char *col = carte->visible ? couleurCarte(carte->valeur) : "\033[100m";
 
     printf("%s+-------+\033[0m\n", col);
@@ -140,6 +151,11 @@ void afficherCarteStylisee(const Carte *carte) {
 }
 
 void afficherPiocheCentrale(const Pioche *pioche) {
+    //verif
+    if (pioche == NULL) {
+        printf("pioche invalide (NULL)\n");
+        return;
+    }
     printf("\nPioche centrale :\n");
     if (pioche->taille == 0) {
         printf("        (vide)\n");
@@ -151,6 +167,12 @@ void afficherPiocheCentrale(const Pioche *pioche) {
 }
 
 void afficherDefausse(const Joueur *joueur) {
+    //verif sur les pointeurs
+    if (joueur == NULL) {
+        printf("joueur invalide (NULL)\n");
+        return;
+    }
+    
     printf("Défausse :\n");
 
     if (joueur->nb_defausse == 0) {
