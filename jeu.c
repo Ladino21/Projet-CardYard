@@ -127,7 +127,7 @@ void jouerPartie(Partie *partie) {
                     printf("Réponse invalide. Tapez 'o' ou 'n'.\n");
                 }
                 continue;
-        }
+            }
 
         Carte cartePiochee;
         int joueurSource = -1;
