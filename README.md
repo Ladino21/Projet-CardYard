@@ -28,31 +28,31 @@ Card Yard est un jeu de cartes à 2 à 8 joueurs dont le but du jeu est d'avoir 
 
 Mise en place:
 
-    - Chaque joueur reçoit un certain nombre de cartes personnelles (face cachée).
+- Chaque joueur reçoit un certain nombre de cartes personnelles (face cachée).
 
-    - Une pioche est créée (par défaut ou depuis un fichier).
+- Une pioche est créée (par défaut ou depuis un fichier).
 
-    - Chaque joueur a aussi une défausse, vide au départ.
+- Chaque joueur a aussi une défausse, vide au départ.
 
 Déroulement d’un tour:
 
 À chaque tour, un joueur peut :
 
-    Piocher une carte (dans la pioche ou la défausse)
+1) Piocher une carte (dans la pioche ou la défausse)
 
-    Choisir de :
+2) Choisir de :
 
-        - Remplacer une de ses cartes personnelles (visible ou non)
+- Remplacer une de ses cartes personnelles (visible ou non)
 
-        ou
+ou
 
-        - Défausser la carte sans rien changer
+- Défausser la carte sans rien changer
 
 ! Une fois une carte personnelle remplacée, elle devient visible ! et ! vous pouvez sauvegarder à tout moment !
 
 Fin de partie :
 
-Affichage du classement des joueurs 
+! Affichage du classement des joueurs ! 
 
 
 
