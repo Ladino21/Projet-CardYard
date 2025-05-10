@@ -1,14 +1,18 @@
 # Projet-CardYard
 
 Etapes de compilation pour lancer ce jeu incroyable créer par Adam Abd El Ghany et nidal mekeddem :
+
 Etape 1: Ouvrir un terminal
 - Appuie sur Alt + F2
 - Tape gnome-terminal puis appuie sur Entrée
+
 Etape 2: Cloner le projet depuis GitHub
 - Entrez "git clone https://github.com/Ladino21/Projet-CardYard"
+
 Etape 3: Accéder au dossier du projet
 - Entrez "gcc -o jeu *.c"
 --> un executable est crée appelé jeu
+
 Etape 4: Lancer le jeu
 - Entrez "./jeu"
 
