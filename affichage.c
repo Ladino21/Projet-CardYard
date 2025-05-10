@@ -67,7 +67,7 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
     //verif pointeur
     if (cartes == NULL) {
         printf("Carte invalide (NULL)\n");
-        return;
+        exit(21);
     }
     
     if (nbCartes <= 0) return;
@@ -132,7 +132,7 @@ void afficherCarteStylisee(const Carte *carte) {
     //verif
     if (carte == NULL) {
         printf("Carte invalide (NULL)\n");
-        return;
+        exit(31);
     }
     const char *col = carte->visible ? couleurCarte(carte->valeur) : "\033[100m";
 
@@ -155,7 +155,7 @@ void afficherPiocheCentrale(const Pioche *pioche) {
     //verif
     if (pioche == NULL) {
         printf("pioche invalide (NULL)\n");
-        return;
+        exit(64);
     }
     printf("\nPioche centrale :\n");
     if (pioche->taille == 0) {
@@ -171,7 +171,7 @@ void afficherDefausse(const Joueur *joueur) {
     //verif sur les pointeurs
     if (joueur == NULL) {
         printf("joueur invalide (NULL)\n");
-        return;
+        exit(78);
     }
     
     printf("Défausse :\n");
