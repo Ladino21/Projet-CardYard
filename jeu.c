@@ -12,6 +12,12 @@
 
 
 int demanderEntier(const char *message, int min, int max) {
+    //verif des pointeurs
+    if (message == NULL) {
+        printf("message invalide (NULL)\n");
+        exit(5);
+    }
+    
     int valeur;
     char ligne[64];
     while (1) {
@@ -24,6 +30,12 @@ int demanderEntier(const char *message, int min, int max) {
 }
 
 Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPioche) {
+    //verif des pointeurs
+    if (fichierPioche == NULL) {
+        printf("message invalide (NULL)\n");
+        exit(6);
+    }
+    
     Partie *partie = malloc(sizeof(Partie));
     if (!partie) return NULL;
 
@@ -54,11 +66,17 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
 }
 
 void jouerPartie(Partie *partie) {
-    if (!partie) return;
+    //verif des pointeurs
+    if (partie == NULL) {
+        printf("partie invalide (NULL)\n");
+        exit(7);
+    }
+    
+    if (partie == NULL) return;
     char entree[64];
     int finPartie = 0;
 
-    while (!finPartie) {
+    while (finPartie == NULL) {
         printf("\n===== Tour du joueur %d =====\n", partie->joueur_courant + 1);
         afficherPartie(partie);
 
@@ -239,7 +257,11 @@ void jouerPartie(Partie *partie) {
 }
 
 void libererPartie(Partie *partie) {
-    if (!partie) return;
+    if (partie == NULL){
+        //verif des pointeurs
+        printf("partie invalide (NULL)\n");
+        exit(8);
+    }
     libererJoueurs(partie->joueurs, partie->nb_joueurs);
     libererPioche(&partie->pioche);
     free(partie);
