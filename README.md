@@ -31,6 +31,8 @@ Déroulement d’un tour
 
         Remplacer une de ses cartes personnelles (visible ou non)
 
+        ou
+
         Défausser la carte sans rien changer
 
     Une fois une carte personnelle remplacée, elle devient visible.
