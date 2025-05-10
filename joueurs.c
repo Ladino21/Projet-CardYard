@@ -3,6 +3,12 @@
 #include "joueurs.h"
 
 Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, int nb_cartes_total) {
+    //verif des pointeurs
+    if (pioche == NULL) {
+        printf("pioche invalide (NULL)\n");
+        exit(9);
+    }
+
     if (nb_joueurs < 2 || nb_joueurs > NB_JOUEURS_MAX) {
         fprintf(stderr, "Nombre de joueurs invalide : %d. Doit être entre 2 et %d.\n", nb_joueurs, NB_JOUEURS_MAX);
         return NULL;
@@ -57,7 +63,7 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
 }
 
 void libererJoueurs(Joueur *joueurs, int nb_joueurs) {
-    if (joueurs==NULL) return;
+    if (joueurs == NULL) return;
 
     for (int i = 0; i < nb_joueurs; ++i) {
         if (joueurs[i].personnelles) {
