@@ -45,10 +45,10 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
 
 Partie* chargerPartie(const char *nom_fichier) {
     if (nom_fichier==NULL) return NULL;
-
+     //OUVERTURE du fichier
     FILE *f = fopen(nom_fichier, "rb");
     if (f==NULL) return NULL;
-
+    //alloc avant de d'utiliser la fonction fread
     Partie *partie = malloc(sizeof(Partie));
     if (partie==NULL) {
         fclose(f);
@@ -66,8 +66,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         free(partie);
         return NULL;
     }
-
-    
+    //la meme chose qu'avant
     if (fread(&partie->joueur_courant, sizeof(int), 1, f) != 1) {
         fclose(f);
         free(partie);
@@ -111,13 +110,13 @@ Partie* chargerPartie(const char *nom_fichier) {
     // Calculer les tailles initiales pour les piles de défausse
     int total_personnelles = partie->nb_joueurs * partie->nb_cartes_personnelles;
     int total_defausse = 0;
-
-    fpos_t pos;
+    // permet de bien allouer la mémoire.
+    fpos_t pos;//utilisé pour sauvegarder la position actuelle du curseur de lecture/écriture dans un fichier, de manière portable.
     fgetpos(f, &pos);
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         int nb_personnelles, nb_defausse;
         fread(&nb_personnelles, sizeof(int), 1, f);
-        fseek(f, nb_personnelles * sizeof(Carte), SEEK_CUR);
+        fseek(f, nb_personnelles * sizeof(Carte), SEEK_CUR);// permet le deplacement du curseur lors de la lecture de fichier
         fread(&nb_defausse, sizeof(int), 1, f);
         total_defausse += nb_defausse;
         fseek(f, nb_defausse * sizeof(Carte), SEEK_CUR);
