@@ -10,10 +10,7 @@
 
 
 
-// Déclarations anticipées
-void afficherPartie(const Partie *partie);
-void afficherJoueur(const Joueur *joueur, int indice);
-void afficherCarte(const Carte *carte);
+
 
 int demanderEntier(const char *message, int min, int max) {
     int valeur;
