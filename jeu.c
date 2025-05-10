@@ -96,15 +96,24 @@ void jouerPartie(Partie *partie) {
         if (strlen(entree) == 1) {
             char choixLettre = toupper(entree[0]);
             if (choixLettre == 'Q') {
-                printf("Quitter sans sauvegarder ? (o/n) : ");
-                char confirmation;
-                if (scanf(" %c", &confirmation) == 1 && tolower(confirmation) == 'o') {
-                    printf("Partie terminée.\n");
-                    return;
-                }
-                while (getchar() != '\n');
-                continue;
+               char confirmation;
+               while (1) {
+                   printf("Quitter sans sauvegarder ? (o/n) : ");
+                   if (scanf(" %c", &confirmation) == 1) {
+                       confirmation = tolower(confirmation);
+                       while (getchar() != '\n'); // vider le buffer
+                       if (confirmation == 'o') {
+                          printf("Partie terminée.\n");
+                          return;
+                       } else if (confirmation == 'n') {
+                          break;  // on sort de la confirmation et retourne dans le tour
+                       }
+                   }
+                   printf("Réponse invalide. Veuillez taper 'o' ou 'n'.\n");
+               }
+               continue;
             }
+
             
             if (choixLettre == 'S') {
                 if (sauvegarderPartie("sauvegarde.dat", partie) == 0) {
