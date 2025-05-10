@@ -1,4 +1,4 @@
-//adam
+//Adam
 
 #include <stdio.h>
 #include <stdlib.h>
