@@ -11,7 +11,6 @@
 
 
 
-
 int demanderEntier(const char *message, int min, int max) {
     int valeur;
     char ligne[64];
