@@ -105,6 +105,7 @@ void jouerPartie(Partie *partie) {
                 while (getchar() != '\n');
                 continue;
             }
+            
             if (choixLettre == 'S') {
                 if (sauvegarderPartie("sauvegarde.dat", partie) == 0) {
                    printf("Sauvegarde réussie.\n");
@@ -112,7 +113,8 @@ void jouerPartie(Partie *partie) {
                     
                    printf("Échec de la sauvegarde.\n");
                 }
-
+                //verif pour ne pas rentrer n'importe quoi
+                
                 char reponse = ' ';
                 char ligne[64];
                 while (1) {
