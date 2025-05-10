@@ -139,7 +139,7 @@ void jouerPartie(Partie *partie) {
                 afficherLigneCartes(&partie->joueurs[cible].defausse[i], count);
             }
 
-            int indexDefausse = demanderEntier("Choisissez une carte : ", 0, nb - 1);
+            int indexDefausse = demanderEntier("Choisissez l'index de la carte que vous desirez prendre : ", 0, nb - 1);
             cartePiochee = partie->joueurs[cible].defausse[indexDefausse];
             for (int i = indexDefausse; i < nb - 1; i++) {
                 partie->joueurs[cible].defausse[i] = partie->joueurs[cible].defausse[i + 1];
