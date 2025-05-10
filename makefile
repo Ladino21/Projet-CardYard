@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -std=c99 -g
 EXEC = skyjo.exe
 
 SRC = main.c affichage.c jeu.c save.c cartes.c joueurs.c
