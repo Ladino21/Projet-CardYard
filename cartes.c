@@ -52,7 +52,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     //verif sur les pointeurs
     if (nomFichier == NULL) {
         printf("nomfichier invalide (NULL)\n");
-        return;
+        exit(1);
     }
     Pioche pioche;
     pioche.cartes = NULL;
@@ -132,7 +132,7 @@ void melangerPioche(Pioche *pioche) {
 Carte piocherCarte(Pioche *pioche) {
     if (pioche == NULL) {
         printf("pioche invalide (NULL)\n");
-        return;
+        exit(2);
     }
     
     Carte carteInvalide;
