@@ -7,10 +7,10 @@
 
 // Structure représentant un joueur
 typedef struct {
-    Carte *personnelles;     // cartes personnelles (main/tapis du joueur)
-    int nb_cartes;           // nombre de cartes personnelles
-    Carte *defausse;         // pile de défausse du joueur
-    int nb_defausse;         // nombre de cartes dans la défausse (le sommet est defausse[nb_defausse - 1])
+    Carte *personnelles;     
+    int nb_cartes;           
+    Carte *defausse;         
+    int nb_defausse;         
 } Joueur;
 
 // Crée les joueurs et leur distribue les cartes depuis la pioche
