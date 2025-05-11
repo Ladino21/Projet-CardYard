@@ -55,7 +55,6 @@ Partie* chargerPartie(const char *nom_fichier) {
     }    
     
     Partie *partie = malloc(sizeof(Partie));
-    //enchainement de verif
     if (partie==NULL) {
         fclose(f);
         return NULL;
@@ -78,7 +77,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         free(partie);
         return NULL;
     }
-    
+    //enchainement des verif
 
     // Lire la pioche
     int taille_pioche = 0;
@@ -154,16 +153,15 @@ Partie* chargerPartie(const char *nom_fichier) {
                 free(partie->joueurs[k].defausse);
             }
             free(partie->joueurs);
-            
             if (partie->pioche.cartes) {
                free(partie->pioche.cartes);
             }
-
             
             free(partie);
             fclose(f);
             return NULL;
         }
+        // Lecture des données du joueur i (main + défausse) avec vérification mémoire
         if (nb_cartes > 0) {
             fread(partie->joueurs[i].personnelles, sizeof(Carte), nb_cartes, f);
         }
