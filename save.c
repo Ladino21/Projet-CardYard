@@ -9,11 +9,13 @@
 
 int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
     
-    if (partie == NULL || nom_fichier == NULL) return -1;
-
+    if (partie == NULL || nom_fichier == NULL){
+        return -1;
+    }    
     FILE *f = fopen(nom_fichier, "wb");//ecriture binaire
-   
-    if (f==NULL) return -1;
+    if (f==NULL){
+        return -1;
+    }    
 
     // Écrire les informations principales de la partie
     fwrite(&partie->nb_joueurs, sizeof(int), 1, f);
@@ -44,10 +46,13 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
 }
 
 Partie* chargerPartie(const char *nom_fichier) {
-    if (nom_fichier==NULL) return NULL;
-     
+    if (nom_fichier==NULL){
+        return NULL;
+    }
     FILE *f = fopen(nom_fichier, "rb");
-    if (f==NULL) return NULL;
+    if (f==NULL) {
+        return NULL;
+    }    
     
     Partie *partie = malloc(sizeof(Partie));
     if (partie==NULL) {
@@ -124,7 +129,9 @@ Partie* chargerPartie(const char *nom_fichier) {
     fsetpos(f, &pos);//permet de revenir la ou on etait 
 
     int capacite_totale = taille_pioche + total_personnelles + total_defausse;
-    if (capacite_totale < 1) capacite_totale = 1;
+    if (capacite_totale < 1){
+        capacite_totale = 1;
+    }    
 
     // Lire les données des joueurs
     for (int i = 0; i < partie->nb_joueurs; ++i) {
@@ -172,7 +179,9 @@ Partie* chargerPartie(const char *nom_fichier) {
                 free(partie->joueurs[k].defausse);
             }
             free(partie->joueurs);
-            if (partie->pioche.cartes) free(partie->pioche.cartes);
+            if (partie->pioche.cartes) {
+                free(partie->pioche.cartes);
+            }    
             free(partie);
             fclose(f);
             return NULL;
