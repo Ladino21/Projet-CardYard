@@ -4,7 +4,7 @@ Notre équipe est composée de trois membres :
 
 Nidal : en charge des fichiers main.c, jeu.c, affichage.c
 
-Adam : en charge de cartes.c, save.c, joueurs.c
+Adam : en charge de cartes.c, save.c, joueurs.c et quelques fonction pas très longue dans jeu.c
 
 Younes : a contribué à l’amélioration de l’affichage du classement des scores dans affichage.c
 
