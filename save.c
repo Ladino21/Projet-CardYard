@@ -136,9 +136,9 @@ Partie* chargerPartie(const char *nom_fichier) {
             return NULL;
         }
         
-        partie->joueurs[i].nb_cartes = nb_cartes;
-
+        partie->joueurs[i].nb_cartes = nb_cartes;//save
         partie->joueurs[i].personnelles = malloc(nb_cartes * sizeof(Carte));
+        
         if (partie->joueurs[i].personnelles==NULL) {
             
             for (int k = 0; k < i; ++k) {
