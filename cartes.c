@@ -18,7 +18,7 @@ Pioche creerPiocheDefaut() {
     for (int i = 0; i < totalValeurs; ++i) {
         totalCartes += quantitesDefaut[i];
     }
-    //vérification du nombre de cartes dans la pioche//
+    
     if (totalCartes > NB_CARTES_MAX) {
         fprintf(stderr, "Trop de cartes dans la pioche par défaut (total %d dépasse NB_CARTES_MAX)\n", totalCartes);
         totalCartes = NB_CARTES_MAX;
