@@ -143,7 +143,7 @@ Carte piocherCarte(Pioche *pioche) {
     carteInvalide.visible = false;
 
     if (pioche == NULL || pioche->taille <= 0) {
-        fprintf(stderr, "❌ Pioche vide !\n");
+        printf("❌ Pioche vide !\n");
         return carteInvalide;
     }
     //on pioche la dertniere carte du tableau afin puis on reduit la taille du tableaude 1 pour que la carte n''apparait plus dans la pioche 
