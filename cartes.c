@@ -121,7 +121,7 @@ void melangerPioche(Pioche *pioche) {
         srand((unsigned int) time(NULL));
         initialise = 1;
     }
-
+    //Melange de Fisher-Yates tres connu pour   pour mélanger un tableau de manière parfaitement équitable. 
     for (int i = pioche->taille - 1; i > 0; --i) {
         int j = rand() % (i + 1);
         Carte temp = pioche->cartes[i];
@@ -145,7 +145,7 @@ Carte piocherCarte(Pioche *pioche) {
         fprintf(stderr, "❌ Pioche vide !\n");
         return carteInvalide;
     }
-
+    //on pioche la dertniere carte du tableau afin puis on reduit la taille du tableaude 1 pour que la carte n''apparait plus dans la pioche 
     pioche->taille--;
     Carte carte = pioche->cartes[pioche->taille];
     carte.visible = false;
