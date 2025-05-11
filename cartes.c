@@ -63,14 +63,14 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     //verif du fichier pour ne pas rentrer n'imoporte quoi
     if (f == NULL) {
         char rep = ' ';
-        int ch;
+        int buffer;
         //tant que l'utilisateur rentre n'importe quoi on ne continue pas 
         while (1) {
             printf("Impossible d'ouvrir \"%s\". Voulez-vous utiliser la pioche par défaut ? (o/n) : ", nomFichier);
             if (scanf(" %c", &rep) == 1) {
                 rep = tolower(rep);
                 //prend en compte le 1er caractere si l'utilisateur fait une faute de frappe et supprime dans la memoire le reste 
-                while ((ch = getchar()) != '\n' && ch != EOF) {}
+                while ((buffer = getchar()) != '\n' && buffer != EOF) {}
 
                 if (rep == 'o') {
                     return creerPiocheDefaut();
