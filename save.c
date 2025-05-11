@@ -8,11 +8,11 @@
 #include "joueurs.h"
 
 int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
-    //verif
+    
     if (partie == NULL || nom_fichier == NULL) return -1;
 
     FILE *f = fopen(nom_fichier, "wb");//ecriture binaire
-    //verif
+   
     if (f==NULL) return -1;
 
     // Écrire les informations principales de la partie
@@ -45,28 +45,28 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
 
 Partie* chargerPartie(const char *nom_fichier) {
     if (nom_fichier==NULL) return NULL;
-     //OUVERTURE du fichier
+     
     FILE *f = fopen(nom_fichier, "rb");
     if (f==NULL) return NULL;
-    //alloc avant de d'utiliser la fonction fread
+    
     Partie *partie = malloc(sizeof(Partie));
     if (partie==NULL) {
         fclose(f);
         return NULL;
     }
-//verification pour ne pas rentrer n'importe quoi dans fichier 
+
     if (fread(&partie->nb_joueurs, sizeof(int), 1, f) != 1) {
         fclose(f);
         free(partie);
         return NULL;
     }
-    //la meme chose qu'avant
+    
     if (fread(&partie->nb_cartes_personnelles, sizeof(int), 1, f) != 1) {
         fclose(f);
         free(partie);
         return NULL;
     }
-    //la meme chose qu'avant
+    
     if (fread(&partie->joueur_courant, sizeof(int), 1, f) != 1) {
         fclose(f);
         free(partie);
@@ -86,7 +86,7 @@ Partie* chargerPartie(const char *nom_fichier) {
             free(partie);
             return NULL;
         }
-        //verif encore du fichier
+        
         if (fread(partie->pioche.cartes, sizeof(Carte), taille_pioche, f) != taille_pioche) {
             fclose(f);
             free(partie->pioche.cartes);
@@ -129,7 +129,7 @@ Partie* chargerPartie(const char *nom_fichier) {
     // Lire les données des joueurs
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         int nb_cartes;
-        //verif encore
+        
         if (fread(&nb_cartes, sizeof(int), 1, f) != 1) {
             fclose(f);
             free(partie);
@@ -140,14 +140,14 @@ Partie* chargerPartie(const char *nom_fichier) {
 
         partie->joueurs[i].personnelles = malloc(nb_cartes * sizeof(Carte));
         if (partie->joueurs[i].personnelles==NULL) {
-            //si ya une erreur on libere tout
+            
             for (int k = 0; k < i; ++k) {
                 free(partie->joueurs[k].personnelles);
                 free(partie->joueurs[k].defausse);
             }
             free(partie->joueurs);
             if (partie->pioche.cartes) free(partie->pioche.cartes);
-            //si ya une erreur on libere tout
+            
             free(partie);
             fclose(f);
             return NULL;
@@ -161,7 +161,7 @@ Partie* chargerPartie(const char *nom_fichier) {
 
         partie->joueurs[i].defausse = malloc(capacite_totale * sizeof(Carte));
         if (partie->joueurs[i].defausse==NULL) {
-            //si ya une erreur on libere tout
+            
             free(partie->joueurs[i].personnelles);
             for (int k = 0; k < i; ++k) {
                 free(partie->joueurs[k].personnelles);
