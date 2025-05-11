@@ -146,7 +146,11 @@ Partie* chargerPartie(const char *nom_fichier) {
                 free(partie->joueurs[k].defausse);
             }
             free(partie->joueurs);
-            if (partie->pioche.cartes) free(partie->pioche.cartes);
+            
+            if (partie->pioche.cartes) {
+               free(partie->pioche.cartes);
+            }
+
             
             free(partie);
             fclose(f);
