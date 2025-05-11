@@ -50,7 +50,7 @@ Pioche creerPiocheDefaut() {
 
 
 Pioche creerPiocheDepuisFichier(const char *nomFichier) {
-    //verif sur les pointeurs
+   
     if (nomFichier == NULL) {
         printf("nomfichier invalide (NULL)\n");
         exit(1);
@@ -60,7 +60,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     pioche.taille = 0;
 
     FILE *f = fopen(nomFichier, "r");
-    //verif du fichier pour ne pas rentrer n'imoporte quoi
+   
     if (f == NULL) {
         char rep = ' ';
         int buffer;
@@ -83,7 +83,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
             printf("Réponse invalide. Veuillez taper 'o' ou 'n'.\n");
         }
     }
-//alloc 
+
     pioche.cartes = malloc(NB_CARTES_MAX * sizeof(Carte));
     if (pioche.cartes == NULL) {
         printf("Erreur d'allocation mémoire pour la pioche.\n");
@@ -109,7 +109,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
 }
 
 void melangerPioche(Pioche *pioche) {
-    //verif sur les pointeurs
+    
     if (pioche == NULL) {
         printf("pioche invalide (NULL)\n");
         return;
