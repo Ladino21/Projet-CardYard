@@ -9,7 +9,7 @@ Nous avons opté pour un nommage en français, des fichiers bien séparés (.c e
 
 Problèmes rencontrés, choix techniques, limites et améliorations
 1. Gestion complexe des pointeurs et structures
-L’un des plus gros défis a été de manipuler correctement les pointeurs, structures et tableaux dynamiques (pioche, défausse, cartes des joueurs). On s’est souvent perdus avec les malloc, les accès aux champs, et les effets de bord entre fonctions. Cela nous a poussés à structurer plus proprement le code et mieux documenter nos structures.
+L’un des plus gros défis a été de manipuler correctement les pointeurs, structures et tableaux dynamiques (pioche, défausse, cartes des joueurs). On s’est souvent perdus avec les malloc, les accès aux champs, et les appelles entre fonctions. Cela nous a poussés à structurer plus proprement le code et mieux documenter nos structures.
 - Limite : le projet ne permet pas de gérer plusieurs sauvegardes distinctes, ce qui limite les possibilités de reprise.
 
 2. Propreté des chaînes de caractères (strcspn)
