@@ -92,7 +92,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     }
 
     int valeur = 0, quantite = 0;
-    while (fscanf(f, "%d:%d", &valeur, &quantite) == 2) {
+    while (fscanf(f, "%d:%d", &valeur, &quantite) == 2) {//verifie que les 2 entiers ont bien etait lue
         if (valeur == 0 && quantite == 0) break; // condition d'arrêt
         if (quantite < 0) quantite = 0;
 
