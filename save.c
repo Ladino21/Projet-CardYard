@@ -17,18 +17,19 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie) {
         return -1;
     }    
 
-    // Écrire les informations principales de la partie
+    // Sauvegarde complète de l’état de la partie : nombre de joueurs, joueur courant, pioche, cartes personnelles et défausses, en format binaire
+    
     fwrite(&partie->nb_joueurs, sizeof(int), 1, f);
     fwrite(&partie->nb_cartes_personnelles, sizeof(int), 1, f);
     fwrite(&partie->joueur_courant, sizeof(int), 1, f);
 
-    // Sauvegarder la pioche
+    
     fwrite(&partie->pioche.taille, sizeof(int), 1, f);
     if (partie->pioche.taille > 0) {
         fwrite(partie->pioche.cartes, sizeof(Carte), partie->pioche.taille, f);
     }
 
-    // Sauvegarder les données de chaque joueur
+    
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         fwrite(&partie->joueurs[i].nb_cartes, sizeof(int), 1, f);
         if (partie->joueurs[i].nb_cartes > 0) {
