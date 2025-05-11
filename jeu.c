@@ -37,7 +37,7 @@ int demanderEntier(const char *message, int min, int max) {
 Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPioche) {
     //verif 
     Partie *partie = malloc(sizeof(Partie));
-    if (!partie) {
+    if (partie == NULL) {
         return NULL;
     }    
 
