@@ -11,4 +11,4 @@ int sauvegarderPartie(const char *nom_fichier, const Partie *partie);
 // Renvoie un pointeur alloué vers Partie, ou NULL si échec
 Partie* chargerPartie(const char *nom_fichier);
 
-#endif // SAVE_H
+#endif 
