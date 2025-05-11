@@ -60,7 +60,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     pioche.taille = 0;
 
     FILE *f = fopen(nomFichier, "r");
-
+    //verif du fichier pour ne pas rentrer n'imoporte quoi
     if (f == NULL) {
         char rep = ' ';
         int ch;
