@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include "cartes.h"
 
-// Crée une pioche avec des cartes par défautdans le cas ou l'utilisateur ne desire pas creer une pioche avec un fichier
+
 Pioche creerPiocheDefaut() {
     Pioche pioche;
 
@@ -23,7 +23,7 @@ Pioche creerPiocheDefaut() {
         fprintf(stderr, "Trop de cartes dans la pioche par défaut (total %d dépasse NB_CARTES_MAX)\n", totalCartes);
         totalCartes = NB_CARTES_MAX;
     }
-    //allocation dynamique du tableau possendant toutes les cartes de la pioche//
+    
     pioche.cartes = malloc(totalCartes * sizeof(Carte));
     if (pioche.cartes==NULL) {
         //vérification
@@ -48,7 +48,7 @@ Pioche creerPiocheDefaut() {
     return pioche;
 }
 
-// Crée une pioche à partir d’un fichier
+
 Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     //verif sur les pointeurs
     if (nomFichier == NULL) {
@@ -83,7 +83,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
             printf("Réponse invalide. Veuillez taper 'o' ou 'n'.\n");
         }
     }
-
+//alloc 
     pioche.cartes = malloc(NB_CARTES_MAX * sizeof(Carte));
     if (pioche.cartes == NULL) {
         printf("Erreur d'allocation mémoire pour la pioche.\n");
@@ -131,7 +131,7 @@ void melangerPioche(Pioche *pioche) {
     }
 }
 
-// Tire une carte du dessus de la pioche
+
 Carte piocherCarte(Pioche *pioche) {
     if (pioche == NULL) {
         printf("pioche invalide (NULL)\n");
@@ -155,7 +155,7 @@ Carte piocherCarte(Pioche *pioche) {
 }
 
 
-// Libère la mémoire allouée à la pioche
+
 void libererPioche(Pioche *pioche) {
     if (pioche == NULL) {
         printf("pioche invalide (NULL)\n");
