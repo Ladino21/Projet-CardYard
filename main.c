@@ -9,7 +9,7 @@
 
 int main() {
     printf(" Bienvenue dans CARD YARD !!\n");
-    int ch;  // <- pour vider le buffer clavier
+    int buffer;  // <- pour vider le buffer 
 
 
     while (1) {
@@ -19,7 +19,7 @@ int main() {
         printf("3. Quitter\n");
         printf("Votre choix : ");
 
-        char ligne[64];
+        char ligne[100];
         int choix = 0;
 
         if (!fgets(ligne, sizeof(ligne), stdin)) {
@@ -40,21 +40,25 @@ int main() {
 
             // Saisie du nombre de joueurs
             while (nb_joueurs < 2 || nb_joueurs > 8) {
-                printf("Entrez le nombre de joueurs (2 à 8) : ");
-                if (!fgets(ligne, sizeof(ligne), stdin)) continue;
+                printf("Entrez le bon nombre de joueurs (2 à 8) : ");
+                if (!fgets(ligne, sizeof(ligne), stdin)){
+                   continue; 
+                }
                 if (sscanf(ligne, "%d", &nb_joueurs) != 1) {
                     printf("!! Entrée invalide !!\n");
-                    nb_joueurs = 0;
+                    
                 }
             }
 
             // Saisie du nombre de cartes par joueur
             while (nb_cartes < 1) {
                 printf("Entrez le nombre de cartes personnelles par joueur : ");
-                if (!fgets(ligne, sizeof(ligne), stdin)) continue;
+                if (!fgets(ligne, sizeof(ligne), stdin)) {
+                    continue;
+                }
                 if (sscanf(ligne, "%d", &nb_cartes) != 1) {
-                    printf("!! Veuillez entrez un nombre coherent !!\n");
-                    nb_cartes = 0;
+                    printf("!! Veuillez entrez un nombre !!\n");
+                    
                 }
             }
 
@@ -74,7 +78,7 @@ int main() {
                }
 
                if (reponse_fichier != 'o' && reponse_fichier != 'n') {
-                  printf("Réponse invalide. Veuillez taper 'o' ou 'n'.\n");
+                  printf("!! Réponse invalide !! Veuillez taper 'o' ou 'n'.\n");
                }
             } while (reponse_fichier != 'o' && reponse_fichier != 'n');
 
@@ -90,7 +94,7 @@ int main() {
                 (reponse_fichier == 'o' || reponse_fichier == 'O') ? nom_fichier : NULL);
 
             if (!partie) {
-                printf("Échec de la création de la partie.\n");
+                printf("Échec de la création de la partie !!!\n");
                 continue;
             }
 
@@ -100,7 +104,7 @@ int main() {
         } else if (choix == 2) {
             Partie *partie = chargerPartie("sauvegarde.dat");
             if (!partie) {
-                printf("Aucune sauvegarde trouvée ou échec du chargement.\n");
+                printf("!! Aucune sauvegarde trouvée ou échec du chargement !!\n");
             } else {
                 printf("Partie chargée avec succès.\n");
                 jouerPartie(partie);
@@ -111,7 +115,7 @@ int main() {
             printf("Au revoir !\n");
             break;
         } else {
-            printf("Choix invalide. Réessayez.\n");
+            printf("!! Choix invalide. Réessayez !!\n");
         }
     }
 
