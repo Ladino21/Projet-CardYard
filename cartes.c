@@ -118,7 +118,7 @@ void melangerPioche(Pioche *pioche) {
     static int initialise = 0;
     if (!initialise) {
         //On initialise seulement au premier appel de la fonction
-        srand((unsigned int) time(NULL));
+        srand(time(NULL));
         //on le met a 1 pour eviter de faire cette partie a chaque apl de la fonction 
         initialise = 1;
     }
