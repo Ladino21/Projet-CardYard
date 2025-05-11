@@ -108,7 +108,6 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     return pioche;
 }
 
-// Mélange les cartes de la pioche
 void melangerPioche(Pioche *pioche) {
     //verif sur les pointeurs
     if (pioche == NULL) {
@@ -116,9 +115,12 @@ void melangerPioche(Pioche *pioche) {
         return;
     }
     if (pioche == NULL || pioche->taille <= 1) return;
+    //on veut initialiser une fois donc on met =0 une premiere fois 
     static int initialise = 0;
     if (!initialise) {
+        //On initialise seulement au premier appel de la fonction
         srand((unsigned int) time(NULL));
+        //on le met a 1 pour eviter de faire cette partie a chaque apl de la fonction 
         initialise = 1;
     }
     //Melange de Fisher-Yates tres connu pour   pour mélanger un tableau de manière parfaitement équitable. 
