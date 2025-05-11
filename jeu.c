@@ -52,9 +52,6 @@ Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPio
     partie->nb_cartes_personnelles = nbCartesParJoueur;
     partie->joueur_courant = 0;
 
-    partie->pioche = (fichierPioche && strlen(fichierPioche) > 0)
-        ? creerPiocheDepuisFichier(fichierPioche)
-        : creerPiocheDefaut();
     printf("Nombre de cartes dans la pioche : %d\n", partie->pioche.taille);
 
     if (nbJoueurs * nbCartesParJoueur >= partie->pioche.taille) {
