@@ -30,4 +30,4 @@ Carte piocherCarte(Pioche *pioche);
 
 void libererPioche(Pioche *pioche);
 
-#endif // CARTES_H
+#endif 
