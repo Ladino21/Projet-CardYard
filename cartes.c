@@ -93,8 +93,12 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
 
     int valeur = 0, quantite = 0;
     while (fscanf(f, "%d:%d", &valeur, &quantite) == 2) {//verifie que les 2 entiers ont bien etait lue
-        if (valeur == 0 && quantite == 0) break; // condition d'arrêt
-        if (quantite < 0) quantite = 0;
+        if (valeur == 0 && quantite == 0){
+            break; // condition d'arrêt
+        }    
+        if (quantite < 0){
+            quantite = 0;
+        }    
 
         for (int i = 0; i < quantite && pioche.taille < NB_CARTES_MAX; ++i) {
             pioche.cartes[pioche.taille].valeur = valeur;
@@ -114,7 +118,9 @@ void melangerPioche(Pioche *pioche) {
         printf("pioche invalide (NULL)\n");
         return;
     }
-    if (pioche == NULL || pioche->taille <= 1) return;
+    if (pioche == NULL || pioche->taille <= 1) {
+        return;
+    }    
     static int initialise = 0;
     if (!initialise) {
         //On initialise seulement au premier appel de la fonction
