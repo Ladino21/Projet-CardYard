@@ -20,7 +20,7 @@ Problèmes rencontrés et solutions
 Initialement, la partie se terminait brutalement dès qu’un joueur retournait toutes ses cartes. Cela empêchait les autres de révéler leurs cartes et d’afficher les scores. Nous avons modifié la logique dans jeu.c pour révéler toutes les cartes à la fin, calculer les scores de chacun, puis afficher un classement clair dans affichage.c.
 
 2. Affichage lisible et coloré :
-Une difficulté a été de rendre l’affichage des cartes lisible et agréable dans un terminal. Nidol a utilisé des couleurs ANSI pour colorer l'intérieur complet des cartes selon leur valeur (notamment -1, 5, 9, 11), et a mis en place un affichage horizontal clair, surtout lors de la visualisation des équipes.
+Une difficulté a été de rendre l’affichage des cartes lisible et agréable dans un terminal. Nidal a utilisé des couleurs ANSI pour colorer l'intérieur complet des cartes selon leur valeur (notamment -1, 5, 9, 11), et a mis en place un affichage horizontal clair, surtout lors de la visualisation des équipes.
 
 3. Mélange équitable des cartes :
 Adam a implémenté l’algorithme de Fisher-Yates, utilisé dans les jeux de cartes numériques professionnels. Il est rapide (O(n)), fonctionne en place (sans tableau temporaire), et garantit une distribution totalement équitable des cartes.
