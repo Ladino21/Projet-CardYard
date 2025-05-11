@@ -4,46 +4,62 @@ Notre équipe est composée de trois membres :
 
 Nidal : en charge des fichiers main.c, jeu.c, affichage.c
 
-Adam : en charge de cartes.c, save.c, joueurs.c et quelques fonction pas très longue dans jeu.c
+Adam : en charge de cartes.c, save.c, joueurs.c
 
 Younes : a contribué à l’amélioration de l’affichage du classement des scores dans affichage.c
 
-Le projet Card Yard est un jeu de cartes multijoueur (2 à 8 joueurs), inspiré du jeu de société Skyjo, où le but est d'obtenir le score le plus bas.Chaque joueur dispose de cartes personnelles cachées, visibles ou retournées, et peut piocher, échanger ou défausser des cartes à son tour. Le jeu gère plusieurs variantes (pioche par fichier ou par défaut, nombre variable de cartes, fin de partie dynamique, etc.), avec un affichage terminal coloré et une sauvegarde/chargement complet de la partie.
+Le projet Card Yard est un jeu de cartes multijoueur (2 à 8 joueurs), inspiré du jeu de société Skyjo, où le but est d'obtenir le score le plus bas.
+Chaque joueur dispose de cartes personnelles cachées, visibles ou retournées, et peut piocher, échanger ou défausser des cartes à son tour.
+Le jeu gère plusieurs variantes (pioche par fichier ou par défaut, nombre variable de cartes, fin de partie dynamique, etc.), avec un affichage terminal coloré et une sauvegarde/chargement complet de la partie.
 
-Organisation et répartition du travail
-Dès le début du projet, nous avons décidé de séparer clairement les responsabilités. Adam s’est occupé de tout ce qui touche à la gestion des données du jeu : les cartes, les joueurs et le système de sauvegarde/chargement. Nidol s’est concentré sur la logique du jeu (jeu.c), l’affichage utilisateur (affichage.c), et la gestion de la partie (main.c). Younes est intervenu sur la fin du projet pour améliorer l’ergonomie du classement des scores.
-
-Nous avons utilisé des noms de fonctions et de variables en français pour garantir une bonne lisibilité, et structuré notre code autour de modules indépendants. Chaque fichier .c est accompagné de son .h, ce qui rend le projet facilement modifiable et maintenable.
+Organisation et répartition du travail :
+Dès le début du projet, nous avons décidé de séparer clairement les responsabilités. Adam s’est occupé de tout ce qui touche à la gestion des données du jeu : les cartes, les joueurs et le système de sauvegarde/chargement. 
+Nidal s’est concentré sur la logique du jeu (jeu.c), l’affichage utilisateur (affichage.c), et la gestion de la partie (main.c). Younes est intervenu sur la fin du projet pour améliorer l’ergonomie du classement des scores.
+Nous avons utilisé des noms de fonctions et de variables en français pour garantir une bonne lisibilité, et structuré notre code autour de fichiers indépendants. 
+Chaque fichier .c est accompagné de son fichier .h, ce qui rend le projet facilement modifiable et maintenable.
 
 Problèmes rencontrés et solutions
-1. Gestion de la fin de partie :
-Initialement, la partie se terminait brutalement dès qu’un joueur retournait toutes ses cartes. Cela empêchait les autres de révéler leurs cartes et d’afficher les scores. Nous avons modifié la logique dans jeu.c pour révéler toutes les cartes à la fin, calculer les scores de chacun, puis afficher un classement clair dans affichage.c.
+1. Difficultés avec les pointeurs et structures :
+L’un des défis majeurs a été la manipulation des structures et des pointeurs, surtout quand il s’agissait de gérer plusieurs tableaux dynamiques (pioche, défausse, cartes personnelles, etc.) en parallèle. 
+On s’est souvent perdus avec les malloc, les accès à des champs de structures, ou encore les appelles entre fonctions. On a beaucoup appris en corrigeant ces erreurs et en apprenant à mieux tracer notre code.
 
-2. Affichage lisible et coloré :
-Une difficulté a été de rendre l’affichage des cartes lisible et agréable dans un terminal. Nidal a utilisé des couleurs ANSI pour colorer l'intérieur complet des cartes selon leur valeur (notamment -1, 5, 9, 11), et a mis en place un affichage horizontal clair, surtout lors de la visualisation des équipes.
+2. Utilisation de strcspn :
+Pour assurer une gestion propre des chaînes de caractères, notamment lors de la lecture de fichiers (par exemple avec fgets), nous avons utilisé strcspn pour supprimer les retours à la ligne. 
+Ce petit détail s’est avéré crucial pour éviter des bugs discrets lors du traitement des noms ou des lignes mal formatées. 
+C’est une fonction qu’on a découverte au fil du projet et qui nous a permis de rendre le code plus robuste (notamment comme le fgets et le sscanf).
 
-3. Mélange équitable des cartes :
-Adam a implémenté l’algorithme de Fisher-Yates, utilisé dans les jeux de cartes numériques professionnels. Il est rapide (O(n)), fonctionne en place (sans tableau temporaire), et garantit une distribution totalement équitable des cartes.
+3. Gestion de la fin de partie :
+Initialement, la partie se terminait brutalement dès qu’un joueur retournait toutes ses cartes. Cela empêchait les autres de révéler leurs cartes et d’afficher les scores. 
+Nous avons modifié la logique dans jeu.c pour révéler toutes les cartes à la fin, calculer les scores de chacun, puis afficher un classement clair dans affichage.c.
 
-4. Sauvegarde/Chargement robustes :
-Pour sauvegarder l’état du jeu (pioche, cartes des joueurs, défausse, etc.), nous avons choisi fwrite / fread pour écrire directement les structures en binaire. C’est plus rapide, plus fiable, et surtout plus simple que de gérer des conversions texte. Cela garantit une parfaite cohérence à la restauration de la partie.
+4. Affichage lisible et coloré :
+Une difficulté majeur a été de rendre l’affichage des cartes lisible et agréable dans un terminal.
+On a utilisé des couleurs ANSI pour colorer l'intérieur complet des cartes selon leur valeur, et a mis en place un affichage horizontal clair, surtout lors de la visualisation des équipes.
 
-5. Gestion des pioches :
-Même si le fichier value_file permet de créer une pioche à partir d’un fichier texte, nous avons aussi prévu une pioche par défaut. Ce choix volontaire rend le jeu toujours jouable, même sans fichier externe, ce qui est un vrai plus pour l’utilisateur.
+5. Mélange équitable des cartes :
+On a implémenté l’algorithme de Fisher-Yates, utilisé dans les jeux de cartes numériques professionnels. Il est rapide, de complexité (O(n)), fonctionne en place (sans tableau temporaire), et garantit une distribution totalement équitable des cartes!
+
+6. Sauvegarde/Chargement robustes :
+Pour sauvegarder l’état du jeu (pioche, cartes des joueurs, défausse, etc.), nous avons choisi fwrite / fread pour écrire directement les structures en binaire. 
+C’est plus rapide, plus fiable, et surtout plus simple que de gérer des conversions texte. Cela garantit une parfaite cohérence à la restauration de la partie.
+
+7. Gestion des pioches :
+Même si le fichier value_file permet de créer une pioche à partir d’un fichier texte, nous avons aussi prévu une pioche par défaut.
+Ce choix volontaire rend le jeu toujours jouable, même sans fichier externe, ce qui est un vrai plus pour l’utilisateur.
 
 Résultats et conclusion
-Nous avons atteint tous les objectifs du cahier des charges. Le jeu est fonctionnel, stable, et propose une expérience complète :
+Nous avons atteint tous les objectifs du cahier des charges. Le jeu est fonctionnel, stable, robuste et propose une expérience complète :
 
-Plusieurs joueurs
+- Plusieurs joueurs
 
-Sauvegarde et chargement fiables
+- Sauvegarde et chargement fiables
 
-Affichage coloré, intuitif, avec classement
+- Affichage coloré, intuitif, avec classement
 
-Possibilité d’utiliser un fichier de pioche ou une pioche par défaut
+- Possibilité d’utiliser un fichier de pioche ou une pioche par défaut
 
-Variantes dynamiques du nombre de cartes
+- Variantes dynamiques du nombre de cartes
 
-L’équipe a su bien s’organiser : chacun a géré sa partie de manière autonome tout en communiquant régulièrement pour assurer la cohérence de l’ensemble. Le code est propre, commenté et simple à prendre en main.
+L’équipe a su bien s’organiser : chacun a géré sa partie de manière autonome tout en communiquant régulièrement pour assurer la cohérence de l’ensemble.
 
-Nous sommes fiers de ce projet, qui a été à la fois un défi technique et une belle expérience de travail en équipe.
+!! Nous esperons que ce jeu vous fera plaisir !!
