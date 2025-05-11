@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include "cartes.h"
 
-// Crée une pioche avec des cartes par défaut
+// Crée une pioche avec des cartes par défautdans le cas ou l'utilisateur ne desire pas creer une pioche avec un fichier
 Pioche creerPiocheDefaut() {
     Pioche pioche;
 
