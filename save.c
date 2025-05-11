@@ -121,7 +121,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         total_defausse += nb_defausse;
         fseek(f, nb_defausse * sizeof(Carte), SEEK_CUR);
     }
-    fsetpos(f, &pos);
+    fsetpos(f, &pos);//permet de revenir la ou on etait 
 
     int capacite_totale = taille_pioche + total_personnelles + total_defausse;
     if (capacite_totale < 1) capacite_totale = 1;
