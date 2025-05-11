@@ -20,14 +20,14 @@ Pioche creerPiocheDefaut() {
     }
     
     if (totalCartes > NB_CARTES_MAX) {
-        fprintf(stderr, "Trop de cartes dans la pioche par défaut (total %d dépasse NB_CARTES_MAX)\n", totalCartes);
+        printf("Trop de cartes dans la pioche par défaut (total %d dépasse NB_CARTES_MAX)\n", totalCartes);
         totalCartes = NB_CARTES_MAX;
     }
     
     pioche.cartes = malloc(totalCartes * sizeof(Carte));
     if (pioche.cartes==NULL) {
         //vérification
-        fprintf(stderr, "Échec d'allocation de la mémoire pour la pioche\n");
+        printf("Échec d'allocation de la mémoire pour la pioche\n");
         pioche.taille = 0;
         return pioche;
     }
