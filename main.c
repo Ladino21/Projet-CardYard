@@ -4,7 +4,7 @@
 #include <string.h>
 #include "jeu.h"
 #include "save.h"
-#include <ctype.h>  // pour tolower()
+#include <ctype.h>  
 
 
 int main() {
