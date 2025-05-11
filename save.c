@@ -55,6 +55,7 @@ Partie* chargerPartie(const char *nom_fichier) {
     }    
     
     Partie *partie = malloc(sizeof(Partie));
+    //enchainement de verif
     if (partie==NULL) {
         fclose(f);
         return NULL;
@@ -77,7 +78,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         free(partie);
         return NULL;
     }
-
+    
 
     // Lire la pioche
     int taille_pioche = 0;
