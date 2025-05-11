@@ -10,31 +10,31 @@ Nous avons opté pour un nommage en français, des fichiers bien séparés (.c e
 Problèmes rencontrés, choix techniques, limites et améliorations
 1. Gestion complexe des pointeurs et structures
 L’un des plus gros défis a été de manipuler correctement les pointeurs, structures et tableaux dynamiques (pioche, défausse, cartes des joueurs). On s’est souvent perdus avec les malloc, les accès aux champs, et les effets de bord entre fonctions. Cela nous a poussés à structurer plus proprement le code et mieux documenter nos structures.
-💡 Limite : le projet ne permet pas de gérer plusieurs sauvegardes distinctes, ce qui limite les possibilités de reprise.
+- Limite : le projet ne permet pas de gérer plusieurs sauvegardes distinctes, ce qui limite les possibilités de reprise.
 
 2. Propreté des chaînes de caractères (strcspn)
 Pour éviter les erreurs dues aux retours à la ligne dans les fgets, on a utilisé strcspn. Ce détail a renforcé la robustesse du chargement des pioches personnalisées.
-✅ Choix pertinent pour éviter les bugs invisibles et simplifier le traitement des fichiers texte.
+- Choix pertinent pour éviter les bugs invisibles et simplifier le traitement des fichiers texte.
 
 3. Fin de partie et affichage du classement
 Initialement, la partie se terminait dès qu’un joueur retournait toutes ses cartes, sans afficher le score des autres. On a ajusté cela pour révéler toutes les cartes restantes et afficher un classement général. Younes a contribué à rendre ce classement plus clair.
-⚠️ Limite : si beaucoup de joueurs sont présents, l’affichage devient un peu dense, mais lisible grâce à notre mise en page horizontale.
+- Limite : si beaucoup de joueurs sont présents, l’affichage devient un peu dense, mais lisible grâce à notre mise en page horizontale.
 
 4. Affichage coloré et intuitif dans le terminal
 L’affichage a été un vrai défi. Nous avons utilisé les codes ANSI pour colorer entièrement les cartes selon leur valeur, ce qui rend le jeu plus visuel malgré les limites du terminal. Les cartes sont affichées horizontalement, côte à côte, ce qui facilite la lecture.
-🎯 Bonus : les cartes déjà visibles ne peuvent plus être échangées. Ce choix volontaire rend les tours plus stratégiques, car l'information n'est pas toujours exploitable.
+- Bonus : les cartes déjà visibles ne peuvent plus être échangées. Ce choix volontaire rend les tours plus stratégiques, car l'information n'est pas toujours exploitable.
 
 5. Mélange équitable avec l’algorithme de Fisher-Yates
 Pour mélanger les cartes, nous avons choisi l’algorithme de Fisher-Yates. Il est rapide (O(n)), fonctionne sans tableau temporaire, et donne à chaque permutation la même probabilité. C’est une méthode utilisée dans les jeux professionnels.
-✅ Choix technique majeur, garantissant l’équité et la performance.
+- Choix technique majeur, garantissant l’équité et la performance.
 
 6. Sauvegarde et chargement binaire
 Nous avons opté pour fwrite et fread afin de stocker directement les structures en binaire. Cela évite les conversions texte complexes, améliore les performances et garantit une restauration fidèle de la partie.
-💡 Limite : une seule sauvegarde possible par défaut, ce qui limite la reprise de différentes parties.
+- Limite : une seule sauvegarde possible par défaut, ce qui limite la reprise de différentes parties.
 
 7. Double système de pioche
 Le jeu propose deux manières de générer la pioche : soit automatiquement (pioche par défaut), soit à partir d’un fichier personnalisé (value_file). Même si cette seconde option n’était pas obligatoire, nous l’avons ajoutée pour plus de flexibilité.
-🎲 Bonus : cette double possibilité rend le jeu plus riche, car l’utilisateur peut créer ses propres scénarios ou jouer rapidement avec une pioche aléatoire.
+- Bonus : cette double possibilité rend le jeu plus riche, car l’utilisateur peut créer ses propres scénarios ou jouer rapidement avec une pioche aléatoire.
 
 Conclusion
 Ce projet nous a permis de progresser en C tout en travaillant efficacement en équipe. Malgré quelques limites (affichage dense, sauvegarde unique, cartes visibles non modifiables), Card Yard est un jeu stable, complet, et agréable à jouer grâce à ses choix techniques simples mais solides.
