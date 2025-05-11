@@ -69,7 +69,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
             printf("Impossible d'ouvrir \"%s\". Voulez-vous utiliser la pioche par défaut ? (o/n) : ", nomFichier);
             if (scanf(" %c", &rep) == 1) {
                 rep = tolower(rep);
-                //prend en compte le 1er caractere si l'utilisateur fait une faute de frappe et supprime dans la memoire le reste 
+                //prend en compte le 1er caractere si l'utilisateur fait une faute de frappe et supprime le reste du buffer de la memoire 
                 while ((buffer = getchar()) != '\n' && buffer != EOF) {}
 
                 if (rep == 'o') {
