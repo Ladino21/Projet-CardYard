@@ -64,7 +64,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
     if (f == NULL) {
         char rep = ' ';
         int ch;
-
+        //tant que l'utilisateur rentre n'importe quoi on ne continue pas 
         while (1) {
             printf("Impossible d'ouvrir \"%s\". Voulez-vous utiliser la pioche par défaut ? (o/n) : ", nomFichier);
             if (scanf(" %c", &rep) == 1) {
