@@ -23,9 +23,13 @@ int demanderEntier(const char *message, int min, int max) {
     char ligne[64];
     while (1) {
         printf("%s", message);
-        if (fgets(ligne, sizeof(ligne), stdin) == NULL) return -1;
+        if (fgets(ligne, sizeof(ligne), stdin) == NULL){
+            return -1;
+        }    
         ligne[strcspn(ligne, "\n")] = '\0';
-        if (sscanf(ligne, "%d", &valeur) == 1 && valeur >= min && valeur <= max) return valeur;
+        if (sscanf(ligne, "%d", &valeur) == 1 && valeur >= min && valeur <= max){
+            return valeur;
+        }
         printf("Veuillez entrer un nombre entre %d et %d.\n", min, max);
     }
 }
@@ -33,7 +37,9 @@ int demanderEntier(const char *message, int min, int max) {
 Partie* creerPartie(int nbJoueurs, int nbCartesParJoueur, const char *fichierPioche) {
     //verif 
     Partie *partie = malloc(sizeof(Partie));
-    if (!partie) return NULL;
+    if (!partie) {
+        return NULL;
+    }    
 
 // Puis, une fois partie allouée :
        if (fichierPioche != NULL && fichierPioche[0] != '\0') {
@@ -75,7 +81,9 @@ void jouerPartie(Partie *partie) {
         exit(7);
     }
     
-    if (partie == NULL) return;
+    if (partie == NULL) {
+        return;
+    }    
     char entree[64];
     int finPartie = 0;
 
@@ -85,7 +93,9 @@ void jouerPartie(Partie *partie) {
 
         int piocheVide = (partie->pioche.taille == 0);
         printf("Joueur %d, choisissez une action :\n", partie->joueur_courant + 1);
-        if (!piocheVide) printf("[0] Piocher dans la pioche centrale\n");
+        if (!piocheVide) {
+            printf("[0] Piocher dans la pioche centrale\n");
+        }     
         printf("[1-%d] Piocher dans la défausse d’un joueur\n", partie->nb_joueurs);
         printf("[S] Sauvegarder\n[Q] Quitter\nVotre choix : ");
 
@@ -149,7 +159,9 @@ void jouerPartie(Partie *partie) {
                    if (fgets(ligne, sizeof(ligne), stdin)) {
                       if (sscanf(ligne, " %c", &reponse) == 1) {
                          reponse = tolower(reponse);
-                         if (reponse == 'o') break;
+                         if (reponse == 'o'){
+                             break;
+                         }    
                          if (reponse == 'n') {
                             printf("Partie sauvegardée et arrêtée.\n");
                             return;
@@ -169,7 +181,9 @@ void jouerPartie(Partie *partie) {
 
         if (choix == 0) {
             cartePiochee = piocherCarte(&partie->pioche);
-            if (cartePiochee.valeur == -999) continue;
+            if (cartePiochee.valeur == -999) {
+                continue;
+            }    
             printf("Carte piochée : %d\n", cartePiochee.valeur);
         } else if (choix >= 1 && choix <= partie->nb_joueurs) {
             int cible = choix - 1;
@@ -202,7 +216,9 @@ void jouerPartie(Partie *partie) {
             while (1) {
                 printf("Échanger avec une carte personnelle ? (o/n) : ");
                 if (fgets(ligne, sizeof(ligne), stdin)) {
-                    if (sscanf(ligne, " %c", &rep) == 1 && (tolower(rep) == 'o' || tolower(rep) == 'n')) break;
+                    if (sscanf(ligne, " %c", &rep) == 1 && (tolower(rep) == 'o' || tolower(rep) == 'n')) {
+                        break;
+                    }    
                 }
                 printf("Entrée invalide. Tapez 'o' ou 'n'.\n");
             }
