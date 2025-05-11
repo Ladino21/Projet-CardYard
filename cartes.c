@@ -115,7 +115,6 @@ void melangerPioche(Pioche *pioche) {
         return;
     }
     if (pioche == NULL || pioche->taille <= 1) return;
-    //on veut initialiser une fois donc on met =0 une premiere fois 
     static int initialise = 0;
     if (!initialise) {
         //On initialise seulement au premier appel de la fonction
