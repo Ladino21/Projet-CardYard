@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "save.h"
 #include "cartes.h"
 #include "joueurs.h"
