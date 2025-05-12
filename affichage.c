@@ -230,7 +230,10 @@ void afficherDefausse(const Joueur *joueur) {
 }
 
 void afficherPartie(const Partie *partie) {
-    if (!partie) return;
+    if (partie == NULL) {
+    printf("Erreur : partie invalide (NULL)\n");
+    exit(77);
+    }
 
     printf("\n==== État du jeu ====\n\n");
     afficherPiocheCentrale(&partie->pioche);
