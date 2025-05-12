@@ -77,10 +77,7 @@ void jouerPartie(Partie *partie) {
         printf("partie invalide (NULL)\n");
         exit(7);
     }
-    
-    if (partie == NULL) {
-        return;
-    }    
+      
     char entree[64];
     int finPartie = 0;
 
