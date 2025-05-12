@@ -17,7 +17,7 @@ Pour éviter les erreurs dues aux retours à la ligne dans les fgets, on a utili
 - Choix pertinent pour éviter les bugs invisibles et simplifier le traitement des fichiers texte.
 
 3. Fin de partie et affichage du classement
-Initialement, la partie se terminait dès qu’un joueur retournait toutes ses cartes, sans afficher le score des autres. On a ajusté cela pour révéler toutes les cartes restantes et afficher un classement général. Younes a contribué à rendre ce classement plus clair.
+Initialement, la partie se terminait dès qu’un joueur retournait toutes ses cartes, sans afficher le score des autres et sans laisser un dernier tour a tout les joueurs sauf a celui qui a retourner toutes ses cartes. On a ajusté cela pour révéler toutes les cartes restantes et afficher un classement général. Younes a contribué à rendre ce classement plus clair.
 - Limite : si beaucoup de joueurs sont présents, l’affichage devient un peu dense, mais lisible grâce à notre mise en page horizontale.
 
 4. Affichage coloré et intuitif dans le terminal
