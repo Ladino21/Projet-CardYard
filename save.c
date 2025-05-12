@@ -119,18 +119,18 @@ Partie* chargerPartie(const char *nom_fichier) {
     // Calculer les tailles initiales pour les piles de défausse
     int total_personnelles = partie->nb_joueurs * partie->nb_cartes_personnelles;
     int total_defausse = 0;
-    // permet de bien allouer la mémoire.
-    fpos_t pos;//utilisé pour sauvegarder la position actuelle du curseur de lecture/écriture dans un fichier, de manière portable.
+    
+    fpos_t pos;
     fgetpos(f, &pos);
     for (int i = 0; i < partie->nb_joueurs; ++i) {
         int nb_personnelles, nb_defausse;
         fread(&nb_personnelles, sizeof(int), 1, f);
-        fseek(f, nb_personnelles * sizeof(Carte), SEEK_CUR);// permet le deplacement du curseur lors de la lecture de fichier
+        fseek(f, nb_personnelles * sizeof(Carte), SEEK_CUR);
         fread(&nb_defausse, sizeof(int), 1, f);
         total_defausse += nb_defausse;
         fseek(f, nb_defausse * sizeof(Carte), SEEK_CUR);
     }
-    fsetpos(f, &pos);//permet de revenir la ou on etait 
+    fsetpos(f, &pos); 
 
     int capacite_totale = taille_pioche + total_personnelles + total_defausse;
     if (capacite_totale < 1){
