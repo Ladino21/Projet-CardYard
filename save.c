@@ -107,7 +107,10 @@ Partie* chargerPartie(const char *nom_fichier) {
     // Allouer les joueurs
     partie->joueurs = malloc(partie->nb_joueurs * sizeof(Joueur));
     if (partie->joueurs==NULL) {
-        if (partie->pioche.cartes) free(partie->pioche.cartes);
+        if (partie->pioche.cartes){
+            free(partie->pioche.cartes);
+        }
+        
         free(partie);
         fclose(f);
         return NULL;
