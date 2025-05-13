@@ -247,7 +247,7 @@ void jouerPartie(Partie *partie) {
 
         if (joueurQuiADeclencheFin == -1) {
            int visibles = 0;
-           for (int j = 0; j < partie->joueurs[partie->joueur_courant].nb_cartes; ++j) {
+           for (int j = 0; j < partie->joueurs[partie->joueur_courant].nb_cartes; j++) {
                if (partie->joueurs[partie->joueur_courant].personnelles[j].visible) visibles++;
            }
            if (visibles == partie->joueurs[partie->joueur_courant].nb_cartes) {
@@ -269,8 +269,8 @@ void jouerPartie(Partie *partie) {
         partie->joueur_courant = (partie->joueur_courant + 1) % partie->nb_joueurs;
     }
 
-    for (int i = 0; i < partie->nb_joueurs; ++i) {
-        for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
+    for (int i = 0; i < partie->nb_joueurs; i++) {
+        for (int j = 0; j < partie->joueurs[i].nb_cartes; j++) {
             partie->joueurs[i].personnelles[j].visible = true;
         }
     }
