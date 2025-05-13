@@ -22,14 +22,14 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
         return NULL;
     }
 
-    for (int i = 0; i < nb_joueurs; ++i) {
+    for (int i = 0; i < nb_joueurs; i++) {
         joueurs[i].nb_cartes = nb_cartes_par_joueur;
 
         // Allouer les cartes personnelles
         joueurs[i].personnelles = malloc(nb_cartes_par_joueur * sizeof(Carte));
         if (joueurs[i].personnelles==NULL) {
             printf("Échec d'allocation pour les cartes personnelles du joueur %d\n", i);
-            for (int k = 0; k < i; ++k) {
+            for (int k = 0; k < i; k++) {
                 free(joueurs[k].personnelles);
             }
             free(joueurs);
@@ -37,7 +37,7 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
         }
 
         // Distribuer les cartes personnelles depuis la pioche
-        for (int c = 0; c < nb_cartes_par_joueur; ++c) {
+        for (int c = 0; c < nb_cartes_par_joueur; c++) {
             Carte carte = piocherCarte(pioche);
             carte.visible = false; // les cartes sont face cachée au début
             joueurs[i].personnelles[c] = carte;
@@ -51,7 +51,7 @@ Joueur* creerJoueurs(int nb_joueurs, int nb_cartes_par_joueur, Pioche *pioche, i
         if (joueurs[i].defausse==NULL) {
             printf("Échec d'allocation pour la défausse du joueur %d\n", i);
             free(joueurs[i].personnelles);
-            for (int k = 0; k < i; ++k) {
+            for (int k = 0; k < i; k++) {
                 free(joueurs[k].personnelles);
                 free(joueurs[k].defausse);
             }
@@ -73,7 +73,7 @@ void libererJoueurs(Joueur *joueurs, int nb_joueurs) {
     }
 
 
-    for (int i = 0; i < nb_joueurs; ++i) {
+    for (int i = 0; i < nb_joueurs; i++) {
         if (joueurs[i].personnelles) {
             free(joueurs[i].personnelles);
             joueurs[i].personnelles = NULL;
