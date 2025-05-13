@@ -121,7 +121,7 @@ Partie* chargerPartie(const char *nom_fichier) {
     
     fpos_t pos;
     fgetpos(f, &pos);
-    for (int i = 0; i < partie->nb_joueurs; ++i) {
+    for (int i = 0; i < partie->nb_joueurs; i++) {
         int nb_personnelles, nb_defausse;
         fread(&nb_personnelles, sizeof(int), 1, f);
         fseek(f, nb_personnelles * sizeof(Carte), SEEK_CUR);
@@ -137,7 +137,7 @@ Partie* chargerPartie(const char *nom_fichier) {
     }    
 
     // Lire les données des joueurs
-    for (int i = 0; i < partie->nb_joueurs; ++i) {
+    for (int i = 0; i < partie->nb_joueurs; i++) {
         int nb_cartes;
         
         if (fread(&nb_cartes, sizeof(int), 1, f) != 1) {
@@ -151,7 +151,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         
         if (partie->joueurs[i].personnelles==NULL) {
             
-            for (int k = 0; k < i; ++k) {
+            for (int k = 0; k < i; k++) {
                 free(partie->joueurs[k].personnelles);
                 free(partie->joueurs[k].defausse);
             }
@@ -176,7 +176,7 @@ Partie* chargerPartie(const char *nom_fichier) {
         if (partie->joueurs[i].defausse==NULL) {
             
             free(partie->joueurs[i].personnelles);
-            for (int k = 0; k < i; ++k) {
+            for (int k = 0; k < i; k++) {
                 free(partie->joueurs[k].personnelles);
                 free(partie->joueurs[k].defausse);
             }
