@@ -161,7 +161,9 @@ void afficherPiocheCentrale(const Pioche *pioche) {
     if (pioche->taille == 0) {
         printf("        (vide)\n");
     } else {
-        Carte dos = { .valeur = -1, .visible = false };
+        Carte dos;
+        dos.valeur=-1;
+        dos.visible=false;
         afficherCarteStylisee(&dos);
     }
     printf("\n");
