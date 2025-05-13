@@ -15,7 +15,7 @@ Pioche creerPiocheDefaut() {
     int totalValeurs = 15;
 
     int totalCartes = 0;
-    for (int i = 0; i < totalValeurs; ++i) {
+    for (int i = 0; i < totalValeurs; i++) {
         totalCartes += quantitesDefaut[i];
     }
     
@@ -37,7 +37,7 @@ Pioche creerPiocheDefaut() {
     for (int i = 0; i < totalValeurs; ++i) {
         int valeur = valeursDefaut[i];
         int quantite = quantitesDefaut[i];
-        for (int j = 0; j < quantite && pioche.taille < totalCartes; ++j) {
+        for (int j = 0; j < quantite && pioche.taille < totalCartes; j++) {
             pioche.cartes[pioche.taille].valeur = valeur;
             pioche.cartes[pioche.taille].visible = false;
             pioche.taille++;
@@ -100,7 +100,7 @@ Pioche creerPiocheDepuisFichier(const char *nomFichier) {
             quantite = 0;
         }    
 
-        for (int i = 0; i < quantite && pioche.taille < NB_CARTES_MAX; ++i) {
+        for (int i = 0; i < quantite && pioche.taille < NB_CARTES_MAX; i++) {
             pioche.cartes[pioche.taille].valeur = valeur;
             pioche.cartes[pioche.taille].visible = false;
             pioche.taille++;
@@ -127,7 +127,7 @@ void melangerPioche(Pioche *pioche) {
         initialise = 1;
     }
     //Melange de Fisher-Yates tres connu pour   pour mélanger un tableau de manière parfaitement équitable. 
-    for (int i = pioche->taille - 1; i > 0; --i) {
+    for (int i = pioche->taille - 1; i > 0; i--) {
         int j = rand() % (i + 1);
         Carte temp = pioche->cartes[i];
         pioche->cartes[i] = pioche->cartes[j];
@@ -150,7 +150,7 @@ Carte piocherCarte(Pioche *pioche) {
         printf(" Pioche vide !\n");
         return carteInvalide;
     }
-    //on pioche la dertniere carte du tableau afin puis on reduit la taille du tableaude 1 pour que la carte n''apparait plus dans la pioche 
+    //on pioche la dertniere carte du tableau puis on reduit la taille du tableaude 1 pour que la carte n''apparait plus dans la pioche 
     pioche->taille--;
     Carte carte = pioche->cartes[pioche->taille];
     carte.visible = false;
