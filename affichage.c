@@ -69,8 +69,6 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
         printf("Carte invalide (NULL)\n");
         exit(21);
     }
-    
-    if (nbCartes <= 0) return;
 
     const int max_par_ligne = 10;
 
