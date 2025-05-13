@@ -75,7 +75,9 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
     for (int ligne = 0; ligne * max_par_ligne < nbCartes; ligne++) {
         int debut = ligne * max_par_ligne;
         int fin = debut + max_par_ligne;
-        if (fin > nbCartes) fin = nbCartes;
+        if (fin > nbCartes){
+            fin = nbCartes;
+        }
 
         // Ligne haut
         for (int i = debut; i < fin; i++) {
@@ -89,8 +91,12 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
             const Carte *c = &cartes[i];
             const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
             printf("%s|%s", col, col);
-            if (!c->visible) printf(" CARD  ");
-            else printf("       ");
+            if (!c->visible){
+                printf(" CARD  ");
+            } 
+            else{ 
+                printf("       ");
+            }
             printf("%s|\033[0m ", col);
         }
         printf("\n");
@@ -100,8 +106,12 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
             const Carte *c = &cartes[i];
             const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
             printf("%s|%s", col, col);
-            if (!c->visible) printf(" YARD  ");
-            else printf("  %2d   ", c->valeur);
+            if (!c->visible){
+                printf(" YARD  "); 
+            } 
+            else{ 
+                printf("  %2d   ", c->valeur);
+            }
             printf("%s|\033[0m ", col);
         }
         printf("\n");
