@@ -34,7 +34,7 @@ Pioche creerPiocheDefaut() {
 
     pioche.taille = 0;
     //remplissage automatique de la pioche par défaut.//
-    for (int i = 0; i < totalValeurs; ++i) {
+    for (int i = 0; i < totalValeurs; i++) {
         int valeur = valeursDefaut[i];
         int quantite = quantitesDefaut[i];
         for (int j = 0; j < quantite && pioche.taille < totalCartes; j++) {
