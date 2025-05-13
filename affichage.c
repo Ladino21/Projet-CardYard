@@ -38,17 +38,17 @@ void afficherClassement(const Partie *partie) {
 
     Classement scores[NB_JOUEURS_MAX];
 
-    for (int i = 0; i < partie->nb_joueurs; ++i) {
+    for (int i = 0; i < partie->nb_joueurs; i++) {
         int total = 0;
-        for (int j = 0; j < partie->joueurs[i].nb_cartes; ++j) {
+        for (int j = 0; j < partie->joueurs[i].nb_cartes; j++) {
             total += partie->joueurs[i].personnelles[j].valeur;
         }
         scores[i].joueur_id = i + 1;
         scores[i].score = total;
     }
 
-    for (int i = 0; i < partie->nb_joueurs - 1; ++i) {
-        for (int j = i + 1; j < partie->nb_joueurs; ++j) {
+    for (int i = 0; i < partie->nb_joueurs - 1; i++) {
+        for (int j = i + 1; j < partie->nb_joueurs; j++) {
             if (scores[i].score > scores[j].score) {
                 Classement tmp = scores[i];
                 scores[i] = scores[j];
@@ -58,7 +58,7 @@ void afficherClassement(const Partie *partie) {
     }
 
     printf("\n !! Classement final !! :\n");
-    for (int i = 0; i < partie->nb_joueurs; ++i) {
+    for (int i = 0; i < partie->nb_joueurs; i++) {
         printf("  %d* Joueur %d - Score : %d\n", i + 1, scores[i].joueur_id, scores[i].score);
     }
 }
@@ -80,14 +80,14 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
         if (fin > nbCartes) fin = nbCartes;
 
         // Ligne haut
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             const char *col = cartes[i].visible ? couleurCarte(cartes[i].valeur) : "\033[100m";
             printf("%s+-------+\033[0m ", col);
         }
         printf("\n");
 
         // Ligne texte haut
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             const Carte *c = &cartes[i];
             const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
             printf("%s|%s", col, col);
@@ -98,7 +98,7 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
         printf("\n");
 
         // Ligne texte bas (valeurs)
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             const Carte *c = &cartes[i];
             const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
             printf("%s|%s", col, col);
@@ -109,14 +109,14 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
         printf("\n");
 
         // Ligne bas
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             const char *col = cartes[i].visible ? couleurCarte(cartes[i].valeur) : "\033[100m";
             printf("%s+-------+\033[0m ", col);
         }
         printf("\n");
 
         // Ligne des indices
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             int index = i + indice_debut;
             if (index < 10){
                 printf("   [%d]    ", index);
@@ -184,20 +184,20 @@ void afficherDefausse(const Joueur *joueur) {
     const int max_par_ligne = 5;
     int total = joueur->nb_defausse;
 
-    for (int ligne = 0; ligne * max_par_ligne < total; ++ligne) {
+    for (int ligne = 0; ligne * max_par_ligne < total; ligne++) {
         int debut = ligne * max_par_ligne;
         int fin = debut + max_par_ligne;
         if (fin > total) fin = total;
 
         // Ligne haut
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             const char *col = joueur->defausse[i].visible ? couleurCarte(joueur->defausse[i].valeur) : "\033[100m";
             printf("%s+-------+\033[0m ", col);
         }
         printf("\n");
 
         // Ligne milieu
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             const Carte *c = &joueur->defausse[i];
             const char *col = c->visible ? couleurCarte(c->valeur) : "\033[100m";
             printf("%s|%s", col, col);
@@ -210,14 +210,14 @@ void afficherDefausse(const Joueur *joueur) {
         printf("\n");
 
         // Ligne bas
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             const char *col = joueur->defausse[i].visible ? couleurCarte(joueur->defausse[i].valeur) : "\033[100m";
             printf("%s+-------+\033[0m ", col);
         }
         printf("\n");
 
         // Indices centrés
-        for (int i = debut; i < fin; ++i) {
+        for (int i = debut; i < fin; i++) {
             if (i < 10){
                 printf("   [%d]    ", i); // 9 caractères
             }
@@ -238,7 +238,7 @@ void afficherPartie(const Partie *partie) {
     printf("\n==== État du jeu ====\n\n");
     afficherPiocheCentrale(&partie->pioche);
 
-    for (int i = 0; i < partie->nb_joueurs; ++i) {
+    for (int i = 0; i < partie->nb_joueurs; i++) {
         printf("Joueur %d :\n", i + 1);
         afficherLigneCartesAvecIndice(partie->joueurs[i].personnelles, partie->joueurs[i].nb_cartes,0);
         afficherDefausse(&partie->joueurs[i]);
