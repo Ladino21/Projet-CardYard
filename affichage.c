@@ -70,7 +70,7 @@ void afficherLigneCartesAvecIndice(const Carte *cartes, int nbCartes, int indice
         exit(21);
     }
 
-    const int max_par_ligne = 10;
+    int max_par_ligne = 10;
 
     for (int ligne = 0; ligne * max_par_ligne < nbCartes; ligne++) {
         int debut = ligne * max_par_ligne;
